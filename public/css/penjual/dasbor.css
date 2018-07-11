@@ -1,0 +1,11 @@
+#form-barang{
+    text-align: center;
+}
+#foto-barang{
+    margin: 0 auto;
+    max-width: 100%;
+    max-height: 300px;
+}
+#crop{
+    display: none;
+}
