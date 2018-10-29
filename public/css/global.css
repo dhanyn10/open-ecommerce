@@ -27,3 +27,6 @@
     display: block;
     height: 20px;
 }
+.sidebar .nav-link:hover{
+    background:#007bff;
+}
