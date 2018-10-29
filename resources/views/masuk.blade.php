@@ -1,9 +1,9 @@
 @extends('tataletak')
 @section('konten')
-<div class="col-md-4 tengah">
+<div class="col-md-4 offset-md-4">
     @include('flash::message')
     <div class="card border-primary w-100">
-        <div class="card-header bg-primary text-center text-white">Masuk ke dalam akun kamu</div>
+        <div class="card-header bg-primary text-center text-white">Masuk</div>
         <div class="card-body">
             <form method="post">
                 {{csrf_field()}}
