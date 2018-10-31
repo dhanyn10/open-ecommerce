@@ -12,11 +12,10 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="text-primary text-uppercase text-center">tambah barang</h4>
+                    <h4 class="text-primary text-uppercase text-center">Menambah Barang Dagang</h4>
                     @include('flash::message')
                     <form method="post">
                         {{csrf_field()}}
-                        <input type="hidden" name="jenis" value="tambahdata"/>
                         <div class="form-group">
                             <input type="hidden" name="input-barang"/>
                             <div id="form-barang">
@@ -48,5 +47,5 @@
         </div>
     </div>
 </div>
-<script src="{{URL::asset('js/penjual/dasbor.js')}}"></script>
+<script src="{{URL::asset('js/penjual/tambah.js')}}"></script>
 @endsection
