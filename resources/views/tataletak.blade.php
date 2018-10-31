@@ -39,7 +39,7 @@
                 <ul class="navbar-nav mr-auto">
                     @if(session('peran') == 2)
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('dasbor-penjual')}}">dasbor</a>
+                        <a class="nav-link" href="{{route('penjual-tambah')}}">dasbor</a>
                     </li>
                     @elseif(session('peran') == 3)
                     <li class="nav-item">

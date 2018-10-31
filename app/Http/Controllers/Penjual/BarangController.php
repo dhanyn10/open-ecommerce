@@ -30,7 +30,7 @@ class BarangController extends Controller
             if($validasi->fails())
             {
                 flash('id barang tidak ada');
-                return redirect()->route('dasbor-penjual');
+                return redirect()->route('penjual-tambah');
             }
             else
             {
@@ -42,13 +42,13 @@ class BarangController extends Controller
                 //hapus file gambar barang di public path
                 File::delete(public_path().'/img/barangdagang/'.$id.'.png');
                 flash('berhasil menghapus data')->success();
-                return redirect()->route('barang-penjual');
+                return redirect()->route('penjual-lihat');
             }
         }
         else
         {
             flash('terjadi kesalahan');
-            return redirect()->route('barang-penjual');
+            return redirect()->route('penjual-lihat');
         }
     }
 }

@@ -89,8 +89,8 @@ class MasukController extends Controller
                         }
                         else if(session("peran") == 2)
                         {
-                            //mengalihkan halaman ke dasbor penjual
-                            return redirect()->route('dasbor-penjual');
+                            //mengalihkan halaman ke tambah barang penjual
+                            return redirect()->route('penjual-tambah');
                         }
                         else if(session('peran') == 3)
                         {

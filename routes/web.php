@@ -29,15 +29,19 @@ Route::group([
     'prefix'        => 'penjual'
 ], function(){
 
-    Route::get('dasbor', 'Penjual\DasborController@index')->name('dasbor-penjual');
+    Route::get('/',function() {
+        return redirect()->route('penjual-tambah');
+    });
 
-    Route::get('barang', 'Penjual\BarangController@index')->name('barang-penjual');
+    Route::get('tambah', 'Penjual\TambahController@index')->name('penjual-tambah');
+
+    Route::get('lihat', 'Penjual\BarangController@index')->name('penjual-lihat');
 
     Route::get('akun', 'Penjual\AkunController@index')->name('akun-penjual');
 
-    Route::post('dasbor', 'Penjual\DasborController@barang');
+    Route::post('tambah', 'Penjual\TambahController@barang');
 
-    Route::post('barang', 'Penjual\BarangController@barang');
+    Route::post('lihat', 'Penjual\BarangController@barang');
     
     Route::post('akun', 'PenggunaController@profil');
 
