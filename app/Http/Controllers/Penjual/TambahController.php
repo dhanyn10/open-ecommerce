@@ -8,12 +8,12 @@ use File;
 use Validator;
 
 use App\Barang;
-class DasborController extends Controller
+class TambahController extends Controller
 {
     public function index()
     {
         $barang = Barang::where('penjual', session('email'))->get();
-        return view('penjual.dasbor',[
+        return view('penjual.tambah',[
             'data_barang'   => $barang
         ]);
     }
@@ -38,7 +38,6 @@ class DasborController extends Controller
             if($validasi->fails())
             {
                 flash('data tidak sesuai format');
-                return redirect()->route('dasbor-penjual');
             }
             else
             {
@@ -65,13 +64,12 @@ class DasborController extends Controller
                     'keterangan'=> $keterangan
                 ]);
                 flash('berhasil menambah barang');
-                return redirect()->route('dasbor-penjual');
             }
         }
         else
         {
             flash('terjadi kesalahan');
-            return redirect()->route('dasbor-penjual');
         }
+        return redirect()->route('penjual-tambahbarang');
     }
 }
