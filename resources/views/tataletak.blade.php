@@ -43,7 +43,7 @@
                     </li>
                     @elseif(session('peran') == 3)
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('dasbor-pembeli')}}">dasbor</a>
+                        <a class="nav-link" href="{{route('pembeli-dasbor')}}">dasbor</a>
                     </li>
                     @endif
                 </ul>
