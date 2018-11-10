@@ -24,7 +24,7 @@ class TambahController extends Controller
      
         return preg_replace('/-+/', '_', $string); // Replaces multiple hyphens with single one.
      }
-    public function barang(Request $req)
+    public function formtambah(Request $req)
     {
         $validasi = Validator::make($req->all(),[
             'input-barang'  => 'required',
