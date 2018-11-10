@@ -39,9 +39,9 @@ Route::group([
 
     Route::get('akun', 'Penjual\AkunController@index')->name('akun-penjual');
 
-    Route::post('tambah', 'Penjual\TambahController@barang');
+    Route::post('tambah', 'Penjual\TambahController@formtambah');
 
-    Route::post('lihat', 'Penjual\BarangController@barang');
+    Route::post('lihat', 'Penjual\HapusController@formhapus');
     
     Route::post('akun', 'PenggunaController@profil');
 
