@@ -7,12 +7,12 @@ use App\Http\Controllers\Controller;
 
 use App\Pengguna;
 
-class DasborController extends Controller
+class ProfilController extends Controller
 {
     public function index()
     {
         $pengguna   = Pengguna::where('email', session('email'))->get();
-        return view('pembeli.dasbor',[
+        return view('pembeli.profil',[
             'pengguna'  => $pengguna
         ]);
     }
