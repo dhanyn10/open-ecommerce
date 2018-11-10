@@ -52,9 +52,9 @@ Route::group([
     'prefix'        => 'pembeli'
 ], function(){
 
-    Route::get('dasbor', 'Pembeli\DasborController@index')->name('pembeli-dasbor');
+    Route::get('profil', 'Pembeli\ProfilController@index')->name('pembeli-profil');
 
-    Route::post('dasbor', 'PenggunaController@profil');
+    Route::post('profil', 'PenggunaController@profil');
 });
 
 Route::group([
