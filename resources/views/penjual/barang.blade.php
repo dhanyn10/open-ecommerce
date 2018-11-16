@@ -17,7 +17,7 @@
                                         </div>
                                         <div class="card-body">
                                             <h6 class="text-uppercase">{{$barang->nama}}</h6>
-                                            <span class="text-muted">{{$barang->harga}}</span>
+                                            <span class="text-danger">{{$barang->harga}}</span>
                                             <div class="modal fade" id="modalhapus{{$barang->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
                                                     <form method="post">
