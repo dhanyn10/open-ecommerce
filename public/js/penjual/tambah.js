@@ -15,11 +15,16 @@ function croppergambar()
     $("#foto-barang").cropper({
         aspectRatio: 4/4,
         zoomable:true,
-        autoCropArea: 0.8,
+        autoCropArea: 1.0,
         cropBoxResizable:true,
         crop: function(e) {
         }
     });
+    data_url =  $("#foto-barang").cropper('getCroppedCanvas',{
+        height:150,
+        width:150
+    }).toDataURL();
+    $("#input-barang").val(data_url);
 }
 $("#cekbarang").change(function(){
     if($(".cropper-container").length)
