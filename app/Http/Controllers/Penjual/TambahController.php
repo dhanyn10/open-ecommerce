@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Penjual;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use App\Http\Controllers\Controller;
 use File;
 use Validator;
@@ -27,7 +28,6 @@ class TambahController extends Controller
     public function formtambah(Request $req)
     {
         $validasi = Validator::make($req->all(),[
-            'input-barang'  => 'required',
             'nama'          => 'required|max:30',
             'harga'         => 'required|numeric|digits_between:1,10',
             'jumlah'        => 'required|numeric|digits_between:1,10',
@@ -39,29 +39,37 @@ class TambahController extends Controller
         }
         else
         {
-            $nama       = $req->input('nama');
-            $harga      = $req->input('harga');
-            $jumlah     = $req->input('jumlah');
-            $keterangan = $req->input('keterangan');
-                //mengambil kode base64 dari gambar
-            $explode    = explode(",", $req->input("input-barang"));
-            //mendecode string gambar yang diperoleh
-            $barang     = base64_decode($explode[1]);
-            //nama barang sekaligus menjadi id
-            $id     = date("ymdhis").str_random(7).'-'.$this->clean($nama);
-            //lokasi barang
-            $lokasibarang   = public_path().'/img/barangdagang/'.$id.'.png';
-            //menyimpan file kedalam folder public/img/user
-            File::put($lokasibarang, $barang);
-            Barang::create([
-                'id'        => $id,
-                'nama'      => $nama,
-                'harga'     => $harga,
-                'jumlah'    => $jumlah,
-                'penjual'   => session('email'),
-                'keterangan'=> $keterangan
-            ]);
-            flash('berhasil menambah barang');
+            if($req->input('data-gambar') != null)
+            {
+                //encode gambar menjadi base64
+                $getgambar  = $req->input('data-gambar');
+                $explode    = explode(',', $getgambar);
+                $nama       = $req->input('nama');
+                $harga      = $req->input('harga');
+                $jumlah     = $req->input('jumlah');
+                $keterangan = $req->input('keterangan');
+                //mendecode string gambar yang diperoleh
+                $gambar     = base64_decode($explode[1]);
+                //nama barang sekaligus menjadi id
+                $id     = date("ymdhis").str_random(7).'-'.$this->clean($nama);
+                //lokasi gambar
+                $lokasibarang   = public_path().'/img/barangdagang/'.$id.'.png';
+                //menyimpan file kedalam folder public/img/user
+                File::put($lokasibarang, $gambar);
+                Barang::create([
+                    'id'        => $id,
+                    'nama'      => $nama,
+                    'harga'     => $harga,
+                    'jumlah'    => $jumlah,
+                    'penjual'   => session('email'),
+                    'keterangan'=> $keterangan
+                ]);
+                flash('berhasil menambah barang');
+            }
+            else
+            {
+                flash('data gambar tidak tersedia')->error();
+            }
         }
         return redirect()->route('penjual-tambah');
     }
