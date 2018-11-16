@@ -8,6 +8,8 @@
 .fotobarangdagang img{
     width: auto;
     height: auto;
+    max-width: 150px;
+    max-height: 150px;
 }
 .card-barangdagang{
     margin-bottom: 5px;
