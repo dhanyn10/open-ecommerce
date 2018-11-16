@@ -17,7 +17,7 @@
                     <form method="post">
                         {{csrf_field()}}
                         <div class="form-group">
-                            <input type="hidden" name="input-barang"/>
+                            <input type="hidden" name="input-barang" id="input-barang"/>
                             <div id="form-barang">
                                 <img name="foto-barang" id="foto-barang"/>
                             </div>
