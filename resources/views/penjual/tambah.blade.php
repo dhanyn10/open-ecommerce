@@ -1,10 +1,6 @@
 @extends('tataletak')
 @section('css')
-<link href="{{URL::asset('cropper/cropper.min.css')}}" rel="stylesheet"/>
 <link href="{{URL::asset('css/penjual/dasbor.css')}}" rel="stylesheet"/>
-@section('js')
-<script src="{{URL::asset('cropper/cropper.min.js')}}"></script>
-@endsection
 @section('konten')
 <div class="container-fluid">
     <div class="row">
@@ -17,16 +13,11 @@
                     <form method="post">
                         {{csrf_field()}}
                         <div class="form-group">
-                            <input type="hidden" name="input-barang" id="input-barang"/>
-                            <div id="form-barang">
-                                <img name="foto-barang" id="foto-barang"/>
-                            </div>
+                            <img id="preview-gambar" class="img-thumbnail"/>
+                            <input type="hidden" name="data-gambar" id="data-gambar"/>
                         </div>
                         <div class="form-group">
-                            <button type="button" class="btn btn-success btn-block none" id="crop">Potong</button>
-                        </div>
-                        <div class="form-group">
-                            <input type="file" class="form-control" id="cekbarang"/>
+                            <input type="file" class="form-control" id="gambar"/>
                         </div>
                         <div class="form-group">
                             <input type="text" name="nama" class="form-control" maxlength="30" placeholder="namabarang" required/>
