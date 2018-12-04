@@ -13,10 +13,10 @@ class TabelPengguna extends Migration
             $table->string("nama", 20);
             $table->string('telepon', 12)->nullable();
             $table->string('alamat',255)->nullable();
-            $table->string("sandi",60);
+            $table->string("sandi",30);
             $table->integer("peran");
             $table->integer("konfirmasi");
-            $table->string("token", 40);
+            $table->string("token", 40)->nullable();
         });
     }
     public function down()
