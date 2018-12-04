@@ -81,7 +81,7 @@ class MasukController extends Controller
                             'email'     => $data_email,
                             'peran'     => $data_peran
                         ]);
-                        else if(session("peran") == 2)
+                        if(session("peran") == 2)
                         {
                             //mengalihkan halaman ke tambah barang penjual
                             return redirect()->route('penjual-tambah');
