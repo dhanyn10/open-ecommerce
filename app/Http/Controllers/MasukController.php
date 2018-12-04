@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 use App\Pengguna;
 use Validator;
@@ -74,7 +73,7 @@ class MasukController extends Controller
                     $data_sandi = $data->pluck('sandi')->first();
                     
                     //cek apakah sandi yang dimasukkan sesuai dengan sandi di database
-                    if(Hash::check($sandi, $data_sandi))
+                    if($sandi == $data_sandi)
                     {
                         //jika sandi cocok, buat sesi dengan menggunakan data nama dan email
                         session([
@@ -82,11 +81,6 @@ class MasukController extends Controller
                             'email'     => $data_email,
                             'peran'     => $data_peran
                         ]);
-                        if(session("peran") == 1)
-                        {
-                            //mengalihkan halaman ke dasbor-admin
-                            return redirect()->route("dasbor-admin");
-                        }
                         else if(session("peran") == 2)
                         {
                             //mengalihkan halaman ke tambah barang penjual
@@ -140,7 +134,7 @@ class MasukController extends Controller
                 $data['sandi']  = str_random(20);
                 try{
                     Pengguna::where('email', $data['email'])->update([
-                        'sandi' => Hash::make($data['sandi'])
+                        'sandi' => $data['sandi']
                         ]);
                     Mail::send('emailresetsandi', $data, function($pesan) use ($data){
                         $pesan->to($data['email']);
