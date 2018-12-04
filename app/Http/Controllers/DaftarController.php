@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 use App\Pengguna;
 use Validator;
@@ -35,12 +34,12 @@ class DaftarController extends Controller
         }
         catch(\PDOException $e)
         {
-            return "koneksi database gagal";
+            return "gagal";
         }
     }
     public function daftar(Request $req)
     {
-        if($this->connect() == "koneksi database gagal")
+        if($this->connect() == "gagal")
         {
             flash('koneksi database gagal')->error();
             return redirect()->route('daftar');
@@ -79,7 +78,7 @@ class DaftarController extends Controller
                     Pengguna::create([
                         'email'         => $data['email'],
                         'nama'          => $data['nama'],
-                        'sandi'         => Hash::make($req->input('sandi')),
+                        'sandi'         => $req->input('sandi'),
                         'peran'         => $req->input('peran'),
                         'konfirmasi'    => 0,
                         'token'         => $data['token']
