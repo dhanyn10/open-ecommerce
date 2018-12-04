@@ -47,7 +47,7 @@
                                                     <a
                                                         class="btn btn-sm btn-light hover-visible"
                                                         title="edit"
-                                                        href=""
+                                                        href="{{route('penjual-ubah', $barang->id)}}"
                                                     >
                                                         <i class="fa fa-pencil-square"></i>
                                                     </a>
