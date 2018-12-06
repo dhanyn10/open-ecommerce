@@ -68,7 +68,7 @@ class TambahController extends Controller
             }
             else
             {
-                flash('data gambar tidak tersedia')->error();
+                flash('Belum upload gambar')->error();
             }
         }
         return redirect()->route('penjual-tambah');
