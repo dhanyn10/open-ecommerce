@@ -11,6 +11,20 @@ function bacagambar(input)
         reader.readAsDataURL(input.files[0]);
     }
 }
+function GetFileSize(input)
+{
+    fsize_kb = 0;
+    if(input.files.length > 0)
+    {
+        for(var f = 0; f < input.files.length; f++)
+        {
+            fsize       = input.files.item(f).size;
+            fsize_kb    = Math.round((fsize / 1024));
+        }
+    }
+    return fsize_kb;
+}
+
 $("#gambar").change(function()
 {
     if(GetFileSize(this) <= 500)
@@ -19,20 +33,7 @@ $("#gambar").change(function()
     }
     else
     {
-        alert('Ukuran gambar terlalu besar'+ GetFileSize(this));
+        alert('Ukuran gambar terlalu besar');
         $(this).val(null);
     }
 });
-function GetFileSize(input)
-{
-    fsize_kb = 0;
-    if(input.files.length > 0)
-    {
-        for(f = 0; f <= input.files.length; f++)
-        {
-            fsize       = input.files.item(f).size;
-            fsize_kb    = Math.round((fsize / 1024));
-        }
-    }
-    return fsize_kb;
-}
