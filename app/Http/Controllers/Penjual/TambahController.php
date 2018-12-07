@@ -41,13 +41,17 @@ class TambahController extends Controller
         {
             if($req->input('data-gambar') != null)
             {
-                //encode gambar menjadi base64
-                $getgambar  = $req->input('data-gambar');
-                $explode    = explode(',', $getgambar);
                 $nama       = $req->input('nama');
                 $harga      = $req->input('harga');
                 $jumlah     = $req->input('jumlah');
                 $keterangan = $req->input('keterangan');
+
+                /**
+                 * prosesor gambar di sini
+                 */
+                //encode gambar menjadi base64
+                $getgambar  = $req->input('data-gambar');
+                $explode    = explode(',', $getgambar);
                 //mendecode string gambar yang diperoleh
                 $gambar     = base64_decode($explode[1]);
                 //nama barang sekaligus menjadi id
