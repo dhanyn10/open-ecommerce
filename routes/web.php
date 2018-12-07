@@ -29,6 +29,7 @@ Route::group([
     Route::get('akun', 'Penjual\AkunController@index')->name('akun-penjual');
     Route::post('tambah', 'Penjual\TambahController@formtambah');
     Route::post('lihat', 'Penjual\HapusController@formhapus');
+    Route::post('ubah/{id}', 'Penjual\UbahController@formubah');
     Route::post('akun', 'PenggunaController@profil');
 });
 
