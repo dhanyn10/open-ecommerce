@@ -1,19 +1,22 @@
 <?php
 
 return [
-    'name'      => 'BeliSini',
-    'env'       => env('APP_ENV', 'production'),
-    'debug'     => env('APP_DEBUG', false),
-    'url'       => env('APP_URL'),
+    'name'  => 'ecommerce',
+    'env'   => 'development',
+    'debug' => 'true',
+    'url'   => 'http://localhost',
+    'asset_url' => env('ASSET_URL', null),
     'timezone'  => 'UTC',
     'locale'    => 'en',
-    'fallback_locale' => 'en',
-    'key'       => env('APP_KEY'),
+    'fallback_locale'   => 'en',
+    'faker_locale'      => 'en_US',
+    'key'   => 'base64:FCiInNU23db3qMoIT4ZTZvQfbNJaPRyKCUFLz0y9Y/U=',
     'cipher'    => 'AES-256-CBC',
-    'log'       => env('APP_LOG', 'single'),
-    'log_level' => env('APP_LOG_LEVEL', 'debug'),
     'providers' => [
-        /*Laravel Framework Service Providers*/
+
+        /*
+         * Laravel Framework Service Providers...
+         */
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
         Illuminate\Bus\BusServiceProvider::class,
@@ -36,16 +39,33 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        /*Package Service Providers*/
-        /*Application Service Providers*/
+
+        /*
+         * Package Service Providers...
+         */
+
+        /*
+         * Application Service Providers...
+         */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        //laracasts flash
-        Laracasts\Flash\FlashServiceProvider::class,
+
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Class Aliases
+    |--------------------------------------------------------------------------
+    |
+    | This array of class aliases will be registered when this application
+    | is started. However, feel free to register as many as you wish as
+    | the aliases are "lazy" loaded so they don't hinder performance.
+    |
+    */
+
     'aliases' => [
 
         'App' => Illuminate\Support\Facades\App::class,
@@ -81,5 +101,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+
     ],
+
 ];
