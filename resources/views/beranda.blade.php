@@ -7,13 +7,7 @@
 			<div class="carousel slide" data-ride="carousel">
 				<div class="carousel-inner">
 					<div class="carousel-item active">
-						<img class="d-block w-100" src="{{URL::asset('img/teachlikefinland.png')}}" alt="First slide">
-					</div>
-					<div class="carousel-item">
-						<img class="d-block w-100" src="{{URL::asset('img/teachlikefinland.png')}}" alt="Second slide">
-					</div>
-					<div class="carousel-item">
-						<img class="d-block w-100" src="{{URL::asset('img/teachlikefinland.png')}}" alt="Third slide">
+						{{-- <img class="d-block w-100" src="" alt="First slide"> --}}
 					</div>
 				</div>
 			</div>
@@ -40,23 +34,5 @@
 			@endif
 		</div>
 	</div>
-</div>
-<div class="col-mg-12 fixed-bottom bg-primary text-white">
-		<div class="card-body">
-			<div class="row">
-				<div class="col-md-8"></div>
-				<div class="col-md-4">
-					<h4>Kontak</h4>
-					<div class="row">
-						<div class="col-md-6">email</div>
-						<div class="col-md-6">dhanyn.dhan@gmail.com</div>
-					</div>
-					<div class="row">
-						<div class="col-md-6">kontak</div>
-						<div class="col-md-6">123456789</div>
-					</div>
-				</div>
-			</div>
-		</div>
 </div>
 @endsection
