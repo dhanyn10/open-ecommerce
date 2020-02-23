@@ -3,7 +3,7 @@ name: Laravel
 on:
   pull_request:
     branches:
-      - dependabot/*
+      - master
 
 jobs:
   laravel-tests:
