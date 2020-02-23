@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'name'  => 'ecommerce',
+    'name'  => 'open ecommerce',
     'env'   => 'development',
     'debug' => 'true',
     'url'   => 'http://localhost',
