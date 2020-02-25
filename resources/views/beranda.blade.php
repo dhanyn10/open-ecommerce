@@ -23,9 +23,9 @@
 						</div>
 						<div class="card-body">
 							<h6 class="text-uppercase">{{$barang->nama}}</h6>
-							<span class="text-muted">{{$barang->harga}}</span>
+							<span class="text-danger">{{$barang->harga}}</span>
 							<div class="form-group">
-								<a class="text-uppercase btn btn-sm btn-primary hover-visible float-right" href="{{route('barang', $barang->id)}}">lihat</a>
+								<a class="text-uppercase btn btn-sm btn-danger hover-visible float-right" href="{{route('barang', $barang->id)}}">lihat</a>
 							</div>
 						</div>
 					</div>
