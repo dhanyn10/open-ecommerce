@@ -17,18 +17,18 @@
                             <h5 class="text-uppercase">{{$barang->nama}}</h5>
                         </div>
                         <div class="col-md-6">
-                            <strong class="text-primary float-right">Rp.{{$barang->harga}}</strong>
+                            <strong class="text-danger float-right">Rp.{{$barang->harga}}</strong>
                         </div>
                     </div>
                     <strong>tersedia {{$sisabarang}} stok barang</strong>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4 offset-md-8">
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <a href="/barang/beli/{{$barang->id}}" class="btn btn-sm btn-block rounded-0 btn-danger text-uppercase text-white">beli</a>
+                                    <a href="/barang/beli/{{$barang->id}}" class="btn btn-block rounded-0 btn-danger text-uppercase text-white">beli</a>
                                 </div>
                                 <div class="col-sm-6">
-                                    <button type="submit" class="btn btn-sm btn-block rounded-0 btn-outline-primary text-uppercase">bookmark</button>
+                                    <button type="submit" class="btn btn-block rounded-0 btn-outline-primary text-uppercase">wishlist</button>
                                 </div>
                             </div>
                         </div>
