@@ -54,3 +54,10 @@ Route::group([
     Route::post('beli', 'Barang\BeliController@aturbelanja');
     Route::post('beli/{id}', 'Barang\BeliController@aturbelanja');
 });
+
+Route::group([
+    'middleware'    => 'admin',
+    'prefix'        => 'admin'
+], function(){
+    Route::get('dasbor', 'Admin\DasborController@index')->name('admin-dasbor');
+});
