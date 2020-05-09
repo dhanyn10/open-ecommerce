@@ -81,6 +81,11 @@ class MasukController extends Controller
                             'email'     => $data_email,
                             'peran'     => $data_peran
                         ]);
+                        if(session("peran") == 1)
+                        {
+                            //mengalihkan halaman ke dasbor admin
+                            return redirect()->route('admin-dasbor');
+                        }
                         if(session("peran") == 2)
                         {
                             //mengalihkan halaman ke tambah barang penjual
