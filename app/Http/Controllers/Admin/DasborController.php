@@ -8,6 +8,6 @@ class DasborController extends Controller
 {
     public function index()
     {
-        return "halaman admin"
+        return "halaman admin";
     }
 }
