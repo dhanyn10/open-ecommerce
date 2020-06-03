@@ -56,7 +56,7 @@ Route::group([
 });
 
 Route::group([
-    'middleware'    => 'admin',
+    // 'middleware'    => 'admin',
     'prefix'        => 'admin'
 ], function(){
     Route::get('dasbor', 'Admin\DasborController@index')->name('admin-dasbor');
