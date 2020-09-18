@@ -12,9 +12,9 @@ class ExampleTest extends TestCase
      *
      * @return void
      */
-    public function testBasicTest()
+    public function testFormMasuk()
     {
-        $response = $this->get('/');
+        $response = $this->get('/masuk');
 
         $response->assertStatus(200);
     }
