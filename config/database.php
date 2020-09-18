@@ -2,7 +2,7 @@
 
 return [
 
-    'default' => 'mysql',
+    'default' => env('DB_CONNECTION'),
     'connections' => [
 
         'sqlite' => [
@@ -14,11 +14,11 @@ return [
 
         'mysql' => [
             'driver'    => 'mysql',
-            'host'      => '127.0.0.1',
-            'port'      => '3306',
-            'database'  => 'open_ecommerce',
-            'username'  => 'root',
-            'password'  => '',
+            'host'      => env('DB_HOST'),
+            'port'      => env('DB_PORT'),
+            'database'  => env('DB_DATABASE'),
+            'username'  => env('DB_USERNAME'),
+            'password'  => env('DB_PASSWORD'),
             'unix_socket'   => '',
             'charset'   => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',

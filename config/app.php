@@ -1,16 +1,16 @@
 <?php
 
 return [
-    'name'  => 'open ecommerce',
-    'env'   => 'development',
-    'debug' => 'true',
-    'url'   => 'http://localhost',
+    'name'  => env('APP_NAME'),
+    'env'   => env('APP_ENV'),
+    'debug' => env('APP_DEBUG'),
+    'url'   => env('APP_URL'),
     'asset_url' => env('ASSET_URL', null),
     'timezone'  => 'UTC',
     'locale'    => 'en',
     'fallback_locale'   => 'en',
     'faker_locale'      => 'en_US',
-    'key'   => 'base64:FCiInNU23db3qMoIT4ZTZvQfbNJaPRyKCUFLz0y9Y/U=',
+    'key'   => env('APP_KEY'),
     'cipher'    => 'AES-256-CBC',
     'providers' => [
 
