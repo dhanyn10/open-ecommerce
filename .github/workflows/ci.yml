@@ -1,4 +1,4 @@
-name: Install Dependencies and Generate Database
+name: CI
 
 on:
   push:
@@ -26,3 +26,5 @@ jobs:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: vendor/bin/phpunit
+    - name: Seeds
+      run: php artisan db:seed
