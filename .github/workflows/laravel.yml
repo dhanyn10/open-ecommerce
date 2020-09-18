@@ -1,9 +1,10 @@
-name: Laravel
+name: Install Dependencies and Generate Database
 
 on:
+  push:
+    branches: master
   pull_request:
-    branches:
-      - master
+    branches: master
 
 jobs:
   laravel-tests:
