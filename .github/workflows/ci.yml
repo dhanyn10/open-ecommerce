@@ -21,5 +21,7 @@ jobs:
       run: touch database/database.sqlite
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       run: vendor/bin/phpunit
+    - name: Database Migration
+      run: php artisan migrate
     - name: Seeds
       run: php artisan db:seed
