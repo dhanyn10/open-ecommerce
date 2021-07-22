@@ -20,7 +20,7 @@ open source version for my e-commerce sites. This project currently in slow deve
   password: penjual
   ```
   Buyer
-```
+  ```
   email   : pembeli@open_ecommerce
   name    : pembeli
   password: pembeli
