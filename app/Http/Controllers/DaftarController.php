@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 use App\Pengguna;
 use Validator;
@@ -67,7 +68,7 @@ class DaftarController extends Controller
                     return redirect()->route("daftar");
                 }
                 
-                $data['token']  = $data['email'].str_random(10);
+                $data['token']  = $data['email'].Str::random(10);
                 $data['nama']   = $req->input('nama');
                 try{
                     
@@ -144,7 +145,7 @@ class DaftarController extends Controller
             else
             {
                 try{
-                    $data['token']  = $data['email'].str_random(10);
+                    $data['token']  = $data['email'].Str::random(10);
                     $data['email']  = $req->input('email');
                     
                     $pengguna       = Pengguna::where('email', $data['email']);

@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
@@ -12,9 +12,9 @@ class ExampleTest extends TestCase
      *
      * @return void
      */
-    public function testFormMasuk()
+    public function testBasicTest()
     {
-        $response = $this->get('/masuk');
+        $response = $this->get('/');
 
         $response->assertStatus(200);
     }

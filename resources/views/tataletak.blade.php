@@ -5,13 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>{{config('app.name')}}</title>
-        <link href="{{URL::asset('bootstrap/css/bootstrap.min.css')}}" rel="stylesheet"/>
-        <link href="{{URL::asset('fontawesome/css/font-awesome.min.css')}}" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
         <link href="{{URL::asset('css/global.css')}}" rel="stylesheet"/>
         @yield('css')
-        <script src="{{URL::asset('js/jquery.min.js')}}"></script>
         <script src="{{URL::asset('js/tether.min.js')}}"></script>
-        <script src="{{URL::asset('bootstrap/js/bootstrap.min.js')}}"></script>
         <script>
             $.ajaxSetup({
                 headers: {
@@ -65,5 +62,8 @@
             </div>
         </nav>
         @yield('konten')
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
     </body>
 </html>
