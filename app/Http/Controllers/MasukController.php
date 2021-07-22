@@ -143,8 +143,7 @@ class MasukController extends Controller
                         'sandi' => $data['sandi']
                         ]);
                     Mail::send('emailresetsandi', $data, function($pesan) use ($data){
-                        $pesan->to($data['email']);
-                        $pesan->subject('Reset Kata Sandi');
+                        $pesan->to($data['email'])->subject('Reset Kata Sandi');
                     });
                     flash('berhasil reset kata sandi')->success();
                     return redirect()->route('masuk');

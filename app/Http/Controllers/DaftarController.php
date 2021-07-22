@@ -73,8 +73,7 @@ class DaftarController extends Controller
                 try{
                     
                     Mail::send('konfirmasi', $data, function($pesan) use ($data){
-                        $pesan->to($data['email']);
-                        $pesan->subject('Konfirmasi Pendaftaran');
+                        $pesan->to($data['email'])->subject('Konfirmasi Pendaftaran');
                     });
                     Pengguna::create([
                         'email'         => $data['email'],
@@ -155,8 +154,7 @@ class DaftarController extends Controller
                     ]);
                     
                     Mail::send('konfirmasi', $data, function($pesan) use ($data){
-                        $pesan->to($data['email']);
-                        $pesan->subject('Konfirmasi Pendaftaran');
+                        $pesan->to($data['email'])->subject('Konfirmasi Pendaftaran');
                     });
                     flash('Email konfirmasi terkirim, Segera cek email kamu');
                     return redirect()->route('formkonfirmasi');
