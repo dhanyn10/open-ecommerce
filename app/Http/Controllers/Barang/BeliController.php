@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Barang;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 use App\Barang;
 use App\Pembelian;
@@ -87,7 +88,7 @@ class BeliController extends Controller
                     //ambil nama barang
                     $nama_barang    = $barang->pluck('nama')->first();
                     //buat id pembelian
-                    $id_beli        = date("ymdhis").str_random(7).'-'.str_replace(' ','-',$nama_barang);
+                    $id_beli        = date("ymdhis").Str::random(7).'-'.str_replace(' ','-',$nama_barang);
                     //buat database pembelian
                     Pembelian::create([
                         'id'        => $id_beli,
@@ -106,7 +107,7 @@ class BeliController extends Controller
                 //ambil nama barang
                 $nama_barang    = $barang->pluck('nama')->first();
                 //buat id pembelian
-                $id_beli        = date("ymdhis").str_random(7).'-'.str_replace(' ','-',$nama_barang);
+                $id_beli        = date("ymdhis").Str::random(7).'-'.str_replace(' ','-',$nama_barang);
                 //buat database pembelian
                 Pembelian::create([
                     'id'        => $id_beli,
