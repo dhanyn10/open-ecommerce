@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 use App\Pengguna;
 use Validator;
@@ -136,7 +137,7 @@ class MasukController extends Controller
             if(count($pengguna->get())> 0)
             {
                 $data['nama']   = $pengguna->get()->pluck('nama')->first();
-                $data['sandi']  = str_random(20);
+                $data['sandi']  = Str::random(20);
                 try{
                     Pengguna::where('email', $data['email'])->update([
                         'sandi' => $data['sandi']
