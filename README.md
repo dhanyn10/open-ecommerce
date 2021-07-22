@@ -6,7 +6,7 @@ open source version for my e-commerce sites. This project currently in slow deve
 - create database `open_ecommerce` from your phpmyadmin
 - migrate the database from database/migration using command `php artisan migrate`
 - you can use optional features to generate the admin data instantly using command `php artisan db:seed`
-  here's the data, for:
+  here's the data, for:  
   Admin
   ```
   email   : admin@open_ecommerce
