@@ -1,6 +1,7 @@
 @extends('tataletak')
 @section('css')
 <link href="{{URL::asset('css/penjual/penjual.css')}}" rel="stylesheet"/>
+@endsection
 @section('konten')
 <div class="container-fluid">
     <div class="row">
@@ -38,5 +39,7 @@
         </div>
     </div>
 </div>
+@section('js')
 <script src="{{URL::asset('js/penjual/bacagambar.js')}}"></script>
+@endsection
 @endsection
