@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Penjual;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 use File;
 use Validator;
 
@@ -55,7 +56,7 @@ class TambahController extends Controller
                 //mendecode string gambar yang diperoleh
                 $gambar     = base64_decode($explode[1]);
                 //nama barang sekaligus menjadi id
-                $id     = date("ymdhis").str_random(7).'-'.$this->clean($nama);
+                $id     = date("ymdhis").Str::random(7).'-'.$this->clean($nama);
                 //lokasi gambar
                 $lokasibarang   = public_path().'/img/barangdagang/'.$id.'.png';
                 //menyimpan file kedalam folder public/img/user

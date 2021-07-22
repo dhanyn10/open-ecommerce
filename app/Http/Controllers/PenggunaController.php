@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Validator;
 
 use App\Pengguna;
@@ -40,7 +41,7 @@ class PenggunaController extends Controller
             $telepon        = $req->input('telepon');
             $alamat         = $req->input('alamat');
             $sandi          = $req->input('sandi');
-            $data['token']  = $data['email'].str_random(10);
+            $data['token']  = $data['email'].Str::random(10);
             //inisiasi nilai konfirmasi 1(pengguna terkonfirmasi)
             $konfirmasi     = 1;
 
