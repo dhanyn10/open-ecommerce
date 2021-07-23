@@ -6,7 +6,7 @@
         <div class="col-md-6">
             <div class="card border-primary">
                 <div class="card-body">
-                    dasbor
+                    profil
                 </div>
             </div>
         </div>

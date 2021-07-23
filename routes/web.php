@@ -60,4 +60,5 @@ Route::group([
     'prefix'        => 'admin'
 ], function(){
     Route::get('dasbor', 'Admin\DasborController@index')->name('admin-dasbor');
+    Route::get('profil', 'Admin\ProfilController@index')->name('admin-profil');
 });

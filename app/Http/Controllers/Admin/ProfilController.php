@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class DasborController extends Controller
+class ProfilController extends Controller
 {
     public function index()
     {
-        return view('admin.index');
+        return view('admin.profil');
     }
 }
