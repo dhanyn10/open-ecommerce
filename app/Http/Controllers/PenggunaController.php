@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Validator;
 
@@ -19,7 +18,7 @@ class PenggunaController extends Controller
             'nama'      => 'required|max:20',
             'telepon'   => 'required|numeric|digits_between:11,12',
             'alamat'    => 'required|max:255',
-            'sandi'     => 'max:20'
+            'sandi'     => 'max:30'
         ]);
 
         if($validasi->fails())
@@ -77,7 +76,7 @@ class PenggunaController extends Controller
                 'nama'          => $data['nama'],
                 'telepon'       => $telepon,
                 'alamat'        => $alamat,
-                'sandi'         => Hash::make($sandi),
+                'sandi'         => $sandi,
                 'konfirmasi'    => $konfirmasi,
                 'token'         => $data['token']
             ]);
