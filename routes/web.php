@@ -20,7 +20,6 @@ Route::group([
     'prefix'        => 'penjual',
     'as'            => 'penjual-'
 ], function(){
-
     Route::get('/',function() {
         return redirect()->route('penjual-tambah');
     });
@@ -38,7 +37,6 @@ Route::group([
     'middleware'    => 'pembeli',
     'prefix'        => 'pembeli'
 ], function(){
-
     Route::get('profil', 'Pembeli\ProfilController@index')->name('pembeli-profil');
     Route::post('profil', 'PenggunaController@profil');
 });
@@ -47,7 +45,6 @@ Route::group([
     'middleware'    => 'pengguna',
     'prefix'        => 'barang'
 ], function(){
-
     Route::get('beli', 'Barang\BeliController@beli')->name('data-belanja');
     Route::get('bayar','Barang\BeliController@bayar')->name('bayar');
     Route::get('{id}', 'Barang\BarangController@index')->name('barang');
