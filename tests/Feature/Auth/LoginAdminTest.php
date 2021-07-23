@@ -12,7 +12,7 @@ class LoginAdminTest extends TestCase
 {
     use RefreshDatabase;
     
-    public function testExample()
+    public function testLoginAdmin()
     {
  
         Session::start();

@@ -13,7 +13,7 @@ class LoginPembeliTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testExample()
+    public function testLoginPembeli()
     {
         Session::start();
         $this->seed(PembeliSeeder::class);

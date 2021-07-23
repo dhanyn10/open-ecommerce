@@ -13,7 +13,7 @@ class LoginPenjualTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testExample()
+    public function testLoginPenjual()
     {
         Session::start();
         $this->seed(PenjualSeeder::class);
