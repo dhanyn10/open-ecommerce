@@ -48,9 +48,11 @@
                 @endif
                 <ul class="navbar-nav ml-auto">
                     @if(session()->has('peran'))
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('data-belanja')}}">Troli</a>
-                    </li>
+                        @if(session('peran') == 3)
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('data-belanja')}}">Troli</a>
+                        </li>
+                        @endif
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('keluar')}}">Keluar</a>
                     </li>
