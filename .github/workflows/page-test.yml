@@ -24,10 +24,10 @@ jobs:
     - name: Create Database
       run: |
         mkdir -p database
-        touch database/open_ecommerce.sqlite
+        touch database/database.sqlite
       env:
         DB_CONNECTION: sqlite
-        DB_DATABASE: database/open_ecommerce.sqlite
+        DB_DATABASE: database/database.sqlite
     - name: DB Seed
       run: php artisan db:seed
     - name: Execute tests (Unit and Feature tests) via PHPUnit
