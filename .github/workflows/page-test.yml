@@ -28,5 +28,7 @@ jobs:
       env:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
+    - name: DB Seed
+      run: php artisan db:seed
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       run: vendor/bin/phpunit
