@@ -57,9 +57,9 @@ Route::group([
 });
 
 Route::group([
-    // 'middleware'    => 'admin',
-    'prefix'    => 'admin',
-    'as'        => 'admin-'
+    'middleware'    => 'admin',
+    'prefix'        => 'admin',
+    'as'            => 'admin-'
 ], function(){
     Route::get('dasbor', 'Admin\DasborController@index')->name('dasbor');
     Route::get('profil', 'Admin\ProfilController@index')->name('profil');
