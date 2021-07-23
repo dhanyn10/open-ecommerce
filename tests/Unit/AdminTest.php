@@ -20,6 +20,7 @@ class AdminTest extends TestCase
             'sandi' => 'admin',
             '_token' => csrf_token()
         ]);
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(302, $response->getStatusCode());
+        $this->assertRedirectToRoute('admin-dasbor');
     }
 }
