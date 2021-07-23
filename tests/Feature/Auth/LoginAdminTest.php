@@ -12,9 +12,8 @@ class LoginAdminTest extends TestCase
 {
     use RefreshDatabase;
     
-    public function testLoginAdmin()
+    private function loginAdmin()
     {
- 
         Session::start();
         $this->seed(AdminSeeder::class);
         $response = $this->call('POST', '/masuk', [
@@ -23,5 +22,17 @@ class LoginAdminTest extends TestCase
             '_token' => csrf_token()
         ]);
         $response->assertRedirect(route('admin-dasbor'));
+        $response->assertSeeText('dasbor');
+    }
+    public function testLoginAdmin()
+    {
+        $this->loginAdmin();
+    }
+    public function testProfil()
+    {
+        $this->loginAdmin();
+        $response = $this->get('/admin/profil');
+        $response->assertStatus(200);
+        $response->assertSeeText('profil');
     }
 }
