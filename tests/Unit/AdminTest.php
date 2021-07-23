@@ -21,6 +21,5 @@ class AdminTest extends TestCase
             '_token' => csrf_token()
         ]);
         $this->assertEquals(302, $response->getStatusCode());
-        $this->assertRedirect(route('admin-dasbor'));
     }
 }
