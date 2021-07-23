@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
+use Illuminate\Support\Facades\Session;
 
 class AdminTest extends TestCase
 {
@@ -13,6 +14,7 @@ class AdminTest extends TestCase
      */
     public function testLoginAdmin()
     {
+        Session::start();
         $response = $this->call('POST', '/masuk', [
             'email' => 'admin@open_ecommerce',
             'sandi' => 'admin',
