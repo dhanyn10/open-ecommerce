@@ -22,6 +22,6 @@ class LoginAdminTest extends TestCase
             'sandi' => 'admin',
             '_token' => csrf_token()
         ]);
-        $response->assertRedirect('/admin/dasbor');
+        $response->assertRedirect(route('admin-dasbor'));
     }
 }

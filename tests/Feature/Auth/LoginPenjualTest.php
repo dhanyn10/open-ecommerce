@@ -22,6 +22,6 @@ class LoginPenjualTest extends TestCase
             'sandi' => 'penjual',
             '_token' => csrf_token()
         ]);
-        $response->assertRedirect('/penjual/tambah');
+        $response->assertRedirect(route('penjual-tambah'));
     }
 }
