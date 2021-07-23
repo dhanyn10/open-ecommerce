@@ -28,10 +28,10 @@
                     </div>
                 @endif
 
-                @if(Route::currentRouteName() == 'akun-penjual')
-                    <a class="nav-link text-white bg-primary" href="{{route('akun-penjual')}}">Akun</a>
+                @if(Route::currentRouteName() == 'penjual-profil')
+                    <a class="nav-link text-white bg-primary" href="{{route('penjual-profil')}}">Akun</a>
                 @else
-                    <a class="nav-link text-dark" href="{{route('akun-penjual')}}">Akun</a>
+                    <a class="nav-link text-dark" href="{{route('penjual-profil')}}">Akun</a>
                 @endif
             </nav>
         </div>

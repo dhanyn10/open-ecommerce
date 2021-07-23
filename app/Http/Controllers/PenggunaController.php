@@ -27,7 +27,7 @@ class PenggunaController extends Controller
             flash('data tidak sesuai dengan format');
             if(session('peran') == 2)
             {
-                return redirect()->route('akun-penjual');
+                return redirect()->route('penjual-profil');
             }
             else if(session('peran') == 3)
             {
@@ -84,7 +84,7 @@ class PenggunaController extends Controller
             flash('berhasil memperbarui data');
             if(session('peran') == 2)
             {
-                return redirect()->route('akun-penjual');
+                return redirect()->route('penjual-profil');
             }
             else if(session('peran') == 3)
             {

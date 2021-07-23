@@ -17,16 +17,17 @@ Route::post('reset_sandi', 'MasukController@formresetsandi');
 
 Route::group([
     'middleware'    => 'penjual',
-    'prefix'        => 'penjual'
+    'prefix'        => 'penjual',
+    'as'            => 'penjual-'
 ], function(){
 
     Route::get('/',function() {
         return redirect()->route('penjual-tambah');
     });
-    Route::get('tambah', 'Penjual\TambahController@index')->name('penjual-tambah');
-    Route::get('lihat', 'Penjual\BarangController@index')->name('penjual-lihat');
-    Route::get('ubah/{id}', 'Penjual\UbahController@index')->name('penjual-ubah');
-    Route::get('akun', 'Penjual\AkunController@index')->name('akun-penjual');
+    Route::get('tambah', 'Penjual\TambahController@index')->name('tambah');
+    Route::get('lihat', 'Penjual\BarangController@index')->name('lihat');
+    Route::get('ubah/{id}', 'Penjual\UbahController@index')->name('ubah');
+    Route::get('profil', 'Penjual\AkunController@index')->name('profil');
     Route::post('tambah', 'Penjual\TambahController@formtambah');
     Route::post('lihat', 'Penjual\HapusController@formhapus');
     Route::post('ubah/{id}', 'Penjual\UbahController@formubah');
