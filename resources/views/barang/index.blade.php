@@ -44,23 +44,25 @@
                                             <label>Dari</label>
                                         </div>
                                         <div class="form-group">
-                                            <select class="form-control form-control-sm" name="provinsi" onchange="this.form.submit()">
+                                            <select class="form-control form-control-sm" name="provinsiAsal" onchange="this.form.submit()">
                                                 @foreach ($provinsi as $item)
-                                                    @if (isset($provTerpilih) && $item->province_id == $provTerpilih)
+                                                    @if (isset($provAsal) && $item->province_id == $provAsal)
                                                     <option value="{{$item->province_id}}" selected>{{$item->province}}</option>
+                                                    @else
+                                                    <option value="{{$item->province_id}}">{{$item->province}}</option>
                                                     @endif
-                                                <option value="{{$item->province_id}}">{{$item->province}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <select class="form-control form-control-sm" name="kota" onchange="this.form.submit()">
-                                                @isset($kota)
-                                                    @foreach ($kota as $item)
-                                                    @if (isset($kotaTerpilih) && $item->city_id === $kotaTerpilih)
-                                                        <option value="{{$item->city_id}}" selected>{{$item->city_name}}</option>
-                                                    @endif
+                                            <select class="form-control form-control-sm" name="kotaAsal" onchange="this.form.submit()">
+                                                @isset($dataKotaAsal)
+                                                    @foreach ($dataKotaAsal as $item)
+                                                    @if (isset($kotaAsal) && $item->city_id === $kotaAsal)
+                                                    <option value="{{$item->city_id}}" selected>{{$item->city_name}}</option>
+                                                    @else
                                                     <option value="{{$item->city_id}}">{{$item->city_name}}</option>
+                                                    @endif
                                                     @endforeach
                                                 @endisset
                                             </select>
@@ -68,13 +70,31 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Ke</label>
+                                            <label>Tujuan</label>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control form-control-sm" placeholder="provinsi">
+                                            <select class="form-control form-control-sm" name="provinsiTujuan" onchange="this.form.submit()">
+                                                @foreach ($provinsi as $item)
+                                                    @if (isset($provTujuan) && $item->province_id == $provTujuan)
+                                                    <option value="{{$item->province_id}}" selected>{{$item->province}}</option>
+                                                    @else
+                                                    <option value="{{$item->province_id}}">{{$item->province}}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control form-control-sm" placeholder="kota">
+                                            <select class="form-control form-control-sm" name="kotaTujuan" onchange="this.form.submit()">
+                                                @isset($dataKotaTujuan)
+                                                    @foreach ($dataKotaTujuan as $item)
+                                                        @if (isset($kotaTujuan) && $item->city_id === $kotaTujuan)
+                                                        <option value="{{$item->city_id}}" selected>{{$item->city_name}}</option>
+                                                        @else
+                                                        <option value="{{$item->city_id}}">{{$item->city_name}}</option>
+                                                        @endif
+                                                    @endforeach
+                                                @endisset
+                                            </select>
                                         </div>
                                     </div>
                                 </div>

@@ -54,7 +54,7 @@ class BarangController extends Controller
         $rajaongkir = $this->getApi('https://api.rajaongkir.com/starter/province?key=8085b36e047138f8fd2a16309f73c5ad');
         $arrayBarang = $this->sisaBarang($id);
         $provinsi = $rajaongkir->results;
-        $req->session()->forget(['provinsi', 'provTerpilih', 'kota', 'kotaTerpilih']);
+        $req->session()->forget(['provinsi', 'provAsal', 'kota', 'kotaAsal']);
         session([
             'provinsi' => $provinsi
         ]);
@@ -68,23 +68,33 @@ class BarangController extends Controller
     public function cekongkir(Request $req, $id)
     {
         $arrayBarang = $this->sisaBarang($id);
-        $provTerpilih = $req->input('provinsi');
-        $kotaTerpilih = $req->input('kota');
-        $rajaongkir = $this->getApi('https://api.rajaongkir.com/starter/city?key=8085b36e047138f8fd2a16309f73c5ad&province='.$provTerpilih);
-        $kota = $rajaongkir->results;
+        $provAsal   = $req->input('provinsiAsal');
+        $kotaAsal   = $req->input('kotaAsal');
+        $provTujuan = $req->input('provinsiTujuan');
+        $kotaTujuan = $req->input('kotaTujuan');
+        $dataKotaAsal = $this->getApi('https://api.rajaongkir.com/starter/city?key=8085b36e047138f8fd2a16309f73c5ad&province='.$provAsal);
+        $dataKotaAsal = $dataKotaAsal->results;
+        $dataKotaTujuan = $this->getApi('https://api.rajaongkir.com/starter/city?key=8085b36e047138f8fd2a16309f73c5ad&province='.$provTujuan);
+        $dataKotaTujuan = $dataKotaTujuan->results;
         session([
-            'provTerpilih' => $provTerpilih, //provinsi terpilih
-            'kota' => $kota,
-            'kotaTerpilih' => $kotaTerpilih
+            'dataKotaAsal' => $dataKotaAsal,
+            'dataKotaTujuan' => $dataKotaTujuan,
+            'provAsal' => $provAsal, //provinsi Asal
+            'kotaAsal' => $kotaAsal,
+            'provTujuan' => $provTujuan,
+            'kotaTujuan' => $kotaTujuan
         ]);
         return view('barang.index', [
             'data_barang'   => $arrayBarang['barang'],
             'penjual'       => $arrayBarang['namapenjual'],
             'sisabarang'    => $arrayBarang['sisabarang'],
             'provinsi'      => session('provinsi'),
-            'provTerpilih'  => session('provTerpilih'),
-            'kota'          => session('kota'),
-            'kotaTerpilih'  => session('kotaTerpilih')
+            'provAsal'      => session('provAsal'),
+            'dataKotaAsal'  => session('dataKotaAsal'),
+            'dataKotaTujuan'  => session('dataKotaTujuan'),
+            'kotaAsal'      => session('kotaAsal'),
+            'provTujuan'    => session('provTujuan'),
+            'kotaTujuan'    => session('kotaTujuan'),
         ]);
     }
 }
