@@ -101,20 +101,33 @@
                                             </select>
                                         </div>
                                     </div>
-                                </div>
-                                @isset($harga)
-                                    @if ($harga != null)
-                                    <div class="form-group">
-                                        <select class="form-control form-control-sm" name="kurir" onchange="this.form.submit()">
-                                            @foreach ($harga as $item)
-                                            <option value="{{$item->service}}">{{$item->service}} : {{$item->cost[0]->value}}</option>
-                                            @endforeach
-                                        </select>
+                                    <div class="col-md-6">
+                                        <label>Berat</label>
+                                        <div class="form-group">
+                                            @if (session()->has('berat'))
+                                                <input type="number" value="{{session('berat')}}" name="berat" id="" class="form-control form-control-sm" onchange="this.form.submit()">
+                                            @else
+                                                <input type="number" name="berat" id="" class="form-control form-control-sm" onchange="this.form.submit()">
+                                            @endif
+                                        </div>
                                     </div>
-                                    @else
-                                        gagal memperoleh data kurir
-                                    @endif
-                                @endisset
+                                    <div class="col-md-6">
+                                        <label>Kurir</label>
+                                        @isset($harga)
+                                            @if ($harga != null)
+                                            <div class="form-group">
+                                                <select class="form-control form-control-sm" name="biaya" onchange="this.form.submit()">
+                                                    @foreach ($harga as $item)
+                                                    <option value="{{$item->service}}">{{$item->service}} : {{$item->cost[0]->value}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            @else
+                                                gagal memperoleh data kurir
+                                            @endif
+                                        @endisset
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -153,10 +166,18 @@
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="detail" role="tabpanel" aria-labelledby="home-tab">
-                            {!!$barang->keterangan!!}
+                            <div class="card">
+                                <div class="card-body">
+                                    {!!$barang->keterangan!!}
+                                </div>
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="ulasan" role="tabpanel" aria-labelledby="profile-tab">
-                            {!!$barang->keterangan!!}
+                            <div class="card">
+                                <div class="card-body">
+                                    {!!$barang->keterangan!!}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -76,12 +76,22 @@ class BarangController extends Controller
 
         if ($err) {
         return "cURL Error #:" . $err;
-        } else {
+        }
+        else
+        {
             $response_data = json_decode($response);
             $rajaongkir = $response_data->rajaongkir;
-            $results = $rajaongkir->results;
-            $costs = $results[0]->costs;
-            return $costs;
+            $statusCode = $rajaongkir->status->code;
+            if($statusCode == 200)
+            {
+                $results = $rajaongkir->results;
+                $costs = $results[0]->costs;
+                return $costs;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
     public function index(Request $req, $id)
@@ -95,7 +105,9 @@ class BarangController extends Controller
             'provAsal',
             'provTujuan',
             'kotaAsal',
-            'kotaTujuan'
+            'kotaTujuan',
+            'berat',
+            'biaya'
         ]);
         session([
             'provinsi' => $provinsi
@@ -114,6 +126,8 @@ class BarangController extends Controller
         $kotaAsal   = $req->input('kotaAsal');
         $provTujuan = $req->input('provinsiTujuan');
         $kotaTujuan = $req->input('kotaTujuan');
+        $berat      = $req->input('berat');
+        $biaya      = $req->input('biaya');
         $dataKotaAsal = $this->getApi('https://api.rajaongkir.com/starter/city?key=8085b36e047138f8fd2a16309f73c5ad&province='.$provAsal);
         $dataKotaAsal = $dataKotaAsal->results;
         $dataKotaTujuan = $this->getApi('https://api.rajaongkir.com/starter/city?key=8085b36e047138f8fd2a16309f73c5ad&province='.$provTujuan);
@@ -121,14 +135,16 @@ class BarangController extends Controller
 
         $harga = null;
         if($kotaAsal > 0 && $kotaTujuan > 0)
-            $harga = $this->costRajaOngkir($kotaAsal, $kotaTujuan, 1000); //return array cots
+            $harga = $this->costRajaOngkir($kotaAsal, $kotaTujuan, $berat*1000); //return array cots
         session([
-            'dataKotaAsal' => $dataKotaAsal,
+            'dataKotaAsal'  => $dataKotaAsal,
             'dataKotaTujuan' => $dataKotaTujuan,
-            'provAsal' => $provAsal,
-            'kotaAsal' => $kotaAsal,
-            'provTujuan' => $provTujuan,
-            'kotaTujuan' => $kotaTujuan
+            'provAsal'      => $provAsal,
+            'kotaAsal'      => $kotaAsal,
+            'provTujuan'    => $provTujuan,
+            'kotaTujuan'    => $kotaTujuan,
+            'berat'         => $berat,
+            'biaya'         => $biaya
         ]);
         return view('barang.index', [
             'data_barang'   => $arrayBarang['barang'],
