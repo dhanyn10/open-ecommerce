@@ -24,7 +24,7 @@
                         <div class="col-md-4 offset-md-8">
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <a href="/barang/beli/{{$barang->id}}" class="btn btn-block rounded-0 btn-danger text-uppercase text-white">beli</a>
+                                    <a href="/barang/tambah/{{$barang->id}}" class="btn btn-block rounded-0 btn-danger text-uppercase text-white">beli</a>
                                 </div>
                                 <div class="col-sm-6">
                                     <button type="submit" class="btn btn-block rounded-0 btn-outline-primary text-uppercase">wishlist</button>
