@@ -49,6 +49,7 @@ Route::group([
     Route::get('bayar','Barang\BeliController@bayar')->name('bayar');
     Route::get('{id}', 'Barang\BarangController@index')->name('barang');
     Route::get('beli/{id}', 'Barang\BeliController@troli')->name('beli');
+    Route::post('{id}', 'Barang\BarangController@cekongkir');
     Route::post('beli', 'Barang\BeliController@aturbelanja');
     Route::post('beli/{id}', 'Barang\BeliController@aturbelanja');
 });

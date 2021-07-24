@@ -1,6 +1,5 @@
 @extends('tataletak')
 @section('css')
-<link href="{{URL::asset('css/barang/index.css')}}" rel="stylesheet"/>
 @endsection
 @section('konten')
 <div class="container-fluid">
@@ -35,8 +34,101 @@
                     </div>
                     <hr/>
                     <div class="card">
+                        <div class="card-header">Cek Ongkir</div>
                         <div class="card-body">
-                            {!!$barang->keterangan!!}
+                            <form method="POST">
+                                <div class="row">
+                                    {{ csrf_field() }}
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Dari</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="form-control form-control-sm" name="provinsiAsal" onchange="this.form.submit()">
+                                                <option>Pilih</option>
+                                                @foreach ($provinsi as $item)
+                                                    @if (isset($provAsal) && $item->province_id == $provAsal)
+                                                    <option value="{{$item->province_id}}" selected>{{$item->province}}</option>
+                                                    @else
+                                                    <option value="{{$item->province_id}}">{{$item->province}}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="form-control form-control-sm" name="kotaAsal" onchange="this.form.submit()">
+                                                <option>Pilih</option>
+                                                @isset($dataKotaAsal)
+                                                    @foreach ($dataKotaAsal as $item)
+                                                        @if (isset($kotaAsal) && $item->city_id === $kotaAsal)
+                                                        <option value="{{$item->city_id}}" selected>{{$item->type." ".$item->city_name}}</option>
+                                                        @else
+                                                        <option value="{{$item->city_id}}">{{$item->type." ".$item->city_name}}</option>
+                                                        @endif
+                                                    @endforeach
+                                                @endisset
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Tujuan</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="form-control form-control-sm" name="provinsiTujuan" onchange="this.form.submit()">
+                                                <option>Pilih</option>
+                                                @foreach ($provinsi as $item)
+                                                    @if (isset($provTujuan) && $item->province_id == $provTujuan)
+                                                    <option value="{{$item->province_id}}" selected>{{$item->province}}</option>
+                                                    @else
+                                                    <option value="{{$item->province_id}}">{{$item->province}}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="form-control form-control-sm" name="kotaTujuan" onchange="this.form.submit()">
+                                                <option>Pilih</option>
+                                                @isset($dataKotaTujuan)
+                                                    @foreach ($dataKotaTujuan as $item)
+                                                        @if (isset($kotaTujuan) && $item->city_id === $kotaTujuan)
+                                                        <option value="{{$item->city_id}}" selected>{{$item->type." ".$item->city_name}}</option>
+                                                        @else
+                                                        <option value="{{$item->city_id}}">{{$item->type." ".$item->city_name}}</option>
+                                                        @endif
+                                                    @endforeach
+                                                @endisset
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Berat</label>
+                                        <div class="form-group">
+                                            @if (session()->has('berat'))
+                                                <input type="number" value="{{session('berat')}}" name="berat" id="" class="form-control form-control-sm" onchange="this.form.submit()">
+                                            @else
+                                                <input type="number" name="berat" id="" class="form-control form-control-sm" onchange="this.form.submit()">
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Kurir</label>
+                                        @isset($harga)
+                                            @if ($harga != null)
+                                            <div class="form-group">
+                                                <select class="form-control form-control-sm" name="biaya" onchange="this.form.submit()">
+                                                    @foreach ($harga as $item)
+                                                    <option value="{{$item->service}}">{{$item->service}} : {{$item->cost[0]->value}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            @else
+                                                gagal memperoleh data kurir
+                                            @endif
+                                        @endisset
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -55,7 +147,7 @@
                             aria-controls="detail"
                             aria-selected="true"
                         >
-                            Detail Barang
+                            Deskripsi
                         </a>
                     </li>
                     <li class="nav-item">
@@ -74,24 +166,18 @@
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="detail" role="tabpanel" aria-labelledby="home-tab">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        In sed euismod diam. Curabitur tincidunt tortor pharetra lacus lobortis interdum. 
-                        Aliquam vitae placerat nisi. Mauris pulvinar purus a dapibus sodales. 
-                        Quisque ut massa eu nisl pharetra gravida. Ut iaculis, nisl ut malesuada congue, 
-                        ligula nisi porta felis, volutpat volutpat quam risus sed nisl. 
-                        Aenean et turpis in libero sagittis malesuada ac nec odio. 
-                        Nam non sapien tincidunt, condimentum orci a, laoreet eros. 
-                        Fusce fringilla, metus in rutrum interdum, nunc mauris venenatis tortor, 
-                        nec interdum lorem orci eu tellus. Nulla facilisi. Donec maximus tortor vitae leo elementum, 
-                        vitae varius arcu facilisis.
+                            <div class="card">
+                                <div class="card-body">
+                                    {!!$barang->keterangan!!}
+                                </div>
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="ulasan" role="tabpanel" aria-labelledby="profile-tab">
-                        Phasellus a vulputate neque, vel sagittis velit. Nam molestie felis vitae ipsum consequat dictum. 
-                        Donec et ligula elit. Aliquam at augue eu dolor convallis porttitor. Aenean vel purus commodo, 
-                        cursus justo vel, maximus justo. In id pharetra leo. In varius ex quis viverra malesuada. 
-                        Curabitur leo tortor, mollis nec tincidunt in, sodales malesuada dui. Curabitur maximus, 
-                        leo pulvinar ornare ornare, ex mi viverra nulla, ut lacinia mauris sapien et augue. 
-                        Etiam fringilla fermentum vehicula.
+                            <div class="card">
+                                <div class="card-body">
+                                    {!!$barang->keterangan!!}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
