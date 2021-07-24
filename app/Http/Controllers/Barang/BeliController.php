@@ -35,7 +35,7 @@ class BeliController extends Controller
             'total_belanja'     => $totalbelanja
         ]);
     }
-    public function troli($id)
+    public function troliPlus($id)
     {
         $barang = Barang::where('id', $id)->get();
         if(count($barang) > 0)
@@ -149,35 +149,30 @@ class BeliController extends Controller
             return redirect()->route('beranda');
         }
     }
-    public function aturbelanja(Request $req)
+    public function troliDelete($id)
     {
+        
         //menghapus belanja barang
-        if($req->input('jenis') == 'hapusdata')
+        Pembelian::where('idbarang', $id)->delete();
+        flash('berhasil menghapus barang dari troli');
+        return redirect()->route('data-belanja');
+    }
+    public function troliMinus($id)
+    {
+        //mengambil data belanja di tabel pembelian
+        $data_beli  = Pembelian::where('idbarang', $id)->get();
+        //mengambil data jumlah barang yang dibeli
+        $jumlah_beli = $data_beli->pluck('jumlah')->first();
+        if($jumlah_beli > 1)
         {
-            $idbelanja = $req->input('id-belanja');
-            Pembelian::where('id', $idbelanja)->delete();
-            flash('berhasil menghapus barang dari troli');
-            return redirect()->route('data-belanja');
+            $jumlah_beli--;
         }
-        //mengurangi belanja barang
-        else if($req->input('jenis') == 'kurangidata')
-        {
-            $idbelanja  = $req->input('id-belanja');
-            //mengambil data belanja di tabel pembelian
-            $data_beli  = Pembelian::where('id', $idbelanja)->get();
-            //mengambil data jumlah barang yang dibeli
-            $jumlah_beli    = $data_beli->pluck('jumlah')->first();
-            if($jumlah_beli > 1)
-            {
-                $jumlah_beli--;
-            }
-            //memperbarui jumlah barang yang dipesan berdasarkan nilai variabel jumlah_beli
-            Pembelian::where('id', $idbelanja)
-            ->where('pembeli', session('email'))
-            ->update(['jumlah' => $jumlah_beli]);
+        //memperbarui jumlah barang yang dipesan berdasarkan nilai variabel jumlah_beli
+        Pembelian::where('idbarang', $id)
+        ->where('pembeli', session('email'))
+        ->update(['jumlah' => $jumlah_beli]);
 
-            return redirect()->route('data-belanja');
-        }
+        return redirect()->route('data-belanja');
     }
     public function bayar()
     {
