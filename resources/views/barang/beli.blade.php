@@ -36,23 +36,13 @@
                         <td class="text-center">{{$data->jumlah}}</td>
                         <td style="direction:rtl">{{$data->harga*$data->jumlah}}</td>
                         <td>
-                            <form method="post">
-                                {{csrf_field()}}
-                                <input type="hidden" name="jenis" value="hapusdata"/>
-                                <input type="hidden" name="id-belanja" value="{{$data->id}}"/>
-                                <button class="btn btn-block btn-danger btn-sm text-uppercase">hapus</button>
-                            </form>
+                            <a class="btn btn-block btn-outline-dark btn-sm text-uppercase" href="{{url('barang/hapus/'.$data->idbarang)}}">hapus</a>
                         </td>
                         <td>
-                            <a class="btn btn-block btn-outline-dark btn-sm text-uppercase" href="{{url('barang/beli/'.$data->idbarang)}}">+</a>
+                            <a class="btn btn-block btn-outline-dark btn-sm text-uppercase" href="{{url('barang/tambah/'.$data->idbarang)}}">+</a>
                         </td>
                         <td>
-                            <form method="post">
-                                {{csrf_field()}}
-                                <input type="hidden" name="jenis" value="kurangidata"/>
-                                <input type="hidden" name="id-belanja" value="{{$data->id}}"/>
-                                <button class="btn btn-block btn-outline-dark btn-sm text-uppercase">-</button>
-                            </form>
+                            <a class="btn btn-block btn-outline-dark btn-sm text-uppercase" href="{{url('barang/kurang/'.$data->idbarang)}}">-</a>
                         </td>
                     </tr>
                     @endforeach
