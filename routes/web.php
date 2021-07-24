@@ -48,10 +48,11 @@ Route::group([
     Route::get('beli', 'Barang\BeliController@beli')->name('data-belanja');
     Route::get('bayar','Barang\BeliController@bayar')->name('bayar');
     Route::get('{id}', 'Barang\BarangController@index')->name('barang');
-    Route::get('beli/{id}', 'Barang\BeliController@troli')->name('beli');
+    Route::get('tambah/{id}', 'Barang\BeliController@troliPlus');
+    Route::get('kurang/{id}', 'Barang\BeliController@troliMinus');
+    Route::get('hapus/{id}', 'Barang\BeliController@troliDelete');
     Route::post('{id}', 'Barang\BarangController@cekongkir');
     Route::post('beli', 'Barang\BeliController@aturbelanja');
-    Route::post('beli/{id}', 'Barang\BeliController@aturbelanja');
 });
 
 Route::group([
