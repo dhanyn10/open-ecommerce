@@ -44,7 +44,7 @@ class BarangController extends Controller
     {
         $arrayBarang = $this->sisaBarang($id);
         $rajaongkir = RajaOngkir::getApi('https://api.rajaongkir.com/starter/province?key=8085b36e047138f8fd2a16309f73c5ad');
-        $provinsi = $rajaongkir->results;
+        $dataProvinsi = $rajaongkir->results;
         $req->session()->forget([
             'dataKotaAsal',
             'dataKotaTujuan',
@@ -62,7 +62,7 @@ class BarangController extends Controller
             'data_barang'   => $arrayBarang['barang'],
             'penjual'       => $arrayBarang['namapenjual'],
             'sisabarang'    => $arrayBarang['sisabarang'],
-            'provinsi'      => session('provinsi')
+            'dataProvinsi'  => $dataProvinsi
         ]);
     }
     public function cekongkir(Request $req, $id)
@@ -98,7 +98,7 @@ class BarangController extends Controller
             'data_barang'   => $arrayBarang['barang'],
             'penjual'       => $arrayBarang['namapenjual'],
             'sisabarang'    => $arrayBarang['sisabarang'],
-            'provinsi'      => session('provinsi'),
+            'dataProvinsi'  => session('provinsi'),
             'provAsal'      => session('provAsal'),
             'dataKotaAsal'  => session('dataKotaAsal'),
             'dataKotaTujuan'  => session('dataKotaTujuan'),

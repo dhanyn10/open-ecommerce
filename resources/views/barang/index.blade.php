@@ -46,13 +46,15 @@
                                         <div class="form-group">
                                             <select class="form-control form-control-sm" name="provinsiAsal" onchange="this.form.submit()">
                                                 <option>Pilih</option>
-                                                @foreach ($dataProvinsi as $item)
-                                                    @if (isset($provinsiAsal) && $item->province_id == $provinsiAsal)
-                                                    <option value="{{$item->province_id}}" selected>{{$item->province}}</option>
-                                                    @else
-                                                    <option value="{{$item->province_id}}">{{$item->province}}</option>
-                                                    @endif
-                                                @endforeach
+                                                @if (isset($dataProvinsi))
+                                                    @foreach ($dataProvinsi as $item)
+                                                        @if (isset($provAsal) && $item->province_id == $provAsal)
+                                                        <option value="{{$item->province_id}}" selected>{{$item->province}}</option>
+                                                        @else
+                                                        <option value="{{$item->province_id}}">{{$item->province}}</option>
+                                                        @endif
+                                                    @endforeach
+                                                @endif
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -77,13 +79,15 @@
                                         <div class="form-group">
                                             <select class="form-control form-control-sm" name="provinsiTujuan" onchange="this.form.submit()">
                                                 <option>Pilih</option>
-                                                @foreach ($provinsi as $item)
-                                                    @if (isset($provTujuan) && $item->province_id == $provTujuan)
-                                                    <option value="{{$item->province_id}}" selected>{{$item->province}}</option>
-                                                    @else
-                                                    <option value="{{$item->province_id}}">{{$item->province}}</option>
-                                                    @endif
-                                                @endforeach
+                                                @if (isset($dataProvinsi))
+                                                    @foreach ($dataProvinsi as $item)
+                                                        @if (isset($provTujuan) && $item->province_id == $provTujuan)
+                                                        <option value="{{$item->province_id}}" selected>{{$item->province}}</option>
+                                                        @else
+                                                        <option value="{{$item->province_id}}">{{$item->province}}</option>
+                                                        @endif
+                                                    @endforeach
+                                                @endif
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -112,7 +116,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <label>Kurir</label>
+                                        <label>Kurir (JNE)</label>
                                         @isset($harga)
                                             @if ($harga != null)
                                             <div class="form-group">
