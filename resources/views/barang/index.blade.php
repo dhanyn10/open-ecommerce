@@ -123,7 +123,9 @@
                                                 </select>
                                             </div>
                                             @else
-                                                gagal memperoleh data kurir
+                                            <div class="form-group">
+                                                <label>gagal memperoleh data kurir</label>
+                                            </div>
                                             @endif
                                         @endisset
                                     </div>
