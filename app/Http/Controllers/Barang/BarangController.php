@@ -9,20 +9,10 @@ use Illuminate\Support\Facades\Input;
 use App\Barang;
 use App\Pembelian;
 use App\Pengguna;
+use App\Http\Controllers\Barang\RajaOngkir;
 
 class BarangController extends Controller
 {
-    private function getApi($url)
-    {
-        
-        // Read JSON file
-        $json_data = file_get_contents($url);
-        // Decode JSON data into PHP array
-        $response_data = json_decode($json_data);
-        $rajaongkir = $response_data->rajaongkir;
-
-        return $rajaongkir;
-    }
     private function sisaBarang($id)
     {
         $barang         = Barang::where('id', $id)->get();
@@ -97,7 +87,7 @@ class BarangController extends Controller
     public function index(Request $req, $id)
     {
         $arrayBarang = $this->sisaBarang($id);
-        $rajaongkir = $this->getApi('https://api.rajaongkir.com/starter/province?key=8085b36e047138f8fd2a16309f73c5ad');
+        $rajaongkir = RajaOngkir::getApi('https://api.rajaongkir.com/starter/province?key=8085b36e047138f8fd2a16309f73c5ad');
         $provinsi = $rajaongkir->results;
         $req->session()->forget([
             'dataKotaAsal',
@@ -128,9 +118,9 @@ class BarangController extends Controller
         $kotaTujuan = $req->input('kotaTujuan');
         $berat      = $req->input('berat');
         $biaya      = $req->input('biaya');
-        $dataKotaAsal = $this->getApi('https://api.rajaongkir.com/starter/city?key=8085b36e047138f8fd2a16309f73c5ad&province='.$provAsal);
+        $dataKotaAsal = RajaOngkir::getApi('https://api.rajaongkir.com/starter/city?key=8085b36e047138f8fd2a16309f73c5ad&province='.$provAsal);
         $dataKotaAsal = $dataKotaAsal->results;
-        $dataKotaTujuan = $this->getApi('https://api.rajaongkir.com/starter/city?key=8085b36e047138f8fd2a16309f73c5ad&province='.$provTujuan);
+        $dataKotaTujuan = RajaOngkir::getApi('https://api.rajaongkir.com/starter/city?key=8085b36e047138f8fd2a16309f73c5ad&province='.$provTujuan);
         $dataKotaTujuan = $dataKotaTujuan->results;
 
         $harga = null;

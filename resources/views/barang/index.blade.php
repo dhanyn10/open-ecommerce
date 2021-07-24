@@ -102,7 +102,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <label>Berat</label>
+                                        <label>Berat (Kg)</label>
                                         <div class="form-group">
                                             @if (session()->has('berat'))
                                                 <input type="number" value="{{session('berat')}}" name="berat" id="" class="form-control form-control-sm" onchange="this.form.submit()">
