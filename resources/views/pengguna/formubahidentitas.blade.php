@@ -40,6 +40,39 @@
             <label>alamat</label>
         </div>
         <div class="col-md-9">
+            <div class="form-group row">
+                <div class="col-md-4">
+                    <label for="">provinsi</label>
+                </div>
+                <div class="col-md-8">
+                    <select class="form-control form-control-sm" name="provinsi" onchange="this.form.submit()">
+                        <option>Pilih</option>
+                        @if (isset($dataProvinsi))
+                            @foreach ($dataProvinsi as $item)
+                            <option value="{{$item->province_id}}">{{$item->province}}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-4">
+                    <label for="">kota/kabupaten</label>
+                </div>
+                <div class="col-md-8">
+                    <select class="form-control form-control-sm" name="provinsiAsal" onchange="this.form.submit()">
+                        <option>Pilih</option>
+                        @if (isset($dataKabupaten))
+                            @foreach ($dataKabupaten as $item)
+                            <option value="{{$item->city_id}}">{{$item->city_name}}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="text" name="kota" id="" class="form-control form-control-sm">
+            </div>
             <textarea type="text" name="alamat" class="form-control form-control-sm" maxlength="255" required>{{$pengguna->pluck('alamat')->first()}}</textarea>
         </div>
     </div>

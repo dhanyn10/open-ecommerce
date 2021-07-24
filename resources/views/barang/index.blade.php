@@ -46,8 +46,8 @@
                                         <div class="form-group">
                                             <select class="form-control form-control-sm" name="provinsiAsal" onchange="this.form.submit()">
                                                 <option>Pilih</option>
-                                                @foreach ($provinsi as $item)
-                                                    @if (isset($provAsal) && $item->province_id == $provAsal)
+                                                @foreach ($dataProvinsi as $item)
+                                                    @if (isset($provinsiAsal) && $item->province_id == $provinsiAsal)
                                                     <option value="{{$item->province_id}}" selected>{{$item->province}}</option>
                                                     @else
                                                     <option value="{{$item->province_id}}">{{$item->province}}</option>

@@ -30,7 +30,7 @@ class PenggunaController extends Controller
             }
             else if(session('peran') == 3)
             {
-                return redirect()->route('dasbor-pembeli');
+                return redirect()->route('pembeli-profil');
             }
         }
         else
