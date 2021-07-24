@@ -45,6 +45,7 @@
                                         </div>
                                         <div class="form-group">
                                             <select class="form-control form-control-sm" name="provinsiAsal" onchange="this.form.submit()">
+                                                <option>Pilih</option>
                                                 @foreach ($provinsi as $item)
                                                     @if (isset($provAsal) && $item->province_id == $provAsal)
                                                     <option value="{{$item->province_id}}" selected>{{$item->province}}</option>
@@ -56,13 +57,14 @@
                                         </div>
                                         <div class="form-group">
                                             <select class="form-control form-control-sm" name="kotaAsal" onchange="this.form.submit()">
+                                                <option>Pilih</option>
                                                 @isset($dataKotaAsal)
                                                     @foreach ($dataKotaAsal as $item)
-                                                    @if (isset($kotaAsal) && $item->city_id === $kotaAsal)
-                                                    <option value="{{$item->city_id}}" selected>{{$item->city_name}}</option>
-                                                    @else
-                                                    <option value="{{$item->city_id}}">{{$item->city_name}}</option>
-                                                    @endif
+                                                        @if (isset($kotaAsal) && $item->city_id === $kotaAsal)
+                                                        <option value="{{$item->city_id}}" selected>{{$item->type." ".$item->city_name}}</option>
+                                                        @else
+                                                        <option value="{{$item->city_id}}">{{$item->type." ".$item->city_name}}</option>
+                                                        @endif
                                                     @endforeach
                                                 @endisset
                                             </select>
@@ -74,6 +76,7 @@
                                         </div>
                                         <div class="form-group">
                                             <select class="form-control form-control-sm" name="provinsiTujuan" onchange="this.form.submit()">
+                                                <option>Pilih</option>
                                                 @foreach ($provinsi as $item)
                                                     @if (isset($provTujuan) && $item->province_id == $provTujuan)
                                                     <option value="{{$item->province_id}}" selected>{{$item->province}}</option>
@@ -85,12 +88,13 @@
                                         </div>
                                         <div class="form-group">
                                             <select class="form-control form-control-sm" name="kotaTujuan" onchange="this.form.submit()">
+                                                <option>Pilih</option>
                                                 @isset($dataKotaTujuan)
                                                     @foreach ($dataKotaTujuan as $item)
                                                         @if (isset($kotaTujuan) && $item->city_id === $kotaTujuan)
-                                                        <option value="{{$item->city_id}}" selected>{{$item->city_name}}</option>
+                                                        <option value="{{$item->city_id}}" selected>{{$item->type." ".$item->city_name}}</option>
                                                         @else
-                                                        <option value="{{$item->city_id}}">{{$item->city_name}}</option>
+                                                        <option value="{{$item->city_id}}">{{$item->type." ".$item->city_name}}</option>
                                                         @endif
                                                     @endforeach
                                                 @endisset
@@ -98,6 +102,19 @@
                                         </div>
                                     </div>
                                 </div>
+                                @isset($harga)
+                                    @if ($harga != null)
+                                    <div class="form-group">
+                                        <select class="form-control form-control-sm" name="kurir" onchange="this.form.submit()">
+                                            @foreach ($harga as $item)
+                                            <option value="{{$item->service}}">{{$item->service}} : {{$item->cost[0]->value}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    @else
+                                        gagal memperoleh data kurir
+                                    @endif
+                                @endisset
                             </form>
                         </div>
                     </div>

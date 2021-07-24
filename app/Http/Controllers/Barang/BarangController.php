@@ -49,12 +49,54 @@ class BarangController extends Controller
             'sisabarang'    => $sisabarang
         );
     }
+
+    private function costRajaOngkir($origin, $destination, $weight)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => "https://api.rajaongkir.com/starter/cost",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => "origin=".$origin."&destination=".$destination."&weight=".$weight."&courier=jne",
+        CURLOPT_HTTPHEADER => array(
+            "content-type: application/x-www-form-urlencoded",
+            "key: 8085b36e047138f8fd2a16309f73c5ad"
+        ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+        return "cURL Error #:" . $err;
+        } else {
+            $response_data = json_decode($response);
+            $rajaongkir = $response_data->rajaongkir;
+            $results = $rajaongkir->results;
+            $costs = $results[0]->costs;
+            return $costs;
+        }
+    }
     public function index(Request $req, $id)
     {
-        $rajaongkir = $this->getApi('https://api.rajaongkir.com/starter/province?key=8085b36e047138f8fd2a16309f73c5ad');
         $arrayBarang = $this->sisaBarang($id);
+        $rajaongkir = $this->getApi('https://api.rajaongkir.com/starter/province?key=8085b36e047138f8fd2a16309f73c5ad');
         $provinsi = $rajaongkir->results;
-        $req->session()->forget(['provinsi', 'provAsal', 'kota', 'kotaAsal']);
+        $req->session()->forget([
+            'dataKotaAsal',
+            'dataKotaTujuan',
+            'provAsal',
+            'provTujuan',
+            'kotaAsal',
+            'kotaTujuan'
+        ]);
         session([
             'provinsi' => $provinsi
         ]);
@@ -76,10 +118,14 @@ class BarangController extends Controller
         $dataKotaAsal = $dataKotaAsal->results;
         $dataKotaTujuan = $this->getApi('https://api.rajaongkir.com/starter/city?key=8085b36e047138f8fd2a16309f73c5ad&province='.$provTujuan);
         $dataKotaTujuan = $dataKotaTujuan->results;
+
+        $harga = null;
+        if($kotaAsal > 0 && $kotaTujuan > 0)
+            $harga = $this->costRajaOngkir($kotaAsal, $kotaTujuan, 1000); //return array cots
         session([
             'dataKotaAsal' => $dataKotaAsal,
             'dataKotaTujuan' => $dataKotaTujuan,
-            'provAsal' => $provAsal, //provinsi Asal
+            'provAsal' => $provAsal,
             'kotaAsal' => $kotaAsal,
             'provTujuan' => $provTujuan,
             'kotaTujuan' => $kotaTujuan
@@ -95,6 +141,7 @@ class BarangController extends Controller
             'kotaAsal'      => session('kotaAsal'),
             'provTujuan'    => session('provTujuan'),
             'kotaTujuan'    => session('kotaTujuan'),
+            'harga'         => $harga
         ]);
     }
 }
