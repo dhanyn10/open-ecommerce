@@ -1,6 +1,5 @@
 @extends('tataletak')
 @section('css')
-<link href="{{URL::asset('css/barang/index.css')}}" rel="stylesheet"/>
 @endsection
 @section('konten')
 <div class="container-fluid">
@@ -35,8 +34,51 @@
                     </div>
                     <hr/>
                     <div class="card">
+                        <div class="card-header">Cek Ongkir</div>
                         <div class="card-body">
-                            {!!$barang->keterangan!!}
+                            <form method="POST">
+                                <div class="row">
+                                    {{ csrf_field() }}
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Dari</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="form-control form-control-sm" name="provinsi" onchange="this.form.submit()">
+                                                @foreach ($provinsi as $item)
+                                                    @if (isset($provTerpilih) && $item->province_id == $provTerpilih)
+                                                    <option value="{{$item->province_id}}" selected>{{$item->province}}</option>
+                                                    @endif
+                                                <option value="{{$item->province_id}}">{{$item->province}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="form-control form-control-sm" name="kota" onchange="this.form.submit()">
+                                                @isset($kota)
+                                                    @foreach ($kota as $item)
+                                                    @if (isset($kotaTerpilih) && $item->city_id === $kotaTerpilih)
+                                                        <option value="{{$item->city_id}}" selected>{{$item->city_name}}</option>
+                                                    @endif
+                                                    <option value="{{$item->city_id}}">{{$item->city_name}}</option>
+                                                    @endforeach
+                                                @endisset
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Ke</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-sm" placeholder="provinsi">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-sm" placeholder="kota">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -55,7 +97,7 @@
                             aria-controls="detail"
                             aria-selected="true"
                         >
-                            Detail Barang
+                            Deskripsi
                         </a>
                     </li>
                     <li class="nav-item">
@@ -74,24 +116,10 @@
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="detail" role="tabpanel" aria-labelledby="home-tab">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        In sed euismod diam. Curabitur tincidunt tortor pharetra lacus lobortis interdum. 
-                        Aliquam vitae placerat nisi. Mauris pulvinar purus a dapibus sodales. 
-                        Quisque ut massa eu nisl pharetra gravida. Ut iaculis, nisl ut malesuada congue, 
-                        ligula nisi porta felis, volutpat volutpat quam risus sed nisl. 
-                        Aenean et turpis in libero sagittis malesuada ac nec odio. 
-                        Nam non sapien tincidunt, condimentum orci a, laoreet eros. 
-                        Fusce fringilla, metus in rutrum interdum, nunc mauris venenatis tortor, 
-                        nec interdum lorem orci eu tellus. Nulla facilisi. Donec maximus tortor vitae leo elementum, 
-                        vitae varius arcu facilisis.
+                            {!!$barang->keterangan!!}
                         </div>
                         <div class="tab-pane fade" id="ulasan" role="tabpanel" aria-labelledby="profile-tab">
-                        Phasellus a vulputate neque, vel sagittis velit. Nam molestie felis vitae ipsum consequat dictum. 
-                        Donec et ligula elit. Aliquam at augue eu dolor convallis porttitor. Aenean vel purus commodo, 
-                        cursus justo vel, maximus justo. In id pharetra leo. In varius ex quis viverra malesuada. 
-                        Curabitur leo tortor, mollis nec tincidunt in, sodales malesuada dui. Curabitur maximus, 
-                        leo pulvinar ornare ornare, ex mi viverra nulla, ut lacinia mauris sapien et augue. 
-                        Etiam fringilla fermentum vehicula.
+                            {!!$barang->keterangan!!}
                         </div>
                     </div>
                 </div>
