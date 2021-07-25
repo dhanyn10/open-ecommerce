@@ -44,32 +44,12 @@
                                             <label>Dari</label>
                                         </div>
                                         <div class="form-group">
-                                            <select class="form-control form-control-sm" name="provinsiAsal" onchange="this.form.submit()">
-                                                <option>Pilih</option>
-                                                @if (isset($dataProvinsi))
-                                                    @foreach ($dataProvinsi as $item)
-                                                        @if (isset($provAsal) && $item->province_id == $provAsal)
-                                                        <option value="{{$item->province_id}}" selected>{{$item->province}}</option>
-                                                        @else
-                                                        <option value="{{$item->province_id}}">{{$item->province}}</option>
-                                                        @endif
-                                                    @endforeach
-                                                @endif
-                                            </select>
+                                            <input type="hidden" name="provinsiAsal" value="{{$provUserId}}">
+                                            <input type="text" class="form-control form-control-sm" value="{{$provUserName}}" disabled>
                                         </div>
                                         <div class="form-group">
-                                            <select class="form-control form-control-sm" name="kotaAsal" onchange="this.form.submit()">
-                                                <option>Pilih</option>
-                                                @if(isset($dataKotaAsal) && $dataKotaAsal != null)
-                                                    @foreach ($dataKotaAsal as $item)
-                                                        @if (isset($kotaAsal) && $item->city_id === $kotaAsal)
-                                                        <option value="{{$item->city_id}}" selected>{{$item->type." ".$item->city_name}}</option>
-                                                        @else
-                                                        <option value="{{$item->city_id}}">{{$item->type." ".$item->city_name}}</option>
-                                                        @endif
-                                                    @endforeach
-                                                @endif
-                                            </select>
+                                            <input type="hidden" name="kotaAsal" value="{{$kotaUserId}}">
+                                            <input type="text" class="form-control form-control-sm" value="{{$kotaUserName}}" disabled>
                                         </div>
                                     </div>
                                     <div class="col-md-6">

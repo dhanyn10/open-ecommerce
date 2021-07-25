@@ -42,11 +42,28 @@ class BarangController extends Controller
     public function index(Request $req, $id)
     {
         $arrayBarang = $this->sisaBarang($id);
+        $user = Pengguna::where('email', session('email'))->get();
+        $provUser = $user->pluck('provinsi')->first();
+        $kotaUser = $user->pluck('kota')->first();
+        $provUserId = $provUserName = $kotaUserId = $kotaUserName = null;
+        if($provUser != null)
+        {
+            $provUser = explode('-', $provUser);
+            $provUserId = $provUser[0];
+            $provUserName = $provUser[1];
+        }
+        if($kotaUser != null)
+        {
+            $kotaUser = explode('-', $kotaUser);
+            $kotaUserId = $kotaUser[0];
+            $kotaUserName = $kotaUser[1];
+        }
         $roProv = RajaOngkir::getApi('https://api.rajaongkir.com/starter/province?key='.env('RAJAONGKIR_API_KEY'));
         if($roProv != null)
             $dataProvinsi = $roProv->results;
         else
             $dataProvinsi = null;
+        
         $req->session()->forget([
             'provAsal',
             'provTujuan',
@@ -56,15 +73,35 @@ class BarangController extends Controller
             'biaya'
         ]);
         return view('barang.index', [
+            'provUserId'    => $provUserId,
+            'provUserName'  => $provUserName,
+            'kotaUserId'    => $kotaUserId,
+            'kotaUserName'  => $kotaUserName,
             'data_barang'   => $arrayBarang['barang'],
             'penjual'       => $arrayBarang['namapenjual'],
             'sisabarang'    => $arrayBarang['sisabarang'],
-            'dataProvinsi'  => $dataProvinsi
+            'dataProvinsi'  => $dataProvinsi,
+            'provAsal'      => $provAsal
         ]);
     }
     public function cekongkir(Request $req, $id)
     {
         $arrayBarang = $this->sisaBarang($id);
+        $user = Pengguna::where('email', session('email'))->get();
+        $provUser = $user->pluck('provinsi')->first();
+        $kotaUser = $user->pluck('kota')->first();
+        if($provUser != null)
+        {
+            $provUser = explode('-', $provUser);
+            $provUserId = $provUser[0];
+            $provUserName = $provUser[1];
+        }
+        if($kotaUser != null)
+        {
+            $kotaUser = explode('-', $kotaUser);
+            $kotaUserId = $kotaUser[0];
+            $kotaUserName = $kotaUser[1];
+        }
         $provAsal   = $req->input('provinsiAsal');
         $kotaAsal   = $req->input('kotaAsal');
         $provTujuan = $req->input('provinsiTujuan');
@@ -103,14 +140,15 @@ class BarangController extends Controller
             'biaya'         => $biaya
         ]);
         return view('barang.index', [
+            'provUserId'    => $provUserId,
+            'provUserName'  => $provUserName,
+            'kotaUserId'    => $kotaUserId,
+            'kotaUserName'  => $kotaUserName,
             'data_barang'   => $arrayBarang['barang'],
             'penjual'       => $arrayBarang['namapenjual'],
             'sisabarang'    => $arrayBarang['sisabarang'],
             'dataProvinsi'  => $dataProvinsi,
-            'provAsal'      => session('provAsal'),
-            'dataKotaAsal'  => $dataKotaAsal,
             'dataKotaTujuan'  => $dataKotaTujuan,
-            'kotaAsal'      => session('kotaAsal'),
             'provTujuan'    => session('provTujuan'),
             'kotaTujuan'    => session('kotaTujuan'),
             'harga'         => $harga
