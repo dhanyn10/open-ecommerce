@@ -39,27 +39,21 @@ class BarangController extends Controller
             'sisabarang'    => $sisabarang
         );
     }
-
     public function index(Request $req, $id)
     {
         $arrayBarang = $this->sisaBarang($id);
-        $rajaongkir = RajaOngkir::getApi('https://api.rajaongkir.com/starter/province?key='.env('RAJAONGKIR_API_KEY'));
-        if($rajaongkir != null)
-            $dataProvinsi = $rajaongkir->results;
+        $roProv = RajaOngkir::getApi('https://api.rajaongkir.com/starter/province?key='.env('RAJAONGKIR_API_KEY'));
+        if($roProv != null)
+            $dataProvinsi = $roProv->results;
         else
             $dataProvinsi = null;
         $req->session()->forget([
-            'dataKotaAsal',
-            'dataKotaTujuan',
             'provAsal',
             'provTujuan',
             'kotaAsal',
             'kotaTujuan',
             'berat',
             'biaya'
-        ]);
-        session([
-            'provinsi' => $dataProvinsi
         ]);
         return view('barang.index', [
             'data_barang'   => $arrayBarang['barang'],
@@ -77,11 +71,18 @@ class BarangController extends Controller
         $kotaTujuan = $req->input('kotaTujuan');
         $berat      = $req->input('berat');
         $biaya      = $req->input('biaya');
+        $roProv = RajaOngkir::getApi('https://api.rajaongkir.com/starter/province?key='.env('RAJAONGKIR_API_KEY'));
+        if($roProv != null)
+            $dataProvinsi = $roProv->results;
+        else
+            $dataProvinsi = null;
+
         $roProvAsal = RajaOngkir::getApi('https://api.rajaongkir.com/starter/city?key='.env('RAJAONGKIR_API_KEY').'&province='.$provAsal);
         if($roProvAsal != null)
             $dataKotaAsal = $roProvAsal->results;
         else
             $dataKotaAsal = null;
+
         $roProvTujuan = RajaOngkir::getApi('https://api.rajaongkir.com/starter/city?key='.env('RAJAONGKIR_API_KEY').'&province='.$provTujuan);
         if($roProvTujuan != null)
             $dataKotaTujuan = $roProvTujuan->results;
@@ -94,8 +95,6 @@ class BarangController extends Controller
             $harga = RajaOngkir::costRajaOngkir($kotaAsal, $kotaTujuan, $berat*1000); //return array cots
         }
         session([
-            'dataKotaAsal'  => $dataKotaAsal,
-            'dataKotaTujuan' => $dataKotaTujuan,
             'provAsal'      => $provAsal,
             'kotaAsal'      => $kotaAsal,
             'provTujuan'    => $provTujuan,
@@ -107,10 +106,10 @@ class BarangController extends Controller
             'data_barang'   => $arrayBarang['barang'],
             'penjual'       => $arrayBarang['namapenjual'],
             'sisabarang'    => $arrayBarang['sisabarang'],
-            'dataProvinsi'  => session('provinsi'),
+            'dataProvinsi'  => $dataProvinsi,
             'provAsal'      => session('provAsal'),
-            'dataKotaAsal'  => session('dataKotaAsal'),
-            'dataKotaTujuan'  => session('dataKotaTujuan'),
+            'dataKotaAsal'  => $dataKotaAsal,
+            'dataKotaTujuan'  => $dataKotaTujuan,
             'kotaAsal'      => session('kotaAsal'),
             'provTujuan'    => session('provTujuan'),
             'kotaTujuan'    => session('kotaTujuan'),
