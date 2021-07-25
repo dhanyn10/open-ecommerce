@@ -44,12 +44,16 @@
                                             <label>Dari</label>
                                         </div>
                                         <div class="form-group">
-                                            <input type="hidden" name="provinsiAsal" value="{{$provUserId}}">
-                                            <input type="text" class="form-control form-control-sm" value="{{$provUserName}}" disabled>
+                                            @if ($provUserPenjual != null)
+                                            <input type="hidden" name="provinsiAsal" value="{{$provUserPenjual[0]}}">
+                                            <input type="text" class="form-control form-control-sm" value="{{$provUserPenjual[1]}}" disabled>
+                                            @endif
                                         </div>
                                         <div class="form-group">
-                                            <input type="hidden" name="kotaAsal" value="{{$kotaUserId}}">
-                                            <input type="text" class="form-control form-control-sm" value="{{$kotaUserName}}" disabled>
+                                            @if ($kotaUserPenjual != null)
+                                                <input type="hidden" name="kotaAsal" value="{{$kotaUserPenjual[0]}}">
+                                                <input type="text" class="form-control form-control-sm" value="{{$kotaUserPenjual[1]}}" disabled>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -57,61 +61,17 @@
                                             <label>Tujuan</label>
                                         </div>
                                         <div class="form-group">
-                                            <select class="form-control form-control-sm" name="provinsiTujuan" onchange="this.form.submit()">
-                                                <option>Pilih</option>
-                                                @if (isset($dataProvinsi) && $dataProvinsi != null)
-                                                    @foreach ($dataProvinsi as $item)
-                                                        @if (isset($provTujuan) && $item->province_id == $provTujuan)
-                                                        <option value="{{$item->province_id}}" selected>{{$item->province}}</option>
-                                                        @else
-                                                        <option value="{{$item->province_id}}">{{$item->province}}</option>
-                                                        @endif
-                                                    @endforeach
-                                                @endif
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <select class="form-control form-control-sm" name="kotaTujuan" onchange="this.form.submit()">
-                                                <option>Pilih</option>
-                                                @if(isset($dataKotaTujuan) && $dataKotaTujuan != null)
-                                                    @foreach ($dataKotaTujuan as $item)
-                                                        @if (isset($kotaTujuan) && $item->city_id === $kotaTujuan)
-                                                        <option value="{{$item->city_id}}" selected>{{$item->type." ".$item->city_name}}</option>
-                                                        @else
-                                                        <option value="{{$item->city_id}}">{{$item->type." ".$item->city_name}}</option>
-                                                        @endif
-                                                    @endforeach
-                                                @endif
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label>Berat (Kg)</label>
-                                        <div class="form-group">
-                                            @if (session()->has('berat'))
-                                                <input type="number" value="{{session('berat')}}" name="berat" id="" class="form-control form-control-sm" onchange="this.form.submit()">
-                                            @else
-                                                <input type="number" name="berat" id="" class="form-control form-control-sm" onchange="this.form.submit()">
+                                            @if ($provUserPembeli != null)
+                                            <input type="hidden" name="provinsiTujuan" value="{{$provUserPembeli[0]}}">
+                                            <input type="text" class="form-control form-control-sm" value="{{$provUserPembeli[1]}}" disabled>
                                             @endif
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label>Kurir (JNE)</label>
-                                        @isset($harga)
-                                            @if ($harga != null)
-                                            <div class="form-group">
-                                                <select class="form-control form-control-sm" name="biaya" onchange="this.form.submit()">
-                                                    @foreach ($harga as $item)
-                                                    <option value="{{$item->service}}">{{$item->service}} : {{$item->cost[0]->value}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            @else
-                                            <div class="form-group">
-                                                <label>gagal memperoleh data kurir</label>
-                                            </div>
+                                        <div class="form-group">
+                                            @if ($kotaUserPembeli != null)
+                                                <input type="hidden" name="kotaTujuan" value="{{$kotaUserPembeli[0]}}">
+                                                <input type="text" class="form-control form-control-sm" value="{{$kotaUserPembeli[1]}}" disabled>
                                             @endif
-                                        @endisset
+                                        </div>
                                     </div>
                                 </div>
                             </form>

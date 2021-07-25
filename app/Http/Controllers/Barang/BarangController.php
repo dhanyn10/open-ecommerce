@@ -43,116 +43,46 @@ class BarangController extends Controller
     {
         $arrayBarang = $this->sisaBarang($id);
         $barang = Barang::where('id', $id)->get();
+
+        //penjual
         $emailpenjual = $barang->pluck('penjual')->first();
-        $pengguna = Pengguna::where('email', $emailpenjual)->get();
-        $provUser = $pengguna->pluck('provinsi')->first();
-        $kotaUser = $pengguna->pluck('kota')->first();
-        $provUserId = $provUserName = $kotaUserId = $kotaUserName = null;
-        if($provUser != null)
+        $userPenjual = Pengguna::where('email', $emailpenjual)->get();
+        $provUserPenjual = $userPenjual->pluck('provinsi')->first();
+        $kotaUserPenjual = $userPenjual->pluck('kota')->first();
+
+        if($provUserPenjual != null)
         {
-            $provUser = explode('-', $provUser);
-            $provUserId = $provUser[0];
-            $provUserName = $provUser[1];
+            $provUserPenjual = explode('-', $provUserPenjual);
         }
-        if($kotaUser != null)
+        if($kotaUserPenjual != null)
         {
-            $kotaUser = explode('-', $kotaUser);
-            $kotaUserId = $kotaUser[0];
-            $kotaUserName = $kotaUser[1];
+            $kotaUserPenjual = explode('-', $kotaUserPenjual);
         }
-        $roProv = RajaOngkir::getApi('https://api.rajaongkir.com/starter/province?key='.env('RAJAONGKIR_API_KEY'));
-        if($roProv != null)
-            $dataProvinsi = $roProv->results;
-        else
-            $dataProvinsi = null;
+
+
+        //pembeli
+        $userPembeli = Pengguna::where('email', session('email'))->get();
+        $provUserPembeli = $userPembeli->pluck('provinsi')->first();
+        $kotaUserPembeli = $userPembeli->pluck('kota')->first();
+
+        if($provUserPembeli != null)
+        {
+            $provUserPembeli = explode('-', $provUserPembeli);
+        }
+        if($kotaUserPembeli != null)
+        {
+            $kotaUserPembeli = explode('-', $kotaUserPembeli);
+        }
         
-        $req->session()->forget([
-            'provAsal',
-            'provTujuan',
-            'kotaAsal',
-            'kotaTujuan',
-            'berat',
-            'biaya'
-        ]);
         return view('barang.index', [
-            'provUserId'    => $provUserId,
-            'provUserName'  => $provUserName,
-            'kotaUserId'    => $kotaUserId,
-            'kotaUserName'  => $kotaUserName,
+            'provUserPenjual'   => $provUserPenjual,
+            'provUserPembeli'   => $provUserPembeli,
+            'kotaUserPenjual'   => $kotaUserPenjual,
+            'kotaUserPembeli'   => $kotaUserPembeli,
             'data_barang'   => $arrayBarang['barang'],
             'penjual'       => $arrayBarang['namapenjual'],
-            'sisabarang'    => $arrayBarang['sisabarang'],
-            'dataProvinsi'  => $dataProvinsi
+            'sisabarang'    => $arrayBarang['sisabarang']
         ]);
-    }
-    public function cekongkir(Request $req, $id)
-    {
-        $arrayBarang = $this->sisaBarang($id);
-        $user = Pengguna::where('email', session('email'))->get();
-        $provUser = $user->pluck('provinsi')->first();
-        $kotaUser = $user->pluck('kota')->first();
-        if($provUser != null)
-        {
-            $provUser = explode('-', $provUser);
-            $provUserId = $provUser[0];
-            $provUserName = $provUser[1];
-        }
-        if($kotaUser != null)
-        {
-            $kotaUser = explode('-', $kotaUser);
-            $kotaUserId = $kotaUser[0];
-            $kotaUserName = $kotaUser[1];
-        }
-        $provAsal   = $req->input('provinsiAsal');
-        $kotaAsal   = $req->input('kotaAsal');
-        $provTujuan = $req->input('provinsiTujuan');
-        $kotaTujuan = $req->input('kotaTujuan');
-        $berat      = $req->input('berat');
-        $biaya      = $req->input('biaya');
-        $roProv = RajaOngkir::getApi('https://api.rajaongkir.com/starter/province?key='.env('RAJAONGKIR_API_KEY'));
-        if($roProv != null)
-            $dataProvinsi = $roProv->results;
-        else
-            $dataProvinsi = null;
-
-        $roProvAsal = RajaOngkir::getApi('https://api.rajaongkir.com/starter/city?key='.env('RAJAONGKIR_API_KEY').'&province='.$provAsal);
-        if($roProvAsal != null)
-            $dataKotaAsal = $roProvAsal->results;
-        else
-            $dataKotaAsal = null;
-
-        $roProvTujuan = RajaOngkir::getApi('https://api.rajaongkir.com/starter/city?key='.env('RAJAONGKIR_API_KEY').'&province='.$provTujuan);
-        if($roProvTujuan != null)
-            $dataKotaTujuan = $roProvTujuan->results;
-        else
-            $dataKotaTujuan = null;
-
-        $harga = null;
-        if($kotaAsal > 0 && $kotaTujuan > 0)
-        {
-            $harga = RajaOngkir::costRajaOngkir($kotaAsal, $kotaTujuan, $berat*1000); //return array cots
-        }
-        session([
-            'provAsal'      => $provAsal,
-            'kotaAsal'      => $kotaAsal,
-            'provTujuan'    => $provTujuan,
-            'kotaTujuan'    => $kotaTujuan,
-            'berat'         => $berat,
-            'biaya'         => $biaya
-        ]);
-        return view('barang.index', [
-            'provUserId'    => $provUserId,
-            'provUserName'  => $provUserName,
-            'kotaUserId'    => $kotaUserId,
-            'kotaUserName'  => $kotaUserName,
-            'data_barang'   => $arrayBarang['barang'],
-            'penjual'       => $arrayBarang['namapenjual'],
-            'sisabarang'    => $arrayBarang['sisabarang'],
-            'dataProvinsi'  => $dataProvinsi,
-            'dataKotaTujuan'  => $dataKotaTujuan,
-            'provTujuan'    => session('provTujuan'),
-            'kotaTujuan'    => session('kotaTujuan'),
-            'harga'         => $harga
-        ]);
+        //     $harga = RajaOngkir::costRajaOngkir($kotaAsal, $kotaTujuan, $berat*1000); //return array cots
     }
 }
