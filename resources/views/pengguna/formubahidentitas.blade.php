@@ -1,3 +1,4 @@
+@include('flash::message')
 <form method="post">
     {{csrf_field()}}
     <div class="form-group row">
@@ -47,9 +48,17 @@
                 <div class="col-md-8">
                     <select class="form-control form-control-sm" name="provinsi" onchange="this.form.submit()">
                         <option>Pilih</option>
-                        @if (isset($dataProvinsi))
+                        @if (isset($dataProvinsi) && $dataProvinsi != null)
+                        <?php
+                        $provinsi = explode("-", $pengguna->pluck('provinsi')->first());
+                        $provinsi = $provinsi[1];
+                        ?>
                             @foreach ($dataProvinsi as $item)
-                            <option value="{{$item->province_id}}">{{$item->province}}</option>
+                                @if ($provinsi == $item->province)
+                                    <option value="{{$item->province_id}}-{{$item->province}}" selected>{{$item->province}}</option>
+                                @else
+                                    <option value="{{$item->province_id}}-{{$item->province}}">{{$item->province}}</option>
+                                @endif
                             @endforeach
                         @endif
                     </select>
@@ -60,18 +69,27 @@
                     <label for="">kota/kabupaten</label>
                 </div>
                 <div class="col-md-8">
-                    <select class="form-control form-control-sm" name="provinsiAsal" onchange="this.form.submit()">
+                    <?php
+                        if(isset($kotaAsal) && $kotaAsal != null)
+                        {
+                            $kotaAsal = explode('-', $kotaAsal);
+                            $kotaAsal = $kotaAsal[1];
+                        }
+                    ?>
+                    <select class="form-control form-control-sm" name="kota" onchange="this.form.submit()">
                         <option>Pilih</option>
-                        @if (isset($dataKabupaten))
-                            @foreach ($dataKabupaten as $item)
-                            <option value="{{$item->city_id}}">{{$item->city_name}}</option>
+                        @if (isset($dataKota) && $dataKota != null)
+                            @foreach ($dataKota as $item)
+                            @if ($kotaAsal == $item->city_name)
+                                <option value="{{$item->city_id}}-{{$item->city_name}}" selected>{{$item->city_name}}</option>
+                            @else
+                                
+                            @endif
+                                <option value="{{$item->city_id}}-{{$item->city_name}}">{{$item->city_name}}</option>
                             @endforeach
                         @endif
                     </select>
                 </div>
-            </div>
-            <div class="form-group">
-                <input type="text" name="kota" id="" class="form-control form-control-sm">
             </div>
             <textarea type="text" name="alamat" class="form-control form-control-sm" maxlength="255" required>{{$pengguna->pluck('alamat')->first()}}</textarea>
         </div>

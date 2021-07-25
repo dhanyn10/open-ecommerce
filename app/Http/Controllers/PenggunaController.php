@@ -16,8 +16,10 @@ class PenggunaController extends Controller
         $validasi = Validator::make($req->all(),[
             'email'     => 'required|email|max:30',
             'nama'      => 'required|max:20',
-            'telepon'   => 'required|numeric|digits_between:11,12',
-            'alamat'    => 'required|max:255',
+            'telepon'   => 'numeric|digits_between:11,12',
+            'alamat'    => 'max:255',
+            'kota'      => 'max:255',
+            'provinsi'  => 'max:255',
             'sandi'     => 'max:30'
         ]);
 
@@ -39,6 +41,8 @@ class PenggunaController extends Controller
             $data['nama']   = $req->input('nama');
             $telepon        = $req->input('telepon');
             $alamat         = $req->input('alamat');
+            $kota           = $req->input('kota');
+            $provinsi       = $req->input('provinsi');
             $sandi          = $req->input('sandi');
             $data['token']  = $data['email'].Str::random(10);
             //inisiasi nilai konfirmasi 1(pengguna terkonfirmasi)
@@ -76,6 +80,8 @@ class PenggunaController extends Controller
                 'nama'          => $data['nama'],
                 'telepon'       => $telepon,
                 'alamat'        => $alamat,
+                'kota'          => $kota,
+                'provinsi'      => $provinsi,
                 'sandi'         => $sandi,
                 'konfirmasi'    => $konfirmasi,
                 'token'         => $data['token']

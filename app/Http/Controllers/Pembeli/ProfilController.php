@@ -12,15 +12,25 @@ class ProfilController extends Controller
 {
     public function index(Request $req)
     {
-        $provinsiAsal = $req->input('provinsiAsal');
-        $rajaongkir = RajaOngkir::getApi('https://api.rajaongkir.com/starter/province?key='.env('RAJAONGKIR_API_KEY'));
-        $dataKotaAsal = RajaOngkir::getApi('https://api.rajaongkir.com/starter/city?key='.env('RAJAONGKIR_API_KEY').'&province='.$provinsiAsal);
-        $dataProvinsi = $rajaongkir->results;
-        $pengguna   = Pengguna::where('email', session('email'))->get();
+        $pengguna       = Pengguna::where('email', session('email'))->get();
+        $provinsiAsal   = $pengguna->pluck('provinsi')->first();
+        $provinsiAsal   = explode("-", $provinsiAsal);
+        $kotaAsal       = $pengguna->pluck('kota')->first();
+        $roDataProv     = RajaOngkir::getApi('https://api.rajaongkir.com/starter/province?key='.env('RAJAONGKIR_API_KEY'));
+        if($roDataProv != null)
+            $dataProvinsi = $roDataProv->results;
+        else
+            $dataProvinsi = null;
+        $roKota = RajaOngkir::getApi('https://api.rajaongkir.com/starter/city?key='.env('RAJAONGKIR_API_KEY').'&province='.$provinsiAsal[0]);
+        if($roKota != null)
+            $dataKota = $roKota->results;
+        else
+            $kotaAsal = null;
         return view('pembeli.profil',[
-            'pengguna'  => $pengguna,
+            'pengguna'      => $pengguna,
             'dataProvinsi'  => $dataProvinsi,
-            'provinsiAsal'  => $provinsiAsal
+            'dataKota'      => $dataKota,
+            'kotaAsal'      => $kotaAsal
         ]);
     }
 }
