@@ -30,7 +30,7 @@
                     </tr>
                     @foreach($data_pembelian as $data)
                     <tr>
-                        <td><img class="img-thumbnail rounded-circle fotobarang" src="{{URL::asset('img/barangdagang/'.$data->idbarang.'.png')}}"</td>
+                        <td><img class="img-thumbnail rounded-circle fotobarang" src="{{URL::asset('img/barangdagang/'.$data->idbarang.'.png')}}"/></td>
                         <td>{{$data->barang}}</td>
                         <td style="direction:rtl">{{$data->harga}}</td>
                         <td class="text-center">{{$data->jumlah}}</td>
