@@ -16,8 +16,11 @@ class RajaOngkir extends Controller
         // Decode JSON data into PHP array
         $response_data = json_decode($json_data);
         $rajaongkir = $response_data->rajaongkir;
-
-        return $rajaongkir;
+        $statusCode = $rajaongkir->status->code;
+        if($statusCode == 200)  //kuota masih cukup
+            return $rajaongkir;
+        else                    //kuota habis
+            return null;
     }
     public static function costRajaOngkir($origin, $destination, $weight)
     {
@@ -34,7 +37,7 @@ class RajaOngkir extends Controller
         CURLOPT_POSTFIELDS => "origin=".$origin."&destination=".$destination."&weight=".$weight."&courier=jne",
         CURLOPT_HTTPHEADER => array(
             "content-type: application/x-www-form-urlencoded",
-            "key: 8085b36e047138f8fd2a16309f73c5ad"
+            "key: ".env('RAJAONGKIR_API_KEY')
         ),
         ));
 

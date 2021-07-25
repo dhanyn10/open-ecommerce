@@ -13,8 +13,8 @@ class ProfilController extends Controller
     public function index(Request $req)
     {
         $provinsiAsal = $req->input('provinsiAsal');
-        $rajaongkir = RajaOngkir::getApi('https://api.rajaongkir.com/starter/province?key=8085b36e047138f8fd2a16309f73c5ad');
-        $dataKotaAsal = RajaOngkir::getApi('https://api.rajaongkir.com/starter/city?key=8085b36e047138f8fd2a16309f73c5ad&province='.$provinsiAsal);
+        $rajaongkir = RajaOngkir::getApi('https://api.rajaongkir.com/starter/province?key='.env('RAJAONGKIR_API_KEY'));
+        $dataKotaAsal = RajaOngkir::getApi('https://api.rajaongkir.com/starter/city?key='.env('RAJAONGKIR_API_KEY').'&province='.$provinsiAsal);
         $dataProvinsi = $rajaongkir->results;
         $pengguna   = Pengguna::where('email', session('email'))->get();
         return view('pembeli.profil',[

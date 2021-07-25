@@ -43,8 +43,11 @@ class BarangController extends Controller
     public function index(Request $req, $id)
     {
         $arrayBarang = $this->sisaBarang($id);
-        $rajaongkir = RajaOngkir::getApi('https://api.rajaongkir.com/starter/province?key=8085b36e047138f8fd2a16309f73c5ad');
-        $dataProvinsi = $rajaongkir->results;
+        $rajaongkir = RajaOngkir::getApi('https://api.rajaongkir.com/starter/province?key='.env('RAJAONGKIR_API_KEY'));
+        if($rajaongkir != null)
+            $dataProvinsi = $rajaongkir->results;
+        else
+            $dataProvinsi = null;
         $req->session()->forget([
             'dataKotaAsal',
             'dataKotaTujuan',
@@ -56,7 +59,7 @@ class BarangController extends Controller
             'biaya'
         ]);
         session([
-            'provinsi' => $provinsi
+            'provinsi' => $dataProvinsi
         ]);
         return view('barang.index', [
             'data_barang'   => $arrayBarang['barang'],
@@ -74,10 +77,16 @@ class BarangController extends Controller
         $kotaTujuan = $req->input('kotaTujuan');
         $berat      = $req->input('berat');
         $biaya      = $req->input('biaya');
-        $dataKotaAsal = RajaOngkir::getApi('https://api.rajaongkir.com/starter/city?key=8085b36e047138f8fd2a16309f73c5ad&province='.$provAsal);
-        $dataKotaAsal = $dataKotaAsal->results;
-        $dataKotaTujuan = RajaOngkir::getApi('https://api.rajaongkir.com/starter/city?key=8085b36e047138f8fd2a16309f73c5ad&province='.$provTujuan);
-        $dataKotaTujuan = $dataKotaTujuan->results;
+        $roProvAsal = RajaOngkir::getApi('https://api.rajaongkir.com/starter/city?key='.env('RAJAONGKIR_API_KEY').'&province='.$provAsal);
+        if($roProvAsal != null)
+            $dataKotaAsal = $roProvAsal->results;
+        else
+            $dataKotaAsal = null;
+        $roProvTujuan = RajaOngkir::getApi('https://api.rajaongkir.com/starter/city?key='.env('RAJAONGKIR_API_KEY').'&province='.$provTujuan);
+        if($roProvTujuan != null)
+            $dataKotaTujuan = $roProvTujuan->results;
+        else
+            $dataKotaTujuan = null;
 
         $harga = null;
         if($kotaAsal > 0 && $kotaTujuan > 0)
