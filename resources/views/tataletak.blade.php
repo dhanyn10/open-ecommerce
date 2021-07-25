@@ -6,7 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>{{config('app.name')}}</title>
         <script src="https://use.fontawesome.com/a7abdb79bd.js"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
         <link href="{{URL::asset('css/global.css')}}" rel="stylesheet"/>
         <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
         @yield('css')
@@ -66,7 +66,7 @@
         </nav>
         @yield('konten')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" ></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
         @yield('js')
     </body>
 </html>

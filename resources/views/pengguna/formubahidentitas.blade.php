@@ -47,12 +47,7 @@
                 </div>
                 <div class="col-md-8">
                     <select class="form-control form-control-sm" name="provinsi" onchange="this.form.submit()">
-                        <option>Pilih</option>
                         @if (isset($dataProvinsi) && $dataProvinsi != null)
-                        <?php
-                        $provinsi = explode("-", $pengguna->pluck('provinsi')->first());
-                        $provinsi = $provinsi[1];
-                        ?>
                             @foreach ($dataProvinsi as $item)
                                 @if ($provinsi == $item->province)
                                     <option value="{{$item->province_id}}-{{$item->province}}" selected>{{$item->province}}</option>
@@ -69,29 +64,20 @@
                     <label for="">kota/kabupaten</label>
                 </div>
                 <div class="col-md-8">
-                    <?php
-                        if(isset($kotaAsal) && $kotaAsal != null)
-                        {
-                            $kotaAsal = explode('-', $kotaAsal);
-                            $kotaAsal = $kotaAsal[1];
-                        }
-                    ?>
                     <select class="form-control form-control-sm" name="kota" onchange="this.form.submit()">
-                        <option>Pilih</option>
                         @if (isset($dataKota) && $dataKota != null)
                             @foreach ($dataKota as $item)
                             @if ($kotaAsal == $item->city_name)
                                 <option value="{{$item->city_id}}-{{$item->city_name}}" selected>{{$item->city_name}}</option>
                             @else
-                                
-                            @endif
                                 <option value="{{$item->city_id}}-{{$item->city_name}}">{{$item->city_name}}</option>
+                            @endif
                             @endforeach
                         @endif
                     </select>
                 </div>
             </div>
-            <textarea type="text" name="alamat" class="form-control form-control-sm" maxlength="255" required>{{$pengguna->pluck('alamat')->first()}}</textarea>
+            <textarea type="text" name="alamat" class="form-control form-control-sm" maxlength="255">{{$pengguna->pluck('alamat')->first()}}</textarea>
         </div>
     </div>
     <div class="form-group row">

@@ -42,9 +42,11 @@ class BarangController extends Controller
     public function index(Request $req, $id)
     {
         $arrayBarang = $this->sisaBarang($id);
-        $user = Pengguna::where('email', session('email'))->get();
-        $provUser = $user->pluck('provinsi')->first();
-        $kotaUser = $user->pluck('kota')->first();
+        $barang = Barang::where('id', $id)->get();
+        $emailpenjual = $barang->pluck('penjual')->first();
+        $pengguna = Pengguna::where('email', $emailpenjual)->get();
+        $provUser = $pengguna->pluck('provinsi')->first();
+        $kotaUser = $pengguna->pluck('kota')->first();
         $provUserId = $provUserName = $kotaUserId = $kotaUserName = null;
         if($provUser != null)
         {
@@ -80,8 +82,7 @@ class BarangController extends Controller
             'data_barang'   => $arrayBarang['barang'],
             'penjual'       => $arrayBarang['namapenjual'],
             'sisabarang'    => $arrayBarang['sisabarang'],
-            'dataProvinsi'  => $dataProvinsi,
-            'provAsal'      => $provAsal
+            'dataProvinsi'  => $dataProvinsi
         ]);
     }
     public function cekongkir(Request $req, $id)

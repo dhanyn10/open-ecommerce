@@ -17,18 +17,18 @@
 			@if(isset($data_barang))
 				@foreach($data_barang as $barang)
 				<div class="col-md-3">
-					<div class="card card-barangdagang w-100">
+					<div class="card w-100">
 						<div class="fotobarangdagang">
-							<img src="{{URL::asset('img/barangdagang/'.$barang->id.'.png')}}"/>
+							<img class="card-img-top" src="{{URL::asset('img/barangdagang/'.$barang->id.'.png')}}"/>
 						</div>
 						<div class="card-body">
-							<h6 class="text-uppercase">{{$barang->nama}}</h6>
+							<p><a class="h5 card-title stretched-link beranda-link text-secondary" href="{{route('barang', $barang->id)}}">{{$barang->nama}}</a></p>
 							<span class="text-danger">{{$barang->harga}}</span>
-							<div class="form-group">
-								<a class="text-uppercase btn btn-sm btn-danger hover-visible float-right" href="{{route('barang', $barang->id)}}">lihat</a>
-							</div>
 						</div>
-					</div>
+						@if ($kota != null)
+							<div class="card-footer">{{$kota}}</div>
+						@endif
+					  </div>
 				</div>
 				@endforeach
 			@endif

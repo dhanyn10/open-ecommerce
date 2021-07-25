@@ -26,7 +26,8 @@ Route::group([
     Route::get('tambah', 'Penjual\TambahController@index')->name('tambah');
     Route::get('lihat', 'Penjual\BarangController@index')->name('lihat');
     Route::get('ubah/{id}', 'Penjual\UbahController@index')->name('ubah');
-    Route::get('profil', 'Penjual\AkunController@index')->name('profil');
+    Route::get('profil', 'ProfilController@index')->name('profil');
+    Route::post('profil', 'PenggunaController@profil');
     Route::post('tambah', 'Penjual\TambahController@formtambah');
     Route::post('lihat', 'Penjual\HapusController@formhapus');
     Route::post('ubah/{id}', 'Penjual\UbahController@formubah');
@@ -37,7 +38,7 @@ Route::group([
     'middleware'    => 'pembeli',
     'prefix'        => 'pembeli'
 ], function(){
-    Route::get('profil', 'Pembeli\ProfilController@index')->name('pembeli-profil');
+    Route::get('profil', 'ProfilController@index')->name('pembeli-profil');
     Route::post('profil', 'PenggunaController@profil');
 });
 
