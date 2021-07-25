@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use App\Barang;
+use App\Pengguna;
 
 class BerandaController extends Controller
 {
@@ -30,8 +31,17 @@ class BerandaController extends Controller
         else
         {
             $barang = Barang::all();
+            $penjual = $barang->pluck('penjual')->first();
+            $pengguna = Pengguna::where('email', $penjual)->get();
+            $kota = $pengguna->pluck('kota')->first();
+            if($kota != null)
+            {
+                $kota = explode('-', $kota);
+                $kota = $kota[1];
+            }
             return view('beranda',[
-                'data_barang'   => $barang
+                'data_barang' => $barang,
+                'kota' => $kota
             ]);
         }
     }

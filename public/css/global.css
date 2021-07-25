@@ -32,3 +32,7 @@
 .sidebar .nav-link:hover{
     background:#007bff;
 }
+.beranda-link,
+.beranda-link :hover{
+    text-decoration: none !important;
+}
