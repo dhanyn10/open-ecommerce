@@ -80,8 +80,7 @@ class BarangController extends Controller
             'data_barang'   => $arrayBarang['barang'],
             'penjual'       => $arrayBarang['namapenjual'],
             'sisabarang'    => $arrayBarang['sisabarang'],
-            'dataProvinsi'  => $dataProvinsi,
-            'provAsal'      => $provAsal
+            'dataProvinsi'  => $dataProvinsi
         ]);
     }
     public function cekongkir(Request $req, $id)
