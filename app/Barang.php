@@ -15,6 +15,7 @@ class Barang extends Model
         'id',
         'nama',
         'harga',
+        'berat',
         'jumlah',
         'penjual',
         'keterangan'

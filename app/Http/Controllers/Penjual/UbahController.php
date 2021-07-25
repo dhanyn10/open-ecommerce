@@ -22,6 +22,7 @@ class UbahController extends Controller
         $validasi = Validator::make($req->all(),[
             'nama'          => 'required|max:30',
             'harga'         => 'required|digits_between:1,10',
+            'berat'         => 'required|digits_between:1,10',
             'jumlah'        => 'required|max:10',
             'keterangan'    => 'required|max:1000'
         ]);
@@ -38,6 +39,7 @@ class UbahController extends Controller
                 $update = Barang::where('id', $id)->update([
                     'nama'          => $req->input('nama'),
                     'harga'         => $req->input('harga'),
+                    'berat'         => $req->input('berat'),
                     'jumlah'        => $req->input('jumlah'),
                     'keterangan'    => $req->input('keterangan')
                 ]);
@@ -73,6 +75,7 @@ class UbahController extends Controller
                 $update = Barang::where('id', $id)->update([
                     'nama'          => $req->input('nama'),
                     'harga'         => $req->input('harga'),
+                    'berat'         => $req->input('berat'),
                     'jumlah'        => $req->input('jumlah'),
                     'keterangan'    => $req->input('keterangan')
                 ]);

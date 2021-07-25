@@ -14,6 +14,7 @@ class TabelBarang extends Migration
             $table->string('penjual',30);
             $table->integer("harga");
             $table->integer('jumlah');
+            $table->integer('berat');
             $table->text('keterangan',10000);
         });
     }

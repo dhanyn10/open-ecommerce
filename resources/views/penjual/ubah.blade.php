@@ -20,18 +20,45 @@
                             </div>
                             <div class="form-group">
                                 <input type="file" class="form-control" id="gambar"/>
+                            </div>                        <div class="form-group row">
+                                <div class="col-md-4">
+                                    <label>nama barang</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" name="nama" class="form-control" maxlength="30" placeholder="namabarang" value="{{$item->nama}}" required/>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <input type="text" name="nama" class="form-control" maxlength="30" placeholder="namabarang" value="{{$item->nama}}" required/>
+                            <div class="form-group row">
+                                <div class="col-md-4">
+                                    <label>harga</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="number" name="harga" class="form-control" maxlength="10" placeholder="harga" value="{{$item->harga}}" required/>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <input type="text" name="harga" class="form-control" maxlength="10" placeholder="harga" value="{{$item->harga}}" required/>
+                            <div class="form-group row">
+                                <div class="col-md-4">
+                                    <label>berat</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="number" name="berat" class="form-control" maxlength="10" placeholder="berat" value="{{$item->berat}}" required/>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <input type="text" name="jumlah" class="form-control" maxlength="10" placeholder="jumlah" value="{{$item->jumlah}}" required/>
+                            <div class="form-group row">
+                                <div class="col-md-4">
+                                    <label>jumlah</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="number" name="jumlah" class="form-control" maxlength="10" placeholder="jumlah" value="{{$item->jumlah}}" required/>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <textarea name="keterangan" class="form-control" rows="6" maxlength="10000" placeholder="keterangan" required>{{$item->keterangan}}</textarea>
+                            <div class="form-group row">
+                                <div class="col-md-4">
+                                    <label>keterangan</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <textarea name="keterangan" class="form-control" rows="6" maxlength="10000" placeholder="keterangan" required>{{$item->keterangan}}</textarea>
+                                </div>
                             </div>
                             <button type="submit" class="btn btn-primary btn-sm">Ubah</button>
                         @endforeach

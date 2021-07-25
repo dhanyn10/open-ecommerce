@@ -32,6 +32,7 @@ class TambahController extends Controller
             'nama'          => 'required|max:30',
             'harga'         => 'required|numeric|digits_between:1,10',
             'jumlah'        => 'required|numeric|digits_between:1,10',
+            'berat'         => 'required|numeric|digits_between:1,10',
             'keterangan'    => 'required|max:10000'
         ]);
         if($validasi->fails())
@@ -45,6 +46,7 @@ class TambahController extends Controller
                 $nama       = $req->input('nama');
                 $harga      = $req->input('harga');
                 $jumlah     = $req->input('jumlah');
+                $berat      = $req->input('berat');
                 $keterangan = $req->input('keterangan');
 
                 /**
@@ -66,6 +68,7 @@ class TambahController extends Controller
                     'nama'      => $nama,
                     'harga'     => $harga,
                     'jumlah'    => $jumlah,
+                    'berat'     => $berat,
                     'penjual'   => session('email'),
                     'keterangan'=> $keterangan
                 ]);
