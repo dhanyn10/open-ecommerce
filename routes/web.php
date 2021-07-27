@@ -52,7 +52,7 @@ Route::group([
     Route::get('tambah/{id}', 'Barang\BeliController@troliPlus');
     Route::get('kurang/{id}', 'Barang\BeliController@troliMinus');
     Route::get('hapus/{id}', 'Barang\BeliController@troliDelete');
-    Route::post('{id}', 'Barang\BarangController@cekongkir');
+    Route::post('{id}', 'Barang\BarangController@index');
     Route::post('beli', 'Barang\BeliController@aturbelanja');
 });
 
