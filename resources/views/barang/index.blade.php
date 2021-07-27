@@ -73,6 +73,26 @@
                                             @endif
                                         </div>
                                     </div>
+                                    <div class="col-md-6">
+                                        <label>Berat</label>
+                                        <div class="form-group">
+                                            <input type="number" name="berat" id="" value="1" class="form-control form-control-sm" onchange="this.form.submit()">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Kurir(JNE)</label>
+                                        <div class="form-group">
+                                            @if (isset($harga) && $harga != null)
+                                                <select name="harga" id="" class="form-control form-control-sm">
+                                                @foreach ($harga as $item)
+                                                    <option value="{{$item->service}}">[{{$item->service}}] {{$item->cost[0]->value}} (Etd: {{$item->cost[0]->etd}})</option>
+                                                @endforeach
+                                                </select>
+                                            @else
+                                                
+                                            @endif
+                                        </div>
+                                    </div>
                                 </div>
                             </form>
                         </div>

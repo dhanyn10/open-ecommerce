@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Input;
 use App\Barang;
 use App\Pembelian;
 use App\Pengguna;
-use App\Http\Controllers\Barang\RajaOngkir;
+use App\Http\Controllers\RajaOngkir;
 
 class BarangController extends Controller
 {
@@ -43,6 +43,7 @@ class BarangController extends Controller
     {
         $arrayBarang = $this->sisaBarang($id);
         $barang = Barang::where('id', $id)->get();
+        $berat = $req->input('berat');
 
         //penjual
         $emailpenjual = $barang->pluck('penjual')->first();
@@ -59,7 +60,6 @@ class BarangController extends Controller
             $kotaUserPenjual = explode('-', $kotaUserPenjual);
         }
 
-
         //pembeli
         $userPembeli = Pengguna::where('email', session('email'))->get();
         $provUserPembeli = $userPembeli->pluck('provinsi')->first();
@@ -74,6 +74,20 @@ class BarangController extends Controller
             $kotaUserPembeli = explode('-', $kotaUserPembeli);
         }
         
+
+        $idkotaAsal = null;
+        if(count($kotaUserPenjual) > 0)
+        {
+            $idkotaAsal = $kotaUserPenjual[0];
+        }
+        $idkotaTujuan = null;
+        if(count($kotaUserPembeli) > 0)
+        {
+            $idkotaTujuan = $kotaUserPembeli[0];
+        }
+
+        $harga = RajaOngkir::costRajaOngkir($idkotaAsal, $idkotaTujuan, $berat*1000); //return array costs
+
         return view('barang.index', [
             'provUserPenjual'   => $provUserPenjual,
             'provUserPembeli'   => $provUserPembeli,
@@ -81,8 +95,8 @@ class BarangController extends Controller
             'kotaUserPembeli'   => $kotaUserPembeli,
             'data_barang'   => $arrayBarang['barang'],
             'penjual'       => $arrayBarang['namapenjual'],
-            'sisabarang'    => $arrayBarang['sisabarang']
+            'sisabarang'    => $arrayBarang['sisabarang'],
+            'harga'         => $harga
         ]);
-        //     $harga = RajaOngkir::costRajaOngkir($kotaAsal, $kotaTujuan, $berat*1000); //return array cots
     }
 }
