@@ -22,7 +22,9 @@ class Pengguna extends Model
     
     protected $nullable = [
         'telepon',
-        'alamat'
+        'alamat',
+        'kota',
+        'provinsi'
     ];
 
     protected $hidden = [
