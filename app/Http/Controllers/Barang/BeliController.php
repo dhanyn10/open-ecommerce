@@ -8,6 +8,8 @@ use Illuminate\Support\Str;
 
 use App\Barang;
 use App\Pembelian;
+use App\Pengguna;
+use App\Http\Controllers\RajaOngkir;
 class BeliController extends Controller
 {
     public function beli()
@@ -176,18 +178,31 @@ class BeliController extends Controller
     }
     public function bayar()
     {
-        $data_beli  = Pembelian::where('pembeli', session('email'))->get();
+        $pembeli  = Pembelian::where('pembeli', session('email'))->get();
+        $idBarang = $pembeli->pluck('idbarang')->first();
+        $barang = Barang::where('id', $idBarang)->get();
+        $penjualBarang = $barang->pluck('penjual')->first();
+        $kotaAsal = Pengguna::where('email', $penjualBarang)->get();
+        $idkotaAsal = $kotaAsal->pluck('kota')->first();
+        $kotaTujuan = Pengguna::where('email', session('email'))->get();
+        $idkotaTujuan = $kotaTujuan->pluck('kota')->first();
         $totalharga = 0;
         $nomor      = 0;
-        foreach($data_beli as $data)
+        $totalBerat = 0;
+        foreach($pembeli as $data)
         {
             $barang = Barang::where('id', $data->idbarang)->get();
             $harga  = $barang->pluck('harga')->first();
-            $totalharga += $data_beli[$nomor]['jumlah'] * $harga;
+            $berat  = $barang->pluck('berat')->first();
+            $totalharga += $pembeli[$nomor]['jumlah'] * $harga;
             $nomor++;
+            $totalBerat += $berat;
         }
+
+        $ongkir = RajaOngkir::costRajaOngkir($idkotaAsal, $idkotaTujuan, $totalBerat*1000); //return array costs
         return view('barang.bayar',[
-            'totalharga' => $totalharga
+            'totalharga' => $totalharga,
+            'ongkir' => $ongkir
         ]);
     }
 }

@@ -19,15 +19,30 @@
                         </tr>
                         <tr>
                             <td>total pembelian</td>
-                            <td style="direction:rtl">{{$totalharga}}</td>
+                            <td>
+                                <input style="direction:rtl" type="number" name="" id="totalharga" class="form-control form-control-sm" value="{{$totalharga}}" disabled>
+                            </td>
                         </tr>
                         <tr>
                             <td>biaya antar</td>
-                            <td style="direction:rtl">10000</td>
+                            <td style="direction:rtl">
+                                <div class="form-group">
+                                    @if (isset($ongkir) && $ongkir != null)
+                                        <select name="ongkir" id="ongkir" class="form-control form-control-sm" onchange="totalHarga()">
+                                        @foreach ($ongkir as $item)
+                                            <option value="{{$item->cost[0]->value}}">[{{$item->service}}] {{$item->cost[0]->value}} (Etd: {{$item->cost[0]->etd}})</option>
+                                        @endforeach
+                                        </select>
+                                    @else
+                                        
+                                    @endif
+                            </td>
                         </tr>
                         <tr>
-                            <td>total tagihan</td>
-                            <td style="direction:rtl">{{$totalharga + 10000}}</td>
+                            <td>total harga</td>
+                            <td>
+                                <input style="direction:rtl" type="number" id="total-tagihan" class="form-control form-control-sm" disabled/>
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -48,4 +63,20 @@
         </div>
     </div>
 </div>
+@section('js')
+    <script>
+        function totalHarga()
+        {
+            var harga = document.getElementById('totalharga').value
+            var ongkir = document.getElementById('ongkir').value
+            harga = parseInt(harga)
+            ongkir = parseInt(ongkir)
+            var tagihan = (harga + ongkir)
+            document.getElementById('total-tagihan').value = tagihan
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            totalHarga()
+        })
+    </script>
+@endsection
 @endsection
