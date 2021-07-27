@@ -76,7 +76,7 @@
                                     <div class="col-md-6">
                                         <label>Berat</label>
                                         <div class="form-group">
-                                            <input type="number" name="berat" id="" value="1" class="form-control form-control-sm" onchange="this.form.submit()">
+                                            <input type="number" name="berat" id="" value="{{$berat}}" class="form-control form-control-sm" disabled>
                                         </div>
                                     </div>
                                     <div class="col-md-6">

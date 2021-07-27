@@ -43,7 +43,7 @@ class BarangController extends Controller
     {
         $arrayBarang = $this->sisaBarang($id);
         $barang = Barang::where('id', $id)->get();
-        $berat = $req->input('berat');
+        $berat = $barang->pluck('berat')->first();
 
         //penjual
         $emailpenjual = $barang->pluck('penjual')->first();
@@ -96,6 +96,7 @@ class BarangController extends Controller
             'data_barang'   => $arrayBarang['barang'],
             'penjual'       => $arrayBarang['namapenjual'],
             'sisabarang'    => $arrayBarang['sisabarang'],
+            'berat'         => $berat,
             'harga'         => $harga
         ]);
     }
