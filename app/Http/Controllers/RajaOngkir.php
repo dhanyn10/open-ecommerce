@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Barang;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -37,7 +37,7 @@ class RajaOngkir extends Controller
         CURLOPT_POSTFIELDS => "origin=".$origin."&destination=".$destination."&weight=".$weight."&courier=jne",
         CURLOPT_HTTPHEADER => array(
             "content-type: application/x-www-form-urlencoded",
-            "key: ".env('RAJAONGKIR_API_KEY')
+            "key: ".config('app.RajaOngkir')
         ),
         ));
 

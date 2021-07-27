@@ -1,5 +1,5 @@
 @include('flash::message')
-<form method="post">
+<form method="post" id="ubahidentitas">
     {{csrf_field()}}
     <div class="form-group row">
         <div class="col-md-3">
@@ -46,7 +46,8 @@
                     <label for="">provinsi</label>
                 </div>
                 <div class="col-md-8">
-                    <select class="form-control form-control-sm" name="provinsi" onchange="this.form.submit()">
+                    <select class="form-control form-control-sm" name="provinsi" onchange="ubahidentitas()">
+                        <option value="" selected>Pilih</option>
                         @if (isset($dataProvinsi) && $dataProvinsi != null)
                             @foreach ($dataProvinsi as $item)
                                 @if ($provinsi == $item->province)
@@ -64,7 +65,8 @@
                     <label for="">kota/kabupaten</label>
                 </div>
                 <div class="col-md-8">
-                    <select class="form-control form-control-sm" name="kota" onchange="this.form.submit()">
+                    <select class="form-control form-control-sm" name="kota" onchange="ubahidentitas()">
+                        <option value="" selected>Pilih</option>
                         @if (isset($dataKota) && $dataKota != null)
                             @foreach ($dataKota as $item)
                             @if ($kotaAsal == $item->city_name)
@@ -91,4 +93,13 @@
     <div class="form-group">
         <button type="submit" class="btn btn-sm btn-primary">Kirim</button>
     </div>
+    <script>
+        function ubahidentitas() {
+            const telepon = document.getElementsByName('telepon')[0].value
+            if(telepon.length > 0)
+                document.getElementById('ubahidentitas').submit()
+            else
+                alert('nomor telepon belum diisi')
+        }
+    </script>
 </form>

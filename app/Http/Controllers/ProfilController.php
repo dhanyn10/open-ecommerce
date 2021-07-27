@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Pengguna;
-use App\Http\Controllers\Barang\RajaOngkir;
+use App\Http\Controllers\RajaOngkir;
 
 class ProfilController extends Controller
 {
@@ -18,12 +18,13 @@ class ProfilController extends Controller
         $dataKota       = null;
 
         //rajaongkir get data provinsi
-        $roDataProv     = RajaOngkir::getApi('https://api.rajaongkir.com/starter/province?key='.env('RAJAONGKIR_API_KEY'));
+        $roDataProv     = RajaOngkir::getApi('https://api.rajaongkir.com/starter/province?key='.config('app.RajaOngkir'));
         if($roDataProv != null)
             $dataProvinsi = $roDataProv->results;
 
-        $provinsi = null;
-        $provinsiId = null;
+        $provinsi =
+        $provinsiId =
+        $provinsiName = null;
         $provinsi = $pengguna->pluck('provinsi')->first();    
         $kota = $pengguna->pluck('kota')->first();    
 
@@ -33,7 +34,7 @@ class ProfilController extends Controller
             $provinsiId = $provinsi[0];
             $provinsiName = $provinsi[1];    
         }
-        $roKota = RajaOngkir::getApi('https://api.rajaongkir.com/starter/city?key='.env('RAJAONGKIR_API_KEY').'&province='.$provinsiId);
+        $roKota = RajaOngkir::getApi('https://api.rajaongkir.com/starter/city?key='.config('app.RajaOngkir').'&province='.$provinsiId);
         if($roKota != null)
         {
             $dataKota = $roKota->results;

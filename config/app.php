@@ -2,6 +2,7 @@
 
 return [
     'name'  => env('APP_NAME'),
+    'RajaOngkir'    => env('RAJAONGKIR_API_KEY'),
     'env'   => env('APP_ENV'),
     'debug' => env('APP_DEBUG'),
     'url'   => env('APP_URL'),
