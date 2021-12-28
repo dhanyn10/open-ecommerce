@@ -26,6 +26,7 @@ jobs:
         mkdir -p database
         touch database/database.sqlite
       env:
+        RAJAONGKIR_API_KEY: {{ env.RAJAONGKIR_API_KEY }}
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
     - name: DB Migration
