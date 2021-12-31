@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\Penjual;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use File;
 use Validator;
 
-use App\Barang;
+use App\Models\Barang;
+
 class TambahController extends Controller
 {
     public function index()

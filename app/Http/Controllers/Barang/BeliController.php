@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Barang;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-use App\Barang;
-use App\Pembelian;
-use App\Pengguna;
+use App\Models\Barang;
+use App\Models\Pembelian;
+use App\Models\Pengguna;
 use App\Http\Controllers\RajaOngkir;
+
 class BeliController extends Controller
-{
+{    
     public function beli()
     {
         $pembelian  = Pembelian::where('pembeli', session('email'))->get();

@@ -1,11 +1,14 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Pembelian extends Model
 {
+    use HasFactory;
+    
     protected $primaryKey   = 'id';
     protected $table        = 'pembelian';
     public $incrementing    = false;

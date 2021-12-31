@@ -6,11 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Validator;
 
-use App\Pengguna;
+use App\Models\Pengguna;
 
 class PenggunaController extends Controller
 {
-
     public function profil(Request $req)
     {
         $validasi = Validator::make($req->all(),[

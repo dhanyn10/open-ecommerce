@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
-use App\Pengguna;
+use App\Models\Pengguna;
 use App\Http\Controllers\RajaOngkir;
 
 class ProfilController extends Controller

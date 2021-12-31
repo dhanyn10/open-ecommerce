@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Barang;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
-use App\Barang;
-use App\Pembelian;
-use App\Pengguna;
+use App\Models\Barang;
+use App\Models\Pembelian;
+use App\Models\Pengguna;
 use App\Http\Controllers\RajaOngkir;
 
 class BarangController extends Controller
-{
+{    
     private function sisaBarang($id)
     {
         $barang         = Barang::where('id', $id)->get();

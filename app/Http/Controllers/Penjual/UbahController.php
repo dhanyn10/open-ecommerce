@@ -1,12 +1,13 @@
 <?php
+
 namespace App\Http\Controllers\Penjual;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Barang;
-
 use Validator;
 use File;
+
+use App\Models\Barang;
 
 class UbahController extends Controller
 {

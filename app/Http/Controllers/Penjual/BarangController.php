@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Penjual;
 
 use App\Http\Controllers\Controller;
 
-use App\Barang;
+use App\Models\Barang;
 
 class BarangController extends Controller
 {

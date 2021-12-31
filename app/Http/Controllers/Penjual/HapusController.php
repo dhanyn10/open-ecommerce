@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Penjual;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 use File;
 use Validator;
 
-use App\Barang;
-use App\Pembelian;
+use App\Models\Barang;
+use App\Models\Pembelian;
 
 class HapusController extends Controller
 {
