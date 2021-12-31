@@ -14,7 +14,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: 7.2
+        php-version: 7.3
     - name: Copy .env
       run: php -r "copy('.env.test', '.env');"
     - name: Install and update Dependencies
