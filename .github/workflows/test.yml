@@ -14,7 +14,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: 8.0
+        php-version: 7.2
     - name: Copy .env
       run: php -r "copy('.env.test', '.env');"
     - name: Install and update Dependencies
@@ -30,7 +30,7 @@ jobs:
         mkdir -p database
         touch database/database.sqlite
       env:
-        RAJAONGKIR_API_KEY: {{ env.RAJAONGKIR_API_KEY }}
+        RAJAONGKIR_API_KEY: ${{ env.RAJAONGKIR_API_KEY }}
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
     - name: DB Migration
