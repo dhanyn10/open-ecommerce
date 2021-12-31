@@ -76,14 +76,14 @@ class BarangController extends Controller
         
 
         $idkotaAsal = null;
-        if(count($kotaUserPenjual) > 0)
+        if($kotaUserPenjual != null)
         {
-            $idkotaAsal = $kotaUserPenjual[0];
+            $idkotaAsal = $kotaUserPenjual;
         }
         $idkotaTujuan = null;
-        if(count($kotaUserPembeli) > 0)
+        if($kotaUserPembeli != null)
         {
-            $idkotaTujuan = $kotaUserPembeli[0];
+            $idkotaTujuan = $kotaUserPembeli;
         }
 
         $harga = RajaOngkir::costRajaOngkir($idkotaAsal, $idkotaTujuan, $berat*1000); //return array costs
