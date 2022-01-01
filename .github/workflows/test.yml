@@ -37,5 +37,7 @@ jobs:
       run: php artisan migrate
     - name: DB Seed
       run: php artisan db:seed
+    - name: display secret
+      run: echo ${{ secrets.RAJAONGKIR_API_KEY }}
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       run: composer test
