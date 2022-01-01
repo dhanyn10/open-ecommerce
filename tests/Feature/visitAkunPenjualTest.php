@@ -30,6 +30,7 @@ class visitAkunPenjual extends TestCase
     {
         $this->loginPenjual();
         $response = $this->get('/penjual/profil');
+        sleep(10);
         $response->assertStatus(200);
         //sidebar
         $response->assertSeeText('Akun');
