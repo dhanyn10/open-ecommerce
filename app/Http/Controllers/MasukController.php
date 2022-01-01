@@ -90,7 +90,7 @@ class MasukController extends Controller
                         if(session("peran") == 2)
                         {
                             //mengalihkan halaman ke tambah barang penjual
-                            return redirect()->route('penjual-tambah');
+                            return redirect()->route('penjual-lihat');
                         }
                         else if(session('peran') == 3)
                         {

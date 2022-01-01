@@ -40,7 +40,7 @@ Route::group([
     'as'            => 'penjual-'
 ], function(){
     Route::get('/',function() {
-        return redirect()->route('penjual-tambah');
+        return redirect()->route('penjual-lihat');
     });
     Route::get('tambah', [PenjualTambah::class, 'index'])->name('tambah');
     Route::get('lihat', [PenjualBarang::class, 'index'])->name('lihat');
