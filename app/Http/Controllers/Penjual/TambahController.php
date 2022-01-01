@@ -11,15 +11,33 @@ use File;
 use Validator;
 
 use App\Models\Barang;
+use App\Models\Pengguna;
 
 class TambahController extends Controller
 {
     public function index()
     {
-        $barang = Barang::where('penjual', session('email'))->get();
-        return view('penjual.tambah',[
-            'data_barang'   => $barang
-        ]);
+        $pengguna = Pengguna::where('email', session('email'))->get();
+
+        /**
+         * unable to create new product record before user profile completed
+         * force account return to form to complete the data first
+         */
+        $telp       = $pengguna->pluck('telepon')->first();
+        $alamat     = $pengguna->pluck('alamat')->first();
+        $kota       = $pengguna->pluck('kota')->first();
+        $provinsi   = $pengguna->pluck('provinsi')->first();
+
+        if($telp == null || $alamat == null || $kota == null || $provinsi == null)
+        {
+            flash('data akun belum lengkap')->error()->important();
+            return redirect()->route('penjual-profil');
+        }
+        else
+        {
+            // $barang = Barang::where('penjual', session('email'))->get();
+            return view('penjual.tambah');
+        }
     }
     //hapus special character dan ubah spasi menjadi underscore
     protected function clean($string) {
