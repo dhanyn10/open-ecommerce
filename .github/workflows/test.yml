@@ -30,12 +30,14 @@ jobs:
         mkdir -p database
         touch database/database.sqlite
       env:
-        RAJAONGKIR_API_KEY: ${{ env.RAJAONGKIR_API_KEY }}
+        RAJAONGKIR_API_KEY: 26ff89c873624a22f744c0db43ccb6ed
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
     - name: DB Migration
       run: php artisan migrate
     - name: DB Seed
       run: php artisan db:seed
+    - name: display secret
+      run: echo ${{ secrets.RAJAONGKIR_API_KEY }}
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       run: composer test
