@@ -24,18 +24,20 @@ class visitAkunPenjual extends TestCase
             '_token' => csrf_token()
         ]);
         $response->assertRedirect(route('penjual-lihat'));
+        $response = $this->get('/penjual/lihat');
+        $response->assertStatus(200);
+        $response->assertSeeText('Lihat Barang');
     }
 
-    public function testVisitAkun()
-    {
-        $this->loginPenjual();
-        $response = $this->get('/penjual/profil');
-        sleep(10);
-        $response->assertStatus(200);
-        //sidebar
-        $response->assertSeeText('Akun');
-        //content
-        $response->assertSeeText('email');
-        $response->assertSeeText('nama');
-    }
+//     public function testVisitAkun()
+//     {
+//         $this->loginPenjual();
+//         $response = $this->get('/penjual/profil');
+//         $response->assertStatus(200);
+//         //sidebar
+//         $response->assertSeeText('Akun');
+//         //content
+//         $response->assertSeeText('email');
+//         $response->assertSeeText('nama');
+//     }
 }
