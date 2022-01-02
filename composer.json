@@ -35,7 +35,8 @@
     },
     "scripts": {
         "test": [
-            "./vendor/bin/phpunit"
+            "./vendor/bin/phpunit",
+            "@php artisan db:seed"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
