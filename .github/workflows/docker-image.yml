@@ -27,8 +27,8 @@ jobs:
     - name: install docker
       run: sudo apt install docker-ce
     - name: install docker-compose
-      run: curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+      run: mkdir -p ~/.docker/cli-plugins/ && curl -SL https://github.com/docker/compose/releases/download/v2.2.3/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
     - name: set docker-compose permission
-      run: sudo chmod +x /usr/local/bin/docker-compose
+      run: sudo chmod +x ~/.docker/cli-plugins/docker-compose
     - name: Run docker-compose
       run: docker-compose up
