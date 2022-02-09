@@ -31,4 +31,4 @@ jobs:
     - name: set docker-compose permission
       run: sudo chmod +x ~/.docker/cli-plugins/docker-compose
     - name: Run docker-compose
-      run: docker-compose up
+      run: docker-compose up -d
