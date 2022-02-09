@@ -1,0 +1,34 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: docker prerequisites
+      run: apt install apt-transport-https ca-certificates curl software-properties-common
+    - name: docker GPG key
+      run: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    - name: add Docker repo
+      run: add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+    - name: update basis data
+      run: apt update
+    - name: check apt docker
+      run: apt-cache policy docker-ce
+    - name: install docker
+      run: apt install docker-ce
+    - name: install docker-compose
+      run: curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+    - name: set docker-compose permission
+      run: chmod +x /usr/local/bin/docker-compose
+    - name: Run docker-compose
+      run: docker-compose up
