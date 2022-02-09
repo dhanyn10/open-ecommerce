@@ -29,6 +29,6 @@ jobs:
     - name: install docker-compose
       run: curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
     - name: set docker-compose permission
-      run: chmod +x /usr/local/bin/docker-compose
+      run: sudo chmod +x /usr/local/bin/docker-compose
     - name: Run docker-compose
       run: docker-compose up
