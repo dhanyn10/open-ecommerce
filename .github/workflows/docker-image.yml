@@ -32,3 +32,7 @@ jobs:
       run: sudo chmod +x ~/.docker/cli-plugins/docker-compose
     - name: Run docker-compose
       run: docker-compose up -d
+    - name: database migration with docker
+      run: docker exec oe-web php artisan migrate
+    - name: database seed with docker
+      run: docker exec oe-web php artisan db:seed
