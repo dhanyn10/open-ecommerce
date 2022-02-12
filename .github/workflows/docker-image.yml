@@ -9,9 +9,7 @@ on:
 jobs:
 
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: docker prerequisites
@@ -32,3 +30,11 @@ jobs:
       run: sudo chmod +x ~/.docker/cli-plugins/docker-compose
     - name: Run docker-compose
       run: docker-compose up -d
+    - name: Sleep for 10s
+      uses: juliangruber/sleep-action@v1
+      with:
+        time: 10s
+    - name: database migration with docker
+      run: docker exec oe-web php artisan migrate
+    - name: database seed with docker
+      run: docker exec oe-web php artisan db:seed
