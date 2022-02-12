@@ -30,25 +30,6 @@ jobs:
       run: sudo chmod +x ~/.docker/cli-plugins/docker-compose
     - name: Run docker-compose
       run: docker-compose up -d
-  
-  fill-db:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-    # Installing Docker
-    - name: docker prerequisites
-      run: sudo apt install apt-transport-https ca-certificates curl software-properties-common
-    - name: docker GPG key
-      run: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    - name: add Docker repo
-      run: sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
-    - name: update basis data
-      run: sudo apt update
-    - name: check apt docker
-      run: apt-cache policy docker-ce
-    - name: install docker
-      run: sudo apt install docker-ce
-    # Database Migration
     - name: database migration with docker
       run: docker exec oe-web php artisan migrate
     - name: database seed with docker
