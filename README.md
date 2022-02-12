@@ -10,9 +10,9 @@ open source version for my e-commerce sites. This project currently in slow deve
 - you can use optional features to generate users data instantly using command `php artisan db:seed`.
 
 #### Installation with Docker
-- previously, make sure you already installed docker and docker-compose on your machine
+- previously, make sure you already installed docker and docker-compose on your operating system
 - run command `docker-compose up -d` to run and install the web apps instantly
-- wait for >= 10s and run command `docker exec oe-web php artisan migrate` to run the migration function
+- wait for 10s or more and run command `docker exec oe-web php artisan migrate` to run the migration function
 - run command `docker exec oe-web php artisan db:seed` to run database seeding function
 
 #### Enjoy
