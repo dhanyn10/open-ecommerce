@@ -21,7 +21,6 @@ COPY . /src
 WORKDIR /src
 
 RUN composer update
+
+#start docker service
 CMD php artisan serve --host 0.0.0.0
-# run the php server service
-# move this command to -> docker-compose.yml
-# CMD php -S 0.0.0.0:8080 public/index.php

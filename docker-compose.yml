@@ -2,6 +2,7 @@ version: '3.8'
 services:
 
   web:
+    container_name: oe-web
     build:
       context: .
       dockerfile: Dockerfile
@@ -12,14 +13,18 @@ services:
     environment:
       APP_NAME: 'Open Ecommerce'
       APP_KEY: base64:dUU/tjDaLvZv2ChevcXI87IBIoIK9DA4o/UGt5aAa3E=
+
   db:
+    container_name: oe-db
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: open_ecommerce
   
   adminer:
+    container_name: oe-adminer
     image: adminer
     restart: always
     ports:
