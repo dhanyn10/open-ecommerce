@@ -11,9 +11,9 @@ open source version for my e-commerce sites. This project currently in slow deve
 
 #### Installation with Docker
 - previously, make sure you already installed docker and docker-compose on your operating system
-- run command `docker-compose up -d` to run and install the web apps instantly
-- wait for 10s or more and run command `docker exec oe-web php artisan migrate` to run the migration function
-- run command `docker exec oe-web php artisan db:seed` to run database seeding function
+- install and run this web apps with command `docker-compose up -d`
+- wait for 10s or more and run migration function command `docker exec oe-web php artisan migrate`
+- run database seeding function with command `docker exec oe-web php artisan db:seed`
 
 #### Enjoy
 Here's the data, for:  
