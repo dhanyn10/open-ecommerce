@@ -12,22 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: docker prerequisites
-      run: sudo apt install apt-transport-https ca-certificates curl software-properties-common
-    - name: docker GPG key
-      run: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    - name: add Docker repo
-      run: sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
-    - name: update basis data
-      run: sudo apt update
-    - name: check apt docker
-      run: apt-cache policy docker-ce
-    - name: install docker
-      run: sudo apt install docker-ce
-    - name: install docker-compose
-      run: mkdir -p ~/.docker/cli-plugins/ && curl -SL https://github.com/docker/compose/releases/download/v2.2.3/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
-    - name: set docker-compose permission
-      run: sudo chmod +x ~/.docker/cli-plugins/docker-compose
     - name: Run docker-compose
       run: docker-compose up -d
     - name: Sleep for 10s
