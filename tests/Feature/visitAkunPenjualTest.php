@@ -29,15 +29,15 @@ class visitAkunPenjual extends TestCase
         $response->assertSeeText('Lihat Barang');
     }
 
-//     public function testVisitAkun()
-//     {
-//         $this->loginPenjual();
-//         $response = $this->get('/penjual/profil');
-//         $response->assertStatus(200);
-//         //sidebar
-//         $response->assertSeeText('Akun');
-//         //content
-//         $response->assertSeeText('email');
-//         $response->assertSeeText('nama');
-//     }
+    public function testVisitAkun()
+    {
+        $this->loginPenjual();
+        // $response = $this->get('/penjual/profil');
+        // $response->assertStatus(200);
+        // //sidebar
+        // $response->assertSeeText('Akun');
+        // //content
+        // $response->assertSeeText('email');
+        // $response->assertSeeText('nama');
+    }
 }
