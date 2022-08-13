@@ -35,6 +35,4 @@ jobs:
     - name: DB Seed
       run: php artisan db:seed
     - name: Execute tests (Unit and Feature tests) via PHPUnit
-      env:
-        RAJAONGKIR_API_KEY: 26ff89c873624a22f744c0db43ccb6ed
       run: composer test
