@@ -12,7 +12,7 @@ class visitAkunPembeliTest extends TestCase
 {
     use RefreshDatabase;
 
-    private function loginPembeli()
+    public function testLoginPembeli()
     {
         Session::start();
         $this->seed(PembeliSeeder::class);
@@ -29,7 +29,7 @@ class visitAkunPembeliTest extends TestCase
     
     public function testVisitAkun()
     {
-        $this->loginPembeli();
+        $this->testLoginPembeli();
         $response = $this->get('/pembeli/profil');
         $response->assertStatus(200);
         //sidebar

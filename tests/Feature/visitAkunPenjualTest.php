@@ -13,7 +13,7 @@ class visitAkunPenjual extends TestCase
 
     use RefreshDatabase;
 
-    private function loginPenjual()
+    public function testLoginPenjual()
     {
         Session::start();
         $this->seed(PenjualSeeder::class);
@@ -30,7 +30,7 @@ class visitAkunPenjual extends TestCase
 
     public function testVisitAkun()
     {
-        $this->loginPenjual();
+        $this->testLoginPenjual();
         $response = $this->get('/penjual/profil');
         $response->assertStatus(200);
         //sidebar
