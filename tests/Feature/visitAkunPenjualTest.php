@@ -32,12 +32,12 @@ class visitAkunPenjual extends TestCase
     public function testVisitAkun()
     {
         $this->loginPenjual();
-        // $response = $this->get('/penjual/profil');
-        // $response->assertStatus(200);
-        // //sidebar
-        // $response->assertSeeText('Akun');
-        // //content
-        // $response->assertSeeText('email');
-        // $response->assertSeeText('nama');
+        $response = $this->get('/penjual/profil');
+        $response->assertStatus(200);
+        //sidebar
+        $response->assertSeeText('Akun');
+        //content
+        $response->assertSeeText('email');
+        $response->assertSeeText('nama');
     }
 }
