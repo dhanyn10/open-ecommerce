@@ -34,6 +34,8 @@ jobs:
         RAJAONGKIR_API_KEY: 26ff89c873624a22f744c0db43ccb6ed
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
+    - name: Rajaongkir API Key
+      run: echo "RAJAONGKIR_API_KEY=26ff89c873624a22f744c0db43ccb6ed" >> $GITHUB_ENV
     - name: DB Migration
       run: php artisan migrate
     - name: DB Seed
