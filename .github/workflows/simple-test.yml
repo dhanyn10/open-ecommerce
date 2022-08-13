@@ -30,6 +30,12 @@ jobs:
         touch database/database.sqlite
     - name: DB Migration
       env:
+        APP_NAME: 'Open Ecommerce'
+        APP_ENV: local
+        APP_KEY: base64:dUU/tjDaLvZv2ChevcXI87IBIoIK9DA4o/UGt5aAa3E=
+        APP_DEBUG: true
+        APP_URL: http://127.0.0.1:8000/
+        LOG_CHANNEL: stack
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: php artisan migrate
@@ -37,11 +43,5 @@ jobs:
       run: php artisan db:seed
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
-        APP_NAME: 'Open Ecommerce'
-        APP_ENV: local
-        APP_KEY: base64:dUU/tjDaLvZv2ChevcXI87IBIoIK9DA4o/UGt5aAa3E=
-        APP_DEBUG: true
-        APP_URL: http://127.0.0.1:8000/
-        LOG_CHANNEL: stack
         RAJAONGKIR_API_KEY: ${{ secrets.RAJAONGKIR_API_KEY }}
       run: composer test
