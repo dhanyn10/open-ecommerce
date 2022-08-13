@@ -8,6 +8,7 @@ on:
 
 jobs:
   laravel-tests:
+    environment: open_ecommerce
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
