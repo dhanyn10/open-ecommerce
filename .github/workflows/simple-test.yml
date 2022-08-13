@@ -8,6 +8,7 @@ on:
 
 jobs:
   laravel-tests:
+    environment: open_ecommerce
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
@@ -35,9 +36,6 @@ jobs:
         DB_DATABASE: database/database.sqlite
     - name: DB Migration
       run: php artisan migrate
-    - name: check key
-      run: |
-      echo KEY: '${RAJAONGKIR_API_KEY}'
     - name: DB Seed
       run: php artisan db:seed
     - name: Execute tests (Unit and Feature tests) via PHPUnit
