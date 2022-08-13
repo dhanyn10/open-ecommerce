@@ -1,4 +1,6 @@
 # open-ecommerce
+[![Docker Image CI](https://github.com/dhanyn10/open-ecommerce/actions/workflows/docker-image.yml/badge.svg)](https://github.com/dhanyn10/open-ecommerce/actions/workflows/docker-image.yml)
+[![Unit and Feature tests via PHPUnit](https://github.com/dhanyn10/open-ecommerce/actions/workflows/simple-test.yml/badge.svg)](https://github.com/dhanyn10/open-ecommerce/actions/workflows/simple-test.yml)  
 open source version for my e-commerce sites. This project currently in slow development
 
 ### Guides
