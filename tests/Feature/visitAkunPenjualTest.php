@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Session;
 use Tests\TestCase;
 
@@ -38,6 +37,5 @@ class visitAkunPenjual extends TestCase
         $response->assertSeeText('Akun');
         //content
         $response->assertSeeText('email');
-        $response->assertSeeText('nama');
     }
 }
