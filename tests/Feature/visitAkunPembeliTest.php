@@ -6,35 +6,34 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Session;
 use Tests\TestCase;
 
-use PenjualSeeder;
+use PembeliSeeder;
 
-class visitAkunPenjual extends TestCase
+class visitAkunPembeliTest extends TestCase
 {
-
     use RefreshDatabase;
 
-    public function testLoginPenjual()
+    public function testLoginPembeli()
     {
         Session::start();
-        $this->seed(PenjualSeeder::class);
+        $this->seed(PembeliSeeder::class);
         $response = $this->call('POST', '/masuk', [
-            'email' => 'penjual@open_ecommerce',
-            'sandi' => 'penjual',
+            'email' => 'pembeli@open_ecommerce',
+            'sandi' => 'pembeli',
             '_token' => csrf_token()
         ]);
-        $response->assertRedirect(route('penjual-lihat'));
-        $response = $this->get('/penjual/lihat');
+        $response->assertRedirect(route('beranda'));
+        $response = $this->get('/');
         $response->assertStatus(200);
-        $response->assertSeeText('Lihat Barang');
+        $response->assertSeeText('Troli');
     }
-
+    
     public function testVisitAkun()
     {
-        $this->testLoginPenjual();
-        $response = $this->get('/penjual/profil');
+        $this->testLoginPembeli();
+        $response = $this->get('/pembeli/profil');
         $response->assertStatus(200);
         //sidebar
-        $response->assertSeeText('Akun');
+        $response->assertSeeText('Profil');
         //content
         $response->assertSeeText('email');
     }
