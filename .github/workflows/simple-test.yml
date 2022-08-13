@@ -19,7 +19,7 @@ jobs:
     - name: Copy .env
       run: |
         php -r "copy('.env.test', '.env');"
-        echo RAJAONGKIR_API_KEY=26ff89c873624a22f744c0db43ccb6ed >> .env
+        echo RAJAONGKIR_API_KEY=${{ secrets.RAJAONGKIR_API_KEY }} >> .env
         cat .env
     - name: Install and update Dependencies
       run: composer update -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
