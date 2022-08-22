@@ -1,0 +1,40 @@
+name: Unit and Feature tests via PHPUnit
+
+on:
+  pull_request:
+    branches: master
+
+jobs:
+  laravel-tests:
+    if: github.actor == 'dependabot[bot]'
+    environment: open_ecommerce
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 7.3
+    - name: Copy .env
+      run: |
+        php -r "copy('.env.test', '.env');"
+        echo RAJAONGKIR_API_KEY=${{ secrets.RAJAONGKIR_API_KEY }} >> .env
+        cat .env
+    - name: Install and update Dependencies
+      run: composer update -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
+    - name: Generate key
+      run: php artisan key:generate
+    - name: Clear cache
+      run: php artisan config:cache
+    - name: Directory Permissions
+      run: chmod -R 777 storage bootstrap/cache
+    - name: Create Database
+      run: |
+        mkdir -p database
+        touch database/database.sqlite
+    - name: DB Migration
+      run: php artisan migrate
+    - name: DB Seed
+      run: php artisan db:seed
+    - name: Execute tests (Unit and Feature tests) via PHPUnit
+      run: composer test
