@@ -1,13 +1,12 @@
-name: Unit and Feature tests via PHPUnit by Human
+name: Unit and Feature tests via PHPUnit by Dependabot
 
 on:
-  push:
-    branches: master
   pull_request:
     branches: master
 
 jobs:
   laravel-tests:
+    if: github.actor == 'dependabot[bot]'
     environment: open_ecommerce
     runs-on: ubuntu-latest
     steps:
