@@ -1,4 +1,4 @@
-name: Unit and Feature tests via PHPUnit
+name: Unit and Feature tests via PHPUnit by Dependabot
 
 on:
   pull_request:
