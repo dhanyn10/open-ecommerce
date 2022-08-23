@@ -4,11 +4,32 @@
         <div class="row">
             @include('admin.sidebar')
             <div class="col-md-6">
-                <div class="card border-primary">
+                <div class="card border-primary mb-3">
                     <div class="card-body">
                         <div class="chart-wrapper">
                             <canvas id="myChart"></canvas>
                         </div>
+                    </div>
+                </div>
+                <div class="card border-primary mb-3">
+                    <div class="card-header">Pengguna</div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Email</th>
+                                <th>Nama</th>
+                                <th>Peran</th>
+                                <th>Konfirmasi</th>
+                            </tr>
+                            @foreach ($pengguna as $item)
+                                <tr>
+                                    <td>{{$item->email}}</td>
+                                    <td>{{$item->nama}}</td>
+                                    <td>{{$item->peran}}</td>
+                                    <td>{{$item->konfirmasi}}</td>
+                                </tr>
+                            @endforeach
+                        </table>
                     </div>
                 </div>
             </div>
