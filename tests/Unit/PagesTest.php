@@ -1,22 +1,23 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
+use BarangSeeder;
+
 class PagesTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function testBeranda()
+    use RefreshDatabase;
+
+    public function testHome()
     {
+        $this->seed(BarangSeeder::class);
         $response = $this->get('/');
         $response->assertStatus(200);
+        $response->assertSeeText('404');
     }
     
     public function testMasuk()

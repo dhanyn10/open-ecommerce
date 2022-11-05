@@ -17,6 +17,7 @@
         "fakerphp/faker": "^1.9.1",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^5.10",
+        "pelmered/fake-car": "^1.7",
         "phpunit/phpunit": "^9.5.10"
     },
     "autoload": {
