@@ -16,7 +16,7 @@ class BarangSeeder extends Seeder
         for($x = 0; $x < 10; $x++) {
             Barang::create([
                 'id'    => date("ymdhis").Str::random(7).'-404',
-                'nama'  => $faker->vehicle,
+                'nama'  => $faker->vehicle.'-404',
                 'harga' => rand(200000000, 500000000),
                 'berat' => rand(5,10),
                 'jumlah'    => rand(1,50),
