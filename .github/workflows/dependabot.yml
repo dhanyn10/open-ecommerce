@@ -6,6 +6,15 @@ on:
 
 jobs:
   laravel-tests:
+    services:
+      mariadb:
+        image: mariadb:10.4
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: false
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: open_ecommerce
+        ports:
+          - 3306:3306
     if: github.actor == 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
@@ -27,10 +36,6 @@ jobs:
       run: php artisan config:cache
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
-    - name: Create Database
-      run: |
-        mkdir -p database
-        touch database/database.sqlite
     - name: DB Migration
       run: php artisan migrate
     - name: DB Seed

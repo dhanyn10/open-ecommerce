@@ -10,8 +10,8 @@ class Barang extends Migration
     {
         Schema::create('barang', function(Blueprint $table){
             $table->string('id', 50)->primary();
-            $table->string('nama', 30);
-            $table->string('penjual',30);
+            $table->string('nama');
+            $table->string('penjual');
             $table->integer("harga");
             $table->integer('jumlah');
             $table->integer('berat');

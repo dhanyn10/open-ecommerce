@@ -10,7 +10,7 @@ class Pengguna extends Migration
     {
         Schema::create('pengguna', function(Blueprint $table){
             $table->string("email", 30)->primary();
-            $table->string("nama", 20);
+            $table->string("nama");
             $table->string('telepon', 12)->nullable();
             $table->string('alamat',255)->nullable();
             $table->string('kota', 255)->nullable();
