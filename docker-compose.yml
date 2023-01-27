@@ -4,7 +4,7 @@ services:
   web:
     container_name: oe-web
     build:
-      context: .
+      context: ./
       dockerfile: Dockerfile
     depends_on:
      - db
@@ -13,7 +13,9 @@ services:
     environment:
       APP_NAME: 'Open Ecommerce'
       APP_KEY: base64:dUU/tjDaLvZv2ChevcXI87IBIoIK9DA4o/UGt5aAa3E=
-
+    working_dir: /app
+    volumes:
+      - ./:/app
   db:
     container_name: oe-db
     image: mysql
