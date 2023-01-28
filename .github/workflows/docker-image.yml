@@ -17,7 +17,7 @@ jobs:
     - name: Sleep for 20s
       uses: juliangruber/sleep-action@v1
       with:
-        time: 10s
+        time: 20s
     - name: database migration with docker
       run: docker exec oe-web php artisan migrate
     - name: database seed with docker
