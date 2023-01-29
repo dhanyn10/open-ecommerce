@@ -14,10 +14,12 @@ jobs:
     - uses: actions/checkout@v2
     - name: Run docker-compose
       run: docker-compose up -d
-    - name: Sleep for 20s
+    - name: Sleep for 10s
       uses: juliangruber/sleep-action@v1
       with:
-        time: 20s
+        time: 10s
+    - name: debug
+      run: docker-compose ps
     - name: database migration with docker
       run: docker exec oe-web php artisan migrate
     - name: database seed with docker
