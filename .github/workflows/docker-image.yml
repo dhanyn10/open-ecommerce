@@ -20,7 +20,7 @@ jobs:
         time: 10s
     - name: debug & log
       run: |
-        chmod 777 ./
+        chmod -R 777 ./
         docker-compose ps
         docker-compose logs
     - name: database migration with docker
