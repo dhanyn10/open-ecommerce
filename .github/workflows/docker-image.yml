@@ -20,8 +20,8 @@ jobs:
         time: 10s
     - name: debug & log
       run: |
-      docker-compose ps
-      docker-compose logs
+        docker-compose ps
+        docker-compose logs
     - name: database migration with docker
       run: docker exec oe-web php artisan migrate
     - name: database seed with docker
