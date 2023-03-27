@@ -7,6 +7,7 @@
     "require": {
         "php": "^8.0.2",
         "guzzlehttp/guzzle": "^7.2",
+        "laracasts/flash": "^3.2",
         "laravel/framework": "^9.19",
         "laravel/tinker": "^2.7"
     },
@@ -16,6 +17,7 @@
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
+        "pelmered/fake-car": "^1.7",
         "phpunit/phpunit": "^9.5.10",
         "spatie/laravel-ignition": "^1.0"
     },
