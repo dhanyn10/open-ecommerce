@@ -22,8 +22,8 @@ jobs:
         time: 10s
     - name: update config
       run: |
-      docker exec oe-web php artisan config:clear
-      docker exec oe-web php artisan config:cache
+        docker exec oe-web php artisan config:clear
+        docker exec oe-web php artisan config:cache
     - name: database migration
       run: docker exec oe-web php artisan migrate
     - name: database seed
