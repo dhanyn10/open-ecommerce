@@ -16,6 +16,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: setup RAJAONGKIR API KEY
       run: |
+        echo $RAJAONGKIR_KEY
         sed -i "s/RAJAONGKIR_API_KEY=.*/RAJAONGKIR_API_KEY=$RAJAONGKIR_KEY/g" .env.docker
         cat .env.docker
     - name: Run docker-compose
