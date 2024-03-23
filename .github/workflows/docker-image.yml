@@ -20,9 +20,13 @@ jobs:
       uses: juliangruber/sleep-action@v1
       with:
         time: 10s
-    - name: database migration with docker
+    - name: update config
+      run: |
+      docker exec oe-web php artisan config:clear
+      docker exec oe-web php artisan config:cache
+    - name: database migration
       run: docker exec oe-web php artisan migrate
-    - name: database seed with docker
+    - name: database seed
       run: docker exec oe-web php artisan db:seed
     - name: run test
       run: docker exec oe-web php artisan test
