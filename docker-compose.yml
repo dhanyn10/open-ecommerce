@@ -10,9 +10,6 @@ services:
      - db
     ports:
      - 8000:8000
-    environment:
-      APP_NAME: 'Open Ecommerce'
-      APP_KEY: base64:dUU/tjDaLvZv2ChevcXI87IBIoIK9DA4o/UGt5aAa3E=
 
   db:
     container_name: oe-db
