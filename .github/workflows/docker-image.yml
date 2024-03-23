@@ -9,15 +9,13 @@ on:
 jobs:
 
   build:
-    env:
-      RAJAONGKIR_KEY: ${{ secrets.RAJAONGKIR_API_KEY }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: setup RAJAONGKIR API KEY
       run: |
-        echo $RAJAONGKIR_KEY
-        sed -i "s/RAJAONGKIR_API_KEY=.*/RAJAONGKIR_API_KEY=$RAJAONGKIR_KEY/g" .env.docker
+        sed -i "s/RAJAONGKIR_API_KEY=.*/RAJAONGKIR_API_KEY=/g" .env.docker
+        echo RAJAONGKIR_API_KEY=${{ secrets.RAJAONGKIR_API_KEY }} >> .env
         cat .env.docker
     - name: Run docker-compose
       run: docker-compose up -d
