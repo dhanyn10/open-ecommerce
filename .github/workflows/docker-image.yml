@@ -19,7 +19,7 @@ jobs:
       with:
         time: 10s
     - name: setup RAJAONGKIR API KEY
-      run: docker exec oe-web sed -i 's/RAJAONGKIR_API_KEY=.*/RAJAONGKIR_API_KEY=${{ secrets.RAJAONGKIR_API_KEY }}/g' .env
+      run: docker exec oe-web sed -i "s/RAJAONGKIR_API_KEY=.*/RAJAONGKIR_API_KEY=${{ secrets.RAJAONGKIR_API_KEY }}/g" .env
     - name: database migration with docker
       run: docker exec oe-web php artisan migrate
     - name: database seed with docker
