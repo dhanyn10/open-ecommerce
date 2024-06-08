@@ -14,7 +14,11 @@ jobs:
     - uses: actions/checkout@v2
     - name: change env
       run: |
-        sed -i "s/RAJAONGKIR_API_KEY=.*/RAJAONGKIR_API_KEY=${{ secrets.RAJAONGKIR_API_KEY }}/g" .env.docker
+        php -r "copy('.env.docker', '.env');"
+        sed -i "s/RAJAONGKIR_API_KEY=.*/RAJAONGKIR_API_KEY=${{ secrets.RAJAONGKIR_API_KEY }}/g" .env
+        cat .env
+        rm .env.docker
+        cp .env .env.docker
         cat .env.docker
     - name: Run docker-compose
       run: docker-compose up -d
