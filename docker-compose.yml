@@ -15,13 +15,12 @@ services:
       APP_KEY: base64:dUU/tjDaLvZv2ChevcXI87IBIoIK9DA4o/UGt5aAa3E=
 
   db:
+    image: mariadb:10.11-jammy
     container_name: oe-db
-    image: mysql
-    command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: open_ecommerce
+      MARIADB_ROOT_PASSWORD: password
+      MARIADB_DATABASE: open_ecommerce
   
   adminer:
     container_name: oe-adminer
