@@ -15,12 +15,15 @@
 		<hr/>
 		<div class="row">
 			@if(isset($data_barang))
+			@php
+				$number = 1;	
+			@endphp
 				@foreach($data_barang as $barang)
 				<div class="col-md-3">
 					<div class="card w-100">
 						<div class="fotobarangdagang">
 							{{-- https://stackoverflow.com/questions/92720/jquery-javascript-to-replace-broken-images --}}
-							<img class="card-img-top" src="{{URL::asset('img/barangdagang/'.$barang->id.'.png')}} "onError="this.onerror=null;this.src='https://loremflickr.com/cache/resized/2226_2201396519_d44b6a37fd_n_320_240_nofilter.jpg'">
+							<img class="card-img-top" src="{{URL::asset('img/barangdagang/'.$barang->id.'.png')}} "onError="this.onerror=null;this.src='https://picsum.photos/200/300?random={{$number}}'">
 						</div>
 						<div class="card-body">
 							<p><a class="h5 card-title stretched-link beranda-link text-secondary" href="{{route('barang', $barang->id)}}">{{$barang->nama}}</a></p>
@@ -31,6 +34,9 @@
 						@endif
 					  </div>
 				</div>
+				@php
+					$number++;
+				@endphp
 				@endforeach
 			@endif
 		</div>

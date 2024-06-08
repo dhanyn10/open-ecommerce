@@ -1,3 +1,4 @@
+.env
 * text=auto
 
 *.blade.php diff=html

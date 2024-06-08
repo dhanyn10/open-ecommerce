@@ -29,7 +29,7 @@ jobs:
     - name: Copy .env
       run: |
         php -r "copy('.env.test', '.env');"
-        sed -i 's/RAJAONGKIR_API_KEY=.*/RAJAONGKIR_API_KEY=${{ secrets.RAJAONGKIR_API_KEY }}/g' .env
+        sed -i "s/RAJAONGKIR_API_KEY=.*/RAJAONGKIR_API_KEY=${{ secrets.RAJAONGKIR_API_KEY }}/g" .env
         cat .env
     - name: Install and update Dependencies
       run: composer update -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
