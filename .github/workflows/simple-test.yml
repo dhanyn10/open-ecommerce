@@ -25,7 +25,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: 8.0.2
+        php-version: 8.2
     - name: Copy .env
       run: |
         php -r "copy('.env.test', '.env');"
@@ -44,4 +44,4 @@ jobs:
     - name: DB Seed
       run: php artisan db:seed
     - name: Execute tests (Unit and Feature tests) via PHPUnit
-      run: composer test
+      run: php artisan test

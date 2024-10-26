@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 use PembeliSeeder;
 
-class visitAkunPembeliTest extends TestCase
+class PembeliTest extends TestCase
 {
     use RefreshDatabase;
 

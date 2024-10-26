@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 use AdminSeeder;
 
-class visitAkunAdminTest extends TestCase
+class AdminTest extends TestCase
 {
     use RefreshDatabase;
 
