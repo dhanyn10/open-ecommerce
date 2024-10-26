@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 use PenjualSeeder;
 
-class visitAkunPenjual extends TestCase
+class PenjualTest extends TestCase
 {
 
     use RefreshDatabase;

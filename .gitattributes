@@ -1,5 +1,4 @@
-.env
-* text=auto
+* text=auto eol=lf
 
 *.blade.php diff=html
 *.css diff=css
