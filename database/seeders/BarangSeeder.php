@@ -12,7 +12,7 @@ class BarangSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        $faker->addProvider(new \Faker\Provider\Fakecar($faker));
+        $faker->addProvider(new \Faker\Provider\FakeCar($faker));
         for($x = 0; $x < 10; $x++) {
             Barang::create([
                 'id'    => date("ymdhis").Str::random(7).'-404',
