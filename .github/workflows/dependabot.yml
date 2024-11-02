@@ -42,4 +42,4 @@ jobs:
     - name: DB Seed
       run: php artisan db:seed
     - name: Execute tests (Unit and Feature tests) via PHPUnit
-      run: composer test
+      run: php artisan test
