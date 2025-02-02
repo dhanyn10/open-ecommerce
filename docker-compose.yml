@@ -1,4 +1,3 @@
-version: '3.8'
 services:
 
   web:
@@ -13,6 +12,8 @@ services:
     environment:
       APP_NAME: 'Open Ecommerce'
       APP_KEY: base64:dUU/tjDaLvZv2ChevcXI87IBIoIK9DA4o/UGt5aAa3E=
+    networks:
+      - shared_network
 
   db:
     image: mariadb:10.11-jammy
@@ -21,6 +22,8 @@ services:
     environment:
       MARIADB_ROOT_PASSWORD: password
       MARIADB_DATABASE: open_ecommerce
+    networks:
+      - shared_network
   
   adminer:
     container_name: oe-adminer
@@ -28,3 +31,10 @@ services:
     restart: always
     ports:
       - 8080:8080
+    networks:
+      - shared_network
+
+
+networks:
+  shared_network:
+    external: true
