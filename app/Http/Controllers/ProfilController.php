@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Models\Pengguna;
 use App\Http\Controllers\RajaOngkir;
 
@@ -12,55 +11,43 @@ class ProfilController extends Controller
     public function index()
     {
         $pengguna       = Pengguna::where('email', session('email'))->get();
-        $dataProvinsi   = null;
-        $kota           = null;
+        $dataProvinsi   = RajaOngkir::getProvinces();
         $dataKota       = null;
+        $provinsiId     = null;
+        $provinsiName   = null;
+        $kotaAsal       = null;
 
-        //rajaongkir get data provinsi
-        $roDataProv     = RajaOngkir::getApi('https://api.rajaongkir.com/starter/province?key='.config('app.RajaOngkir'));
-        if($roDataProv != null)
-            $dataProvinsi = $roDataProv->results;
+        $userProvinsi = $pengguna->pluck('provinsi')->first();
+        $userKota     = $pengguna->pluck('kota')->first();
 
-        $provinsi =
-        $provinsiId =
-        $provinsiName = null;
-        $provinsi = $pengguna->pluck('provinsi')->first();    
-        $kota = $pengguna->pluck('kota')->first();    
-
-        if($provinsi != null)
-        {
-            $provinsi = explode("-", $provinsi);
-            $provinsiId = $provinsi[0];
-            $provinsiName = $provinsi[1];    
-        }
-        $roKota = RajaOngkir::getApi('https://api.rajaongkir.com/starter/city?key='.config('app.RajaOngkir').'&province='.$provinsiId);
-        if($roKota != null)
-        {
-            $dataKota = $roKota->results;
+        if ($userProvinsi) {
+            $provinsiParts = explode('-', $userProvinsi, 2);
+            $provinsiId = $provinsiParts[0];
+            $provinsiName = $provinsiParts[1] ?? null;
         }
 
-        if($kota != null)
-        {
-            $kota = explode('-', $kota);
-            $kota = $kota[1];
+        if ($provinsiId) {
+            $dataKota = RajaOngkir::getCities($provinsiId);
         }
+
+        if ($userKota) {
+            $kotaParts = explode('-', $userKota, 2);
+            $kotaAsal = $kotaParts[1] ?? null;
+        }
+
         $peran = null;
-
-        if(session('peran') == 2)
-        {
+        if (session('peran') == 2) {
             $peran = 'penjual.akun';
-        }
-        elseif(session('peran') == 3)
-        {
+        } elseif (session('peran') == 3) {
             $peran = 'pembeli.profil';
         }
-        return view($peran ,[
-            'roKota'        => $roKota,
+
+        return view($peran, [
             'pengguna'      => $pengguna,
             'dataProvinsi'  => $dataProvinsi,
             'dataKota'      => $dataKota,
             'provinsi'      => $provinsiName,
-            'kotaAsal'      => $kota
+            'kotaAsal'      => $kotaAsal
         ]);
     }
 }

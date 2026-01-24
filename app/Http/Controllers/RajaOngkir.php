@@ -2,66 +2,91 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 
 class RajaOngkir extends Controller
 {
-    public static function getApi($url)
+    /**
+     * Base URL for the RajaOngkir API.
+     *
+     * @var string
+     */
+    protected static $baseUrl = 'https://api.rajaongkir.com/starter';
+
+    /**
+     * Send a request to the RajaOngkir API.
+     *
+     * @param string $endpoint
+     * @param array $params
+     * @param string $method
+     * @return \Illuminate\Support\Collection|null
+     */
+    private static function sendRequest($endpoint, $params = [], $method = 'GET')
     {
-        
-        // Read JSON file
-        $json_data = file_get_contents($url);
-        // Decode JSON data into PHP array
-        $response_data = json_decode($json_data);
-        $rajaongkir = $response_data->rajaongkir;
-        $statusCode = $rajaongkir->status->code;
-        if($statusCode == 200)  //kuota masih cukup
-            return $rajaongkir;
-        else                    //kuota habis
-            return null;
+        $response = Http::withHeaders([
+            'key' => config('app.RajaOngkir')
+        ]);
+
+        if ($method === 'POST') {
+            $response = $response->asForm()->post(self::$baseUrl . $endpoint, $params);
+        } else {
+            $response = $response->get(self::$baseUrl . $endpoint, $params);
+        }
+
+        if ($response->successful() && $response->json('rajaongkir.status.code') == 200) {
+            return collect($response->json('rajaongkir.results'));
+        }
+
+        return null;
     }
-    public static function costRajaOngkir($origin, $destination, $weight)
+
+    /**
+     * Get all provinces from RajaOngkir.
+     *
+     * @return \Illuminate\Support\Collection|null
+     */
+    public static function getProvinces()
     {
-        $curl = curl_init();
+        return self::sendRequest('/province');
+    }
 
-        curl_setopt_array($curl, array(
-        CURLOPT_URL => "https://api.rajaongkir.com/starter/cost",
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => "",
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 30,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => "POST",
-        CURLOPT_POSTFIELDS => "origin=".$origin."&destination=".$destination."&weight=".$weight."&courier=jne",
-        CURLOPT_HTTPHEADER => array(
-            "content-type: application/x-www-form-urlencoded",
-            "key: ".config('app.RajaOngkir')
-        ),
-        ));
+    /**
+     * Get cities by province ID from RajaOngkir.
+     *
+     * @param string $provinceId
+     * @return \Illuminate\Support\Collection|null
+     */
+    public static function getCities($provinceId)
+    {
+        return self::sendRequest('/city', ['province' => $provinceId]);
+    }
 
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
+    /**
+     * Get shipping cost from RajaOngkir.
+     *
+     * @param int $origin
+     * @param int $destination
+     * @param int $weight
+     * @param string $courier
+     * @return \Illuminate\Support\Collection|null
+     */
+    public static function getCost($origin, $destination, $weight, $courier = 'jne')
+    {
+        $params = [
+            'origin' => $origin,
+            'destination' => $destination,
+            'weight' => $weight,
+            'courier' => $courier,
+        ];
 
-        curl_close($curl);
+        $results = self::sendRequest('/cost', $params, 'POST');
 
-        if ($err) {
-        return "cURL Error #:" . $err;
+        // The cost API returns a nested array, so we extract the 'costs' part.
+        if ($results && isset($results[0]['costs'])) {
+            return collect($results[0]['costs']);
         }
-        else
-        {
-            $response_data = json_decode($response);
-            $rajaongkir = $response_data->rajaongkir;
-            $statusCode = $rajaongkir->status->code;
-            if($statusCode == 200)
-            {
-                $results = $rajaongkir->results;
-                $costs = $results[0]->costs;
-                return $costs;
-            }
-            else
-            {
-                return null;
-            }
-        }
+
+        return null;
     }
 }
