@@ -12,7 +12,7 @@ class RajaOngkir extends Controller
      *
      * @var string
      */
-    protected static $baseUrl = 'https://api.rajaongkir.com/starter';
+    protected static $baseUrl = 'https://rajaongkir.komerce.id/api/v1';
 
     /**
      * Send a request to the RajaOngkir API.
@@ -48,18 +48,25 @@ class RajaOngkir extends Controller
      */
     public static function getProvinces()
     {
-        return self::sendRequest('/province');
+        return self::sendRequest('/destination/province');
     }
 
     /**
-     * Get cities by province ID from RajaOngkir.
+     * Search for a domestic destination (city/subdistrict) by name.
      *
-     * @param string $provinceId
+     * @param string $searchQuery
+     * @param int $limit
+     * @param int $offset
      * @return \Illuminate\Support\Collection|null
      */
-    public static function getCities($provinceId)
+    public static function searchCities($searchQuery, $limit = 10, $offset = 0)
     {
-        return self::sendRequest('/city', ['province' => $provinceId]);
+        $params = [
+            'search' => $searchQuery,
+            'limit' => $limit,
+            'offset' => $offset,
+        ];
+        return self::sendRequest('/destination/domestic-destination', $params);
     }
 
     /**
@@ -67,26 +74,21 @@ class RajaOngkir extends Controller
      *
      * @param int $origin
      * @param int $destination
-     * @param int $weight
+     * @param int $weight in grams
      * @param string $courier
+     * @param string $price ('lowest' or 'highest')
      * @return \Illuminate\Support\Collection|null
      */
-    public static function getCost($origin, $destination, $weight, $courier = 'jne')
+    public static function getCost($origin, $destination, $weight, $courier = 'jne', $price = 'lowest')
     {
         $params = [
             'origin' => $origin,
             'destination' => $destination,
             'weight' => $weight,
             'courier' => $courier,
+            'price' => $price,
         ];
 
-        $results = self::sendRequest('/cost', $params, 'POST');
-
-        // The cost API returns a nested array, so we extract the 'costs' part.
-        if ($results && isset($results[0]['costs'])) {
-            return collect($results[0]['costs']);
-        }
-
-        return null;
+        return self::sendRequest('/calculate/domestic-cost', $params, 'POST');
     }
 }

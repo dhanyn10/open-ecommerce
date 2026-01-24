@@ -67,6 +67,6 @@
         @yield('konten')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
-        @yield('js')
+        @stack('scripts')
     </body>
 </html>

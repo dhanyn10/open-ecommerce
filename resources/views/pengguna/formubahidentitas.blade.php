@@ -46,7 +46,7 @@
                     <label for="">provinsi</label>
                 </div>
                 <div class="col-md-8">
-                    <select class="form-control form-control-sm" name="provinsi" onchange="ubahidentitas()">
+                    <select class="form-control form-control-sm" name="provinsi" onchange="submitForm()">
                         <option value="" selected>Pilih</option>
                         @if (isset($dataProvinsi) && $dataProvinsi != null)
                             @foreach ($dataProvinsi as $item)
@@ -65,16 +65,9 @@
                     <label for="">kota/kabupaten</label>
                 </div>
                 <div class="col-md-8">
-                    <select class="form-control form-control-sm" name="kota" onchange="ubahidentitas()">
-                        <option value="" selected>Pilih</option>
-                        @if (isset($dataKota) && $dataKota != null)
-                            @foreach ($dataKota as $item)
-                            @if ($kotaAsal == $item->city_name)
-                                <option value="{{$item->city_id}}-{{$item->city_name}}" selected>{{$item->city_name}}</option>
-                            @else
-                                <option value="{{$item->city_id}}-{{$item->city_name}}">{{$item->city_name}}</option>
-                            @endif
-                            @endforeach
+                    <select class="form-control form-control-sm" id="city-search" name="kota">
+                        @if($kotaAsal && $userKota)
+                            <option value="{{ $userKota }}" selected>{{ $kotaAsal }}</option>
                         @endif
                     </select>
                 </div>
@@ -93,13 +86,57 @@
     <div class="form-group">
         <button type="submit" class="btn btn-sm btn-primary">Kirim</button>
     </div>
-    <script>
-        function ubahidentitas() {
-            const telepon = document.getElementsByName('telepon')[0].value
-            if(telepon.length > 0)
-                document.getElementById('ubahidentitas').submit()
-            else
-                alert('nomor telepon belum diisi')
-        }
-    </script>
 </form>
+
+@push('scripts')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    // Simplified debounce function
+    function debounce(func, delay) {
+        let timeout;
+        return function(...args) {
+            const context = this;
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(context, args), delay);
+        };
+    }
+
+    $(document).ready(function() {
+        $('#city-search').select2({
+            placeholder: 'Cari kota atau kabupaten...',
+            ajax: {
+                url: '{{ route("ajax.cities.search") }}',
+                dataType: 'json',
+                delay: 250, // Debounce delay
+                data: function (params) {
+                    return {
+                        q: params.term // search term
+                    };
+                },
+                processResults: function (data) {
+                    // Transform the API data into the format Select2 expects
+                    return {
+                        results: $.map(data, function(item) {
+                            return {
+                                id: item.subdistrict_id + '-' + item.city,
+                                text: item.city + ', ' + item.subdistrict_name
+                            }
+                        })
+                    };
+                },
+                cache: true
+            }
+        });
+    });
+
+    function submitForm() {
+        const telepon = document.getElementsByName('telepon')[0].value;
+        if (telepon.length > 0) {
+            document.getElementById('ubahidentitas').submit();
+        } else {
+            alert('Nomor telepon belum diisi');
+        }
+    }
+</script>
+@endpush

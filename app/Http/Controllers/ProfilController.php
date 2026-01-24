@@ -26,10 +26,6 @@ class ProfilController extends Controller
             $provinsiName = $provinsiParts[1] ?? null;
         }
 
-        if ($provinsiId) {
-            $dataKota = RajaOngkir::getCities($provinsiId);
-        }
-
         if ($userKota) {
             $kotaParts = explode('-', $userKota, 2);
             $kotaAsal = $kotaParts[1] ?? null;
@@ -49,5 +45,18 @@ class ProfilController extends Controller
             'provinsi'      => $provinsiName,
             'kotaAsal'      => $kotaAsal
         ]);
+    }
+
+    public function searchCitiesAjax(Request $request)
+    {
+        $searchQuery = $request->query('q', '');
+
+        if (empty($searchQuery)) {
+            return response()->json([]);
+        }
+
+        $cities = RajaOngkir::searchCities($searchQuery);
+
+        return response()->json($cities);
     }
 }
