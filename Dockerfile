@@ -8,7 +8,8 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     zip \
-    unzip
+    unzip \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
@@ -16,13 +17,25 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# copy all of the file in folder to /src
-COPY . /src
-WORKDIR /src
+# Set working directory
+WORKDIR /var/www/html
 
+# Copy composer files first to leverage Docker cache
+COPY composer.json composer.lock ./
+
+# Install dependencies
+# Using --no-scripts to prevent errors before the application code is copied
+RUN composer install --no-interaction --no-progress --no-scripts
+
+# Copy the rest of the application files
+COPY . .
+
+# Run composer scripts now that the application code is present
+RUN composer run-script post-autoload-dump
+
+# Copy environment file
 RUN cp .env.docker .env
 
-RUN composer update --prefer-stable
-
-#start docker service
-CMD php artisan serve --host 0.0.0.0
+# Expose port and start server
+EXPOSE 8000
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]

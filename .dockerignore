@@ -1,0 +1,14 @@
+.git
+.github
+.env
+.env.example
+.env.test
+vendor
+node_modules
+npm-debug.log
+storage/framework/cache/
+storage/framework/sessions/
+storage/framework/testing/
+storage/framework/views/
+storage/logs/*.log
+bootstrap/cache/*.php
