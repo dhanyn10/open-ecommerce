@@ -6,7 +6,8 @@ services:
       context: .
       dockerfile: Dockerfile
     depends_on:
-     - db
+      db:
+        condition: service_healthy
     ports:
      - 8000:8000
     environment:
@@ -19,6 +20,11 @@ services:
     image: mariadb:10.11-jammy
     container_name: oe-db
     restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MARIADB_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     environment:
       MARIADB_ROOT_PASSWORD: password
       MARIADB_DATABASE: open_ecommerce
