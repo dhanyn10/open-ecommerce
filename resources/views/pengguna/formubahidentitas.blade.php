@@ -34,7 +34,7 @@
             <label>telepon</label>
         </div>
         <div class="col-md-9">
-            <input type="text" name="telepon" class="form-control form-control-sm" value="{{$pengguna->pluck('telepon')->first()}}" maxlength="12" required/>
+            <input type="text" name="telepon" class="form-control form-control-sm" value="{{$pengguna->pluck('telepon')->first()}}" maxlength="15" required/>
         </div>
     </div>
 
