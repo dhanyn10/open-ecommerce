@@ -1,6 +1,7 @@
 @include('flash::message')
 <form method="post" id="ubahidentitas">
     {{csrf_field()}}
+    {{-- Other form fields like email, name, phone --}}
     <div class="form-group row">
         <div class="col-md-3">
             <label>email</label>
@@ -36,6 +37,7 @@
             <input type="text" name="telepon" class="form-control form-control-sm" value="{{$pengguna->pluck('telepon')->first()}}" maxlength="12" required/>
         </div>
     </div>
+
     <div class="form-group row">
         <div class="col-md-3">
             <label>alamat</label>
@@ -43,18 +45,14 @@
         <div class="col-md-9">
             <div class="form-group row">
                 <div class="col-md-4">
-                    <label for="">provinsi</label>
+                    <label for="province-search">provinsi</label>
                 </div>
                 <div class="col-md-8">
-                    <select class="form-control form-control-sm" name="provinsi" onchange="submitForm()">
-                        <option value="" selected>Pilih</option>
+                    <select class="form-control form-control-sm" id="province-search" name="provinsi">
+                        <option value="" selected>Pilih Provinsi</option>
                         @if (isset($dataProvinsi) && $dataProvinsi != null)
                             @foreach ($dataProvinsi as $item)
-                                @if ($provinsi == $item->province)
-                                    <option value="{{$item->province_id}}-{{$item->province}}" selected>{{$item->province}}</option>
-                                @else
-                                    <option value="{{$item->province_id}}-{{$item->province}}">{{$item->province}}</option>
-                                @endif
+                                <option value="{{$item->province_id}}-{{$item->province}}" @if ($provinsi == $item->province) selected @endif>{{$item->province}}</option>
                             @endforeach
                         @endif
                     </select>
@@ -62,12 +60,12 @@
             </div>
             <div class="form-group row">
                 <div class="col-md-4">
-                    <label for="">kota/kabupaten</label>
+                    <label for="city-search">kota/kabupaten</label>
                 </div>
                 <div class="col-md-8">
                     <select class="form-control form-control-sm" id="city-search" name="kota">
-                        @if($kotaAsal && $userKota)
-                            <option value="{{ $userKota }}" selected>{{ $kotaAsal }}</option>
+                        @if($kotaAsal && $pengguna->pluck('kota')->first())
+                            <option value="{{ $pengguna->pluck('kota')->first() }}" selected>{{ $kotaAsal }}</option>
                         @endif
                     </select>
                 </div>
@@ -75,6 +73,8 @@
             <textarea type="text" name="alamat" class="form-control form-control-sm" maxlength="255">{{$pengguna->pluck('alamat')->first()}}</textarea>
         </div>
     </div>
+
+    {{-- Password field --}}
     <div class="form-group row">
         <div class="col-md-3">
             <label>password</label>
@@ -92,18 +92,14 @@
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
-    // Simplified debounce function
-    function debounce(func, delay) {
-        let timeout;
-        return function(...args) {
-            const context = this;
-            clearTimeout(timeout);
-            timeout = setTimeout(() => func.apply(context, args), delay);
-        };
-    }
-
     $(document).ready(function() {
-        $('#city-search').select2({
+        // Initialize Select2 for Province
+        const $provinceSelect = $('#province-search').select2({
+            placeholder: 'Pilih Provinsi'
+        });
+
+        // Initialize Select2 for City
+        const $citySelect = $('#city-search').select2({
             placeholder: 'Cari kota atau kabupaten...',
             ajax: {
                 url: '{{ route("ajax.cities.search") }}',
@@ -119,8 +115,8 @@
                     return {
                         results: $.map(data, function(item) {
                             return {
-                                id: item.subdistrict_id + '-' + item.city,
-                                text: item.city + ', ' + item.subdistrict_name
+                                id: item.subdistrict_id + '-' + item.city_name,
+                                text: item.province_name + ', ' + item.city_name + ', ' + item.subdistrict_name
                             }
                         })
                     };
@@ -128,15 +124,25 @@
                 cache: true
             }
         });
-    });
 
-    function submitForm() {
-        const telepon = document.getElementsByName('telepon')[0].value;
-        if (telepon.length > 0) {
-            document.getElementById('ubahidentitas').submit();
-        } else {
-            alert('Nomor telepon belum diisi');
+        // Function to check province selection and enable/disable city
+        function toggleCitySelect() {
+            if ($provinceSelect.val()) {
+                $citySelect.prop('disabled', false);
+            } else {
+                $citySelect.prop('disabled', true);
+            }
         }
-    }
+
+        // Add event listener for province selection
+        $provinceSelect.on('change', function() {
+            toggleCitySelect();
+            // Clear city selection when province changes
+            $citySelect.val(null).trigger('change');
+        });
+
+        // Initial check on page load
+        toggleCitySelect();
+    });
 </script>
 @endpush

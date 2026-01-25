@@ -79,7 +79,7 @@ class RajaOngkir extends Controller
      * @param string $price ('lowest' or 'highest')
      * @return \Illuminate\Support\Collection|null
      */
-    public static function getCost($origin, $destination, $weight, $courier = 'jne', $price = 'lowest')
+    public static function costRajaOngkir($origin, $destination, $weight, $courier = 'jne', $price = 'lowest')
     {
         $params = [
             'origin' => $origin,
