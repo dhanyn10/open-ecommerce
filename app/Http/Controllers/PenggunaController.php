@@ -15,9 +15,9 @@ class PenggunaController extends Controller
         $validasi = Validator::make($req->all(),[
             'email'     => 'required|email|max:30',
             'nama'      => 'required|max:20',
-            'telepon'   => 'numeric|digits_between:11,12',  //auto required karena ada batasan minimal digits
-            'alamat'    => 'max:255',
-            'kota'      => 'max:255',
+            'telepon'   => 'nullable|numeric|min:8|max:15',
+            'alamat'    => 'nullable|max:255',
+            'kota'      => 'nullable|max:255',
             'provinsi'  => 'max:255',
             'sandi'     => 'max:30'
         ]);
