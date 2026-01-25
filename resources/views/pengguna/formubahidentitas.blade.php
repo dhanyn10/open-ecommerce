@@ -52,7 +52,7 @@
                         <option value="" selected>Pilih Provinsi</option>
                         @if (isset($dataProvinsi) && $dataProvinsi != null)
                             @foreach ($dataProvinsi as $item)
-                                <option value="{{$item->id}}-{{$item->name}}" @if ($provinsi == $item->name) selected @endif>{{$item->name}}</option>
+                                <option value="{{$item['id']}}-{{$item['name']}}" @if ($provinsi == $item['name']) selected @endif>{{$item['name']}}</option>
                             @endforeach
                         @endif
                     </select>
