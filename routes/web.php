@@ -34,7 +34,7 @@ Route::post('form_konfirmasi', [DaftarController::class, 'data_konfirmasi']);
 Route::post('masuk', [MasukController::class, 'masuk']);
 Route::post('reset_sandi', [MasukController::class, 'formresetsandi']);
 
-Route::get('/ajax/cities', [ProfilController::class, 'searchCitiesAjax'])->name('ajax.cities.search');
+Route::get('/ajax/cities-by-province', [ProfilController::class, 'getCitiesByProvinceAjax'])->name('ajax.cities.by-province');
 
 Route::group([
     'middleware'    => 'penjual',

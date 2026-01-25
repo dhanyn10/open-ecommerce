@@ -45,10 +45,10 @@
         <div class="col-md-9">
             <div class="form-group row">
                 <div class="col-md-4">
-                    <label for="province-search">provinsi</label>
+                    <label for="province-select">provinsi</label>
                 </div>
                 <div class="col-md-8">
-                    <select class="form-control form-control-sm" id="province-search" name="provinsi">
+                    <select class="form-control form-control-sm" id="province-select" name="provinsi">
                         <option value="" selected>Pilih Provinsi</option>
                         @if (isset($dataProvinsi) && $dataProvinsi != null)
                             @foreach ($dataProvinsi as $item)
@@ -60,10 +60,10 @@
             </div>
             <div class="form-group row">
                 <div class="col-md-4">
-                    <label for="city-search">kota/kabupaten</label>
+                    <label for="city-select">kota/kabupaten</label>
                 </div>
                 <div class="col-md-8">
-                    <select class="form-control form-control-sm" id="city-search" name="kota">
+                    <select class="form-control form-control-sm" id="city-select" name="kota" disabled>
                         @if($kotaAsal && $pengguna->pluck('kota')->first())
                             <option value="{{ $pengguna->pluck('kota')->first() }}" selected>{{ $kotaAsal }}</option>
                         @endif
@@ -93,56 +93,58 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     $(document).ready(function() {
-        // Initialize Select2 for Province
-        const $provinceSelect = $('#province-search').select2({
+        const $provinceSelect = $('#province-select').select2({
             placeholder: 'Pilih Provinsi'
         });
 
-        // Initialize Select2 for City
-        const $citySelect = $('#city-search').select2({
-            placeholder: 'Cari kota atau kabupaten...',
-            ajax: {
-                url: '{{ route("ajax.cities.search") }}',
-                dataType: 'json',
-                delay: 250, // Debounce delay
-                data: function (params) {
-                    return {
-                        q: params.term // search term
-                    };
-                },
-                processResults: function (data) {
-                    // Transform the API data into the format Select2 expects
-                    return {
-                        results: $.map(data, function(item) {
-                            return {
-                                id: item.subdistrict_id + '-' + item.city_name,
-                                text: item.province_name + ', ' + item.city_name + ', ' + item.subdistrict_name
-                            }
-                        })
-                    };
-                },
-                cache: true
-            }
+        const $citySelect = $('#city-select').select2({
+            placeholder: 'Pilih Kota/Kabupaten'
         });
 
-        // Function to check province selection and enable/disable city
-        function toggleCitySelect() {
-            if ($provinceSelect.val()) {
-                $citySelect.prop('disabled', false);
-            } else {
-                $citySelect.prop('disabled', true);
+        function fetchCities(provinceId, selectedCityValue = null) {
+            if (!provinceId) {
+                $citySelect.empty().append('<option value="">Pilih Kota/Kabupaten</option>').prop('disabled', true);
+                return;
             }
+
+            $citySelect.prop('disabled', true).empty().append('<option value="">Memuat...</option>');
+
+            $.ajax({
+                url: '{{ route("ajax.cities.by-province") }}',
+                data: { province_id: provinceId },
+                success: function(cities) {
+                    $citySelect.empty().append('<option value="">Pilih Kota/Kabupaten</option>');
+                    if (cities) {
+                        cities.forEach(function(city) {
+                            $citySelect.append(new Option(city.name, city.id + '-' + city.name));
+                        });
+                    }
+                    $citySelect.prop('disabled', false);
+
+                    // If a city was previously selected, re-select it
+                    if (selectedCityValue) {
+                        $citySelect.val(selectedCityValue).trigger('change');
+                    }
+                },
+                error: function() {
+                    $citySelect.empty().append('<option value="">Gagal memuat</option>').prop('disabled', true);
+                }
+            });
         }
 
-        // Add event listener for province selection
         $provinceSelect.on('change', function() {
-            toggleCitySelect();
-            // Clear city selection when province changes
-            $citySelect.val(null).trigger('change');
+            const selectedProvince = $(this).val();
+            const provinceId = selectedProvince ? selectedProvince.split('-')[0] : null;
+            fetchCities(provinceId);
         });
 
-        // Initial check on page load
-        toggleCitySelect();
+        // Initial load
+        const initialProvince = $provinceSelect.val();
+        if (initialProvince) {
+            const provinceId = initialProvince.split('-')[0];
+            const selectedCity = "{{ $pengguna->pluck('kota')->first() }}";
+            fetchCities(provinceId, selectedCity);
+        }
     });
 </script>
 @endpush

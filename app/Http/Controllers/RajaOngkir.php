@@ -52,21 +52,14 @@ class RajaOngkir extends Controller
     }
 
     /**
-     * Search for a domestic destination (city/subdistrict) by name.
+     * Get cities by province ID from RajaOngkir.
      *
-     * @param string $searchQuery
-     * @param int $limit
-     * @param int $offset
+     * @param string $provinceId
      * @return \Illuminate\Support\Collection|null
      */
-    public static function searchCities($searchQuery, $limit = 10, $offset = 0)
+    public static function getCitiesByProvince($provinceId)
     {
-        $params = [
-            'search' => $searchQuery,
-            'limit' => $limit,
-            'offset' => $offset,
-        ];
-        return self::sendRequest('/destination/domestic-destination', $params);
+        return self::sendRequest("/destination/city/{$provinceId}");
     }
 
     /**

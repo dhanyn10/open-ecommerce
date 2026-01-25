@@ -47,15 +47,15 @@ class ProfilController extends Controller
         ]);
     }
 
-    public function searchCitiesAjax(Request $request)
+    public function getCitiesByProvinceAjax(Request $request)
     {
-        $searchQuery = $request->query('q', '');
+        $provinceId = $request->query('province_id');
 
-        if (empty($searchQuery)) {
+        if (!$provinceId) {
             return response()->json([]);
         }
 
-        $cities = RajaOngkir::searchCities($searchQuery);
+        $cities = RajaOngkir::getCitiesByProvince($provinceId);
 
         return response()->json($cities);
     }
