@@ -34,8 +34,8 @@ class RajaOngkir extends Controller
             $response = $response->get(self::$baseUrl . $endpoint, $params);
         }
 
-        if ($response->successful() && $response->json('rajaongkir.status.code') == 200) {
-            return collect($response->json('rajaongkir.results'));
+        if ($response->successful() && $response->json('meta.code') == 200) {
+            return collect($response->json('data'));
         }
 
         return null;
