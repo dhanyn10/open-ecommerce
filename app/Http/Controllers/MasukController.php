@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -71,7 +70,7 @@ class MasukController extends Controller
 
         $user = User::where('email', $req->input('email'))->first();
         $newPassword = Str::random(10);
-        $user->password = Hash::make($newPassword);
+        $user->password = $newPassword;
         $user->save();
 
         try {

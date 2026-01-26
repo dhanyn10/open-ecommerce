@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class PenjualSeeder extends Seeder
 {
@@ -18,7 +17,7 @@ class PenjualSeeder extends Seeder
         User::create([
             'email' => 'penjual@open_ecommerce',
             'nama'  => 'penjual',
-            'password' => Hash::make('penjual'),
+            'password' => 'penjual',
             'peran' => 2,
             'konfirmasi' => 1
         ]);

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -42,7 +41,7 @@ class DaftarController extends Controller
             $user = User::create([
                 'email' => $data['email'],
                 'nama' => $data['nama'],
-                'password' => Hash::make($data['sandi']),
+                'password' => $data['sandi'],
                 'peran' => $data['peran'],
                 'konfirmasi' => 0,
                 'token' => $token,

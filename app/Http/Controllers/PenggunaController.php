@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class PenggunaController extends Controller
 {
@@ -39,7 +38,7 @@ class PenggunaController extends Controller
 
         // Only update password if a new one is provided
         if (!empty($validatedData['password'])) {
-            $user->password = Hash::make($validatedData['password']);
+            $user->password = $validatedData['password'];
         }
 
         $user->save();
