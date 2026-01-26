@@ -4,96 +4,63 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Validator;
-
 use App\Models\Pengguna;
 
 class PenggunaController extends Controller
 {
     public function profil(Request $req)
     {
-        $validasi = Validator::make($req->all(),[
+        $validatedData = $req->validate([
             'email'     => 'required|email|max:30',
-            'nama'      => 'required|max:20',
-            'telepon'   => 'numeric|digits_between:11,12',  //auto required karena ada batasan minimal digits
-            'alamat'    => 'max:255',
-            'kota'      => 'max:255',
-            'provinsi'  => 'max:255',
-            'sandi'     => 'max:30'
+            'nama'      => 'required|string|max:20',
+            'telepon'   => 'required|digits_between:8,15',
+            'alamat'    => 'required|string|max:255',
+            'kota'      => 'required|string|max:255',
+            'provinsi'  => 'required|string|max:255',
+            'sandi'     => 'nullable|string|max:30'
         ]);
 
-        if($validasi->fails())
-        {
-            flash('data tidak sesuai dengan format');
-            if(session('peran') == 2)
-            {
-                return redirect()->route('penjual-profil');
-            }
-            else if(session('peran') == 3)
-            {
-                return redirect()->route('pembeli-profil');
-            }
+        $pengguna = Pengguna::where('email', session('email'))->firstOrFail();
+
+        // Handle email change and re-confirmation
+        $konfirmasi = $pengguna->konfirmasi;
+        $token = $pengguna->token;
+        if ($pengguna->email !== $validatedData['email']) {
+            $konfirmasi = 0;
+            $token = $validatedData['email'] . Str::random(10);
+            session(['konfirmasi' => 0]);
         }
-        else
-        {
-            $data['email']  = $req->input('email');
-            $data['nama']   = $req->input('nama');
-            $telepon        = $req->input('telepon');
-            $alamat         = $req->input('alamat');
-            $kota           = $req->input('kota');
-            $provinsi       = $req->input('provinsi');
-            $sandi          = $req->input('sandi');
-            $data['token']  = $data['email'].Str::random(10);
-            //inisiasi nilai konfirmasi 1(pengguna terkonfirmasi)
-            $konfirmasi     = 1;
 
-            $pengguna       = Pengguna::where('email', session('email'));
-            $data_pengguna  = $pengguna->get();
-            $data_email     = $data_pengguna->pluck('email')->first();
-            $data_token     = $data_pengguna->pluck('token')->first();
-            $data_sandi     = $data_pengguna->pluck('sandi')->first();
+        // Prepare data for update
+        $updateData = [
+            'email' => $validatedData['email'],
+            'nama' => $validatedData['nama'],
+            'telepon' => $validatedData['telepon'],
+            'alamat' => $validatedData['alamat'],
+            'kota' => $validatedData['kota'],
+            'provinsi' => $validatedData['provinsi'],
+            'konfirmasi' => $konfirmasi,
+            'token' => $token,
+        ];
 
-            //jika email berbeda dengan database, berarti email telah diperbarui
-            if($data_email != $data['email'])
-            {
-                //ubah nilai konfirmasi menjadi 0, sehingga pengguna perlu melakukan konfirmasi ulang
-                $konfirmasi = 0;
-                //tambah sesi konfirmasi dengan nilai 0
-                session([
-                    'email'         => $data['email'],
-                    'konfirmasi' => 0
-                ]);
-            }
-            //jika email tidak berbeda dengan di database
-            if($data_email == $data['email'])
-            {
-                //kembalikan nilai token seperti di database
-                $data['token'] = $data_token;
-            }
-            if($sandi == null)
-            {
-                $sandi = $data_sandi;
-            }
-            $pengguna->update([
-                'email'         => $data['email'],
-                'nama'          => $data['nama'],
-                'telepon'       => $telepon,
-                'alamat'        => $alamat,
-                'kota'          => $kota,
-                'provinsi'      => $provinsi,
-                'sandi'         => $sandi,
-                'konfirmasi'    => $konfirmasi,
-                'token'         => $data['token']
-            ]);
-            flash('berhasil memperbarui data');
-            if(session('peran') == 2)
-            {
-                return redirect()->route('penjual-profil');
-            }
-            else if(session('peran') == 3)
-            {
-                return redirect()->route('pembeli-profil');
-            }
+        // Only update password if a new one is provided
+        if (!empty($validatedData['sandi'])) {
+            $updateData['sandi'] = $validatedData['sandi'];
+        }
+
+        $pengguna->update($updateData);
+
+        // Update session email if it has changed
+        if ($pengguna->email !== session('email')) {
+            session(['email' => $pengguna->email]);
+        }
+
+        flash('Berhasil memperbarui data')->success();
+
+        if (session('peran') == 2) {
+            return redirect()->route('penjual-profil');
+        } else {
+            return redirect()->route('pembeli-profil');
         }
     }
 }
