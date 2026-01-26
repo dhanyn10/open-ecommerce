@@ -5,22 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Barang extends Model
+class Product extends Model
 {
     use HasFactory;
     
     protected $primaryKey   = 'id';
-    protected $table        = 'barang';
+    protected $table        = 'products';
     public $incrementing    = false;
-    public $timestamps      = false;
     
     protected $fillable = [
         'id',
+        'user_id',
         'nama',
         'harga',
         'berat',
         'jumlah',
-        'penjual',
         'keterangan'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

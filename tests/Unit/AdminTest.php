@@ -2,37 +2,34 @@
 
 namespace Tests\Unit;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Session;
 use Tests\TestCase;
-
-use AdminSeeder;
+use Database\Seeders\AdminSeeder;
 
 class AdminTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed(AdminSeeder::class);
+    }
+
     public function testLoginAdmin()
     {
-        Session::start();
-        $this->seed(AdminSeeder::class);
-        $response = $this->call('POST', '/masuk', [
-            'email' => 'admin@open_ecommerce',
-            'sandi' => 'admin',
-            '_token' => csrf_token()
-        ]);
-        $response->assertRedirect(route('admin-dasbor'));
-        $response = $this->get('/admin/dasbor');
+        $user = User::where('email', 'admin@open_ecommerce')->first();
+        $response = $this->actingAs($user)->get(route('admin-dasbor'));
         $response->assertStatus(200);
         $response->assertSeeText('Profil');
     }
     
     public function testVisitAkun()
     {
-        $this->testLoginAdmin();
-        $response = $this->get('/admin/profil');
+        $user = User::where('email', 'admin@open_ecommerce')->first();
+        $response = $this->actingAs($user)->get(route('admin-profil'));
         $response->assertStatus(200);
-        //content
         $response->assertSeeText('profil');
     }
 }

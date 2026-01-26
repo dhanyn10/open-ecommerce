@@ -4,22 +4,30 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Barang extends Migration
+return new class extends Migration
 {
-    public function up()
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
     {
-        Schema::create('barang', function(Blueprint $table){
+        Schema::create('products', function (Blueprint $table) {
             $table->string('id', 50)->primary();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('nama');
-            $table->string('penjual');
             $table->integer("harga");
             $table->integer('jumlah');
             $table->integer('berat');
             $table->text('keterangan',10000);
+            $table->timestamps();
         });
     }
-    public function down()
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
-        Schema::dropIfExists('barang');
+        Schema::dropIfExists('products');
     }
-}
+};

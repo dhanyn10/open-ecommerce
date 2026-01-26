@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class AdminSeeder extends Seeder
 {
@@ -14,10 +15,10 @@ class AdminSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('pengguna')->insert([
+        User::create([
             'email' => 'admin@open_ecommerce',
             'nama'  => 'admin',
-            'sandi' => 'admin',
+            'password' => Hash::make('admin'),
             'peran' => 1,
             'konfirmasi' => 1
         ]);

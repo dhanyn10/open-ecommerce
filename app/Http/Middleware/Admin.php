@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
 
 class Admin
 {
@@ -15,11 +16,11 @@ class Admin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(session('peran') != 1)
-        {
-            flash('silahkan login dulu');
-            return redirect()->route('masuk');
+        if (Auth::check() && Auth::user()->peran == 1) {
+            return $next($request);
         }
-        return $next($request);
+
+        flash('Anda tidak memiliki akses.')->error();
+        return redirect()->route('masuk');
     }
 }

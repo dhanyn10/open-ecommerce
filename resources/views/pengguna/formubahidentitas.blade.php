@@ -7,7 +7,7 @@
             <label for="email">email</label>
         </div>
         <div class="col-md-9">
-            <input type="text" id="email" name="email" class="form-control form-control-sm @error('email') is-invalid @enderror" value="{{ old('email', $pengguna->pluck('email')->first()) }}" maxlength="30" required/>
+            <input type="text" id="email" name="email" class="form-control form-control-sm @error('email') is-invalid @enderror" value="{{ old('email', $pengguna->email) }}" maxlength="30" required/>
             @if(session('konfirmasi') == 0)
                 <small><a class="text-danger float-right" href="{{route('formkonfirmasi')}}">konfirmasi email</a></small>
             @endif
@@ -22,7 +22,7 @@
             <label for="nama">nama</label>
         </div>
         <div class="col-md-9">
-            <input type="text" id="nama" name="nama" class="form-control form-control-sm @error('nama') is-invalid @enderror" value="{{ old('nama', $pengguna->pluck('nama')->first()) }}" maxlength="20" required/>
+            <input type="text" id="nama" name="nama" class="form-control form-control-sm @error('nama') is-invalid @enderror" value="{{ old('nama', $pengguna->nama) }}" maxlength="20" required/>
             @error('nama')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
@@ -34,7 +34,7 @@
             <label for="telepon">telepon</label>
         </div>
         <div class="col-md-9">
-            <input type="text" id="telepon" name="telepon" class="form-control form-control-sm @error('telepon') is-invalid @enderror" value="{{ old('telepon', $pengguna->pluck('telepon')->first()) }}" maxlength="15" required/>
+            <input type="text" id="telepon" name="telepon" class="form-control form-control-sm @error('telepon') is-invalid @enderror" value="{{ old('telepon', $pengguna->telepon) }}" maxlength="15" required/>
             @error('telepon')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
@@ -55,7 +55,7 @@
                         <option value="">Pilih Provinsi</option>
                         @if (isset($dataProvinsi))
                             @foreach ($dataProvinsi as $item)
-                                <option value="{{$item['id']}}-{{$item['name']}}" @if (old('provinsi', $pengguna->pluck('provinsi')->first()) == $item['id'].'-'.$item['name']) selected @endif>{{$item['name']}}</option>
+                                <option value="{{$item['id']}}-{{$item['name']}}" @if (old('provinsi', $pengguna->provinsi) == $item['id'].'-'.$item['name']) selected @endif>{{$item['name']}}</option>
                             @endforeach
                         @endif
                     </select>
@@ -70,8 +70,8 @@
                 </div>
                 <div class="col-md-8">
                     <select class="form-control form-control-sm @error('kota') is-invalid @enderror" id="city-select" name="kota" required>
-                        @if(old('kota', $pengguna->pluck('kota')->first()))
-                            <option value="{{ old('kota', $pengguna->pluck('kota')->first()) }}" selected>{{ explode('-', old('kota', $pengguna->pluck('kota')->first()))[1] ?? 'Pilih Kota/Kabupaten' }}</option>
+                        @if(old('kota', $pengguna->kota))
+                            <option value="{{ old('kota', $pengguna->kota) }}" selected>{{ explode('-', old('kota', $pengguna->kota))[1] ?? 'Pilih Kota/Kabupaten' }}</option>
                         @endif
                     </select>
                      @error('kota')
@@ -79,7 +79,7 @@
                     @enderror
                 </div>
             </div>
-            <textarea type="text" name="alamat" class="form-control form-control-sm @error('alamat') is-invalid @enderror" maxlength="255" required>{{ old('alamat', $pengguna->pluck('alamat')->first()) }}</textarea>
+            <textarea type="text" name="alamat" class="form-control form-control-sm @error('alamat') is-invalid @enderror" maxlength="255" required>{{ old('alamat', $pengguna->alamat) }}</textarea>
             @error('alamat')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
@@ -88,12 +88,12 @@
 
     <div class="form-group row">
         <div class="col-md-3">
-            <label for="sandi">password</label>
+            <label for="password">password</label>
         </div>
         <div class="col-md-9">
-            <input type="password" id="sandi" name="sandi" class="form-control form-control-sm @error('sandi') is-invalid @enderror" maxlength="30"/>
+            <input type="password" id="password" name="password" class="form-control form-control-sm @error('password') is-invalid @enderror" maxlength="30"/>
             <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah password.</small>
-            @error('sandi')
+            @error('password')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
@@ -158,7 +158,7 @@
         const initialProvince = $provinceSelect.val();
         if (initialProvince) {
             const provinceId = initialProvince.split('-')[0];
-            const selectedCity = "{{ old('kota', $pengguna->pluck('kota')->first()) }}";
+            const selectedCity = "{{ old('kota', $pengguna->kota) }}";
             fetchCities(provinceId, selectedCity);
         } else {
              $citySelect.prop('disabled', true).empty().append('<option value="">Pilih Provinsi Dahulu</option>');

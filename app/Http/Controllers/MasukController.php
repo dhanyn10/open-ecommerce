@@ -2,163 +2,88 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-
-use App\Models\Pengguna;
-use Validator;
-use Mail;
 
 class MasukController extends Controller
 {
-    protected function connect()
-    {
-        try
-        {
-            DB::connection()->getPdo();
-        }
-        catch(\PDOException $e)
-        {
-            return "koneksi database gagal";
-        }
-    }
     public function index()
     {
-        if(!(session()->has('email')))
-        {
-            return view('masuk');
-        }
-        else
-        {
-            return redirect()->route('beranda');
-        }
+        return view('masuk');
     }
+
     public function masuk(Request $req)
     {
-        if($this->connect() == "koneksi database gagal")
-        {
-            flash('koneksi database gagal')->error();
-            return redirect()->route('masuk');
-        }
-        //jika pengisian form valid
-        else
-        {
-            $email  = $req->input('email');
-            $sandi  = $req->input('sandi');
-            
-            //mengambil data dari tabel pengguna
-            $data = Pengguna::where('email', $email)->get();
-            //jika tidak ditemukan pengguna dengan data email
-            if(count($data) == 0)
-            {
-                flash('Email belum terdaftar');
-                return redirect()->route('masuk');
-            }
-            //jika ditemukan pengguna dengan email
-            else
-            {
-                //jika pengguna belum melakukan konfirmasi email
-                if($data->pluck('konfirmasi')->first() === "0")
-                {
-                    flash('konfirmasi email dulu <a href="/form_konfirmasi">form konfirmasi</a>')->error();
-                    return redirect()->route('masuk');
-                }
-                //jika pengguna sudah melakukan konfirmasi email
-                else
-                {
-                    //mengambil data di database
-                    $data_nama  = $data->pluck('nama')->first();
-                    $data_email = $data->pluck('email')->first();
-                    $data_peran = $data->pluck('peran')->first();
-                    $data_sandi = $data->pluck('sandi')->first();
-                    
-                    //cek apakah sandi yang dimasukkan sesuai dengan sandi di database
-                    if($sandi == $data_sandi)
-                    {
-                        //jika sandi cocok, buat sesi dengan menggunakan data nama dan email
-                        session([
-                            'nama'      => $data_nama,
-                            'email'     => $data_email,
-                            'peran'     => $data_peran
-                        ]);
-                        if(session("peran") == 1)
-                        {
-                            //mengalihkan halaman ke dasbor admin
-                            return redirect()->route('admin-dasbor');
-                        }
-                        if(session("peran") == 2)
-                        {
-                            //mengalihkan halaman ke tambah barang penjual
-                            return redirect()->route('penjual-lihat');
-                        }
-                        else if(session('peran') == 3)
-                        {
-                            //mengalihkan halaman ke beranda
-                            return redirect()->route('beranda');
-                        }   
-                    }
-                    else
-                    {
-                        flash("sandi tidak cocok <a href='reset_sandi'>reset sandi</a>")->error();
-                        return redirect()->route('masuk');
-                    }
-                }
-            }
-        }
-    }
-    public function resetsandi()
-    {
-        if($this->connect() == "koneksi database gagal")
-        {
-            flash('terdapat masalah koneksi database');
-            return view('resetsandi');
-        }
-        else
-        {
-            return view('resetsandi');
-        }
-    }
-    public function formresetsandi(Request $req)
-    {
-        $validasi = Validator::make($req->all(),[
-            'email' => 'required|email|max:30'
+        $credentials = $req->validate([
+            'email'    => 'required|email',
+            'password' => 'required',
         ]);
 
-        if($validasi->fails())
-        {
-            flash('pengisian formulir tidak valid');
-            return redirect()->route('reset-sandi');
+        $user = User::where('email', $credentials['email'])->first();
+
+        if (!$user) {
+            flash('Email belum terdaftar')->error();
+            return redirect()->route('masuk');
         }
-        else
-        {
-            $data['email']  = $req->input('email');
-            $pengguna       = Pengguna::where('email', $data['email']);
-            if(count($pengguna->get())> 0)
-            {
-                $data['nama']   = $pengguna->get()->pluck('nama')->first();
-                $data['sandi']  = Str::random(20);
-                try{
-                    Pengguna::where('email', $data['email'])->update([
-                        'sandi' => $data['sandi']
-                        ]);
-                    Mail::send('emailresetsandi', $data, function($pesan) use ($data){
-                        $pesan->to($data['email'])->subject('Reset Kata Sandi');
-                    });
-                    flash('berhasil reset kata sandi')->success();
-                    return redirect()->route('masuk');
-                }
-                catch(Exception $e)
-                {
-                    flash('cek email kamu untuk melihat kata sandi baru')->error();
-                    return redirect()->route('reset-sandi');
-                }
-            }
-            else
-            {
-                flash('pengguna belum terdaftar')->error();
-                return redirect()->route('reset-sandi');
+
+        if ($user->konfirmasi == 0) {
+            flash('Silakan konfirmasi email Anda terlebih dahulu. <a href="/form_konfirmasi">Kirim ulang email konfirmasi</a>')->error();
+            return redirect()->route('masuk');
+        }
+
+        if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']])) {
+            $req->session()->regenerate();
+            
+            $peran = Auth::user()->peran;
+            if ($peran == 1) {
+                return redirect()->route('admin-dasbor');
+            } elseif ($peran == 2) {
+                return redirect()->route('penjual-lihat');
+            } else {
+                return redirect()->route('beranda');
             }
         }
+
+        flash('Email atau kata sandi salah.')->error();
+        return redirect()->route('masuk');
+    }
+
+    public function resetsandi()
+    {
+        return view('resetsandi');
+    }
+
+    public function formresetsandi(Request $req)
+    {
+        $validator = Validator::make($req->all(), [
+            'email' => 'required|email|exists:users,email'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('reset-sandi')->withErrors($validator)->withInput();
+        }
+
+        $user = User::where('email', $req->input('email'))->first();
+        $newPassword = Str::random(10);
+        $user->password = Hash::make($newPassword);
+        $user->save();
+
+        try {
+            Mail::send('emailresetsandi', ['sandi' => $newPassword], function ($pesan) use ($user) {
+                $pesan->to($user->email)->subject('Reset Kata Sandi');
+            });
+
+            flash('Kata sandi baru telah dikirim ke email Anda.')->success();
+        } catch (\Exception $e) {
+            flash('Gagal mengirim email reset kata sandi.')->error();
+        }
+
+        return redirect()->route('masuk');
     }
 }

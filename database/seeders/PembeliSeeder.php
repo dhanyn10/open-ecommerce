@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class PembeliSeeder extends Seeder
 {
@@ -14,10 +15,10 @@ class PembeliSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('pengguna')->insert([
+        User::create([
             'email' => 'pembeli@open_ecommerce',
             'nama'  => 'pembeli',
-            'sandi' => 'pembeli',
+            'password' => Hash::make('pembeli'),
             'peran' => 3,
             'konfirmasi' => 1
         ]);

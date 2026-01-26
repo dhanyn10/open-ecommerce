@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use App\Models\Pengguna;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class PenggunaController extends Controller
 {
@@ -17,47 +18,40 @@ class PenggunaController extends Controller
             'alamat'    => 'required|string|max:255',
             'kota'      => 'required|string|max:255',
             'provinsi'  => 'required|string|max:255',
-            'sandi'     => 'nullable|string|max:30'
+            'password'  => 'nullable|string|max:30'
         ]);
 
-        $pengguna = Pengguna::where('email', session('email'))->firstOrFail();
+        $user = Auth::user();
 
         // Handle email change and re-confirmation
-        $konfirmasi = $pengguna->konfirmasi;
-        $token = $pengguna->token;
-        if ($pengguna->email !== $validatedData['email']) {
-            $konfirmasi = 0;
-            $token = $validatedData['email'] . Str::random(10);
+        if ($user->email !== $validatedData['email']) {
+            $user->konfirmasi = 0;
+            $user->token = $validatedData['email'] . Str::random(10);
             session(['konfirmasi' => 0]);
         }
 
-        // Prepare data for update
-        $updateData = [
-            'email' => $validatedData['email'],
-            'nama' => $validatedData['nama'],
-            'telepon' => $validatedData['telepon'],
-            'alamat' => $validatedData['alamat'],
-            'kota' => $validatedData['kota'],
-            'provinsi' => $validatedData['provinsi'],
-            'konfirmasi' => $konfirmasi,
-            'token' => $token,
-        ];
+        $user->email = $validatedData['email'];
+        $user->nama = $validatedData['nama'];
+        $user->telepon = $validatedData['telepon'];
+        $user->alamat = $validatedData['alamat'];
+        $user->kota = $validatedData['kota'];
+        $user->provinsi = $validatedData['provinsi'];
 
         // Only update password if a new one is provided
-        if (!empty($validatedData['sandi'])) {
-            $updateData['sandi'] = $validatedData['sandi'];
+        if (!empty($validatedData['password'])) {
+            $user->password = Hash::make($validatedData['password']);
         }
 
-        $pengguna->update($updateData);
+        $user->save();
 
         // Update session email if it has changed
-        if ($pengguna->email !== session('email')) {
-            session(['email' => $pengguna->email]);
+        if ($user->email !== session('email')) {
+            session(['email' => $user->email]);
         }
 
         flash('Berhasil memperbarui data')->success();
 
-        if (session('peran') == 2) {
+        if ($user->peran == 2) {
             return redirect()->route('penjual-profil');
         } else {
             return redirect()->route('pembeli-profil');

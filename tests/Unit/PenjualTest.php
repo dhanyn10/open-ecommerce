@@ -2,40 +2,35 @@
 
 namespace Tests\Unit;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Session;
 use Tests\TestCase;
-
-use PenjualSeeder;
+use Database\Seeders\PenjualSeeder;
 
 class PenjualTest extends TestCase
 {
-
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed(PenjualSeeder::class);
+    }
 
     public function testLoginPenjual()
     {
-        Session::start();
-        $this->seed(PenjualSeeder::class);
-        $response = $this->call('POST', '/masuk', [
-            'email' => 'penjual@open_ecommerce',
-            'sandi' => 'penjual',
-            '_token' => csrf_token()
-        ]);
-        $response->assertRedirect(route('penjual-lihat'));
-        $response = $this->get('/penjual/lihat');
+        $user = User::where('email', 'penjual@open_ecommerce')->first();
+        $response = $this->actingAs($user)->get(route('penjual-lihat'));
         $response->assertStatus(200);
         $response->assertSeeText('Lihat Barang');
     }
 
     public function testVisitAkun()
     {
-        $this->testLoginPenjual();
-        $response = $this->get('/penjual/profil');
+        $user = User::where('email', 'penjual@open_ecommerce')->first();
+        $response = $this->actingAs($user)->get(route('penjual-profil'));
         $response->assertStatus(200);
-        //sidebar
         $response->assertSeeText('Akun');
-        //content
         $response->assertSeeText('email');
     }
 }

@@ -2,169 +2,109 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-
-use App\Models\Pengguna;
-use Validator;
-use Mail;
 
 class DaftarController extends Controller
 {
     public function index()
     {
-        if(!(session()->has('email')))
-        {
-            return view('daftar');
-        }
-        else
-        {
-            return redirect()->route('beranda');
-        }
+        return view('daftar');
     }
+
     public function formulirkonfirmasi()
     {
         return view('formkonfirmasi');
     }
-    protected function connect()
-    {
-        try
-        {
-            DB::connection()->getPdo();
-        }
-        catch(\PDOException $e)
-        {
-            return "gagal";
-        }
-    }
+
     public function daftar(Request $req)
     {
-        if($this->connect() == "gagal")
-        {
-            flash('koneksi database gagal')->error();
+        $validator = Validator::make($req->all(), [
+            'nama'  => 'required|max:20',
+            'email' => 'required|email|unique:users,email|max:30',
+            'peran' => 'required|in:2,3',
+            'sandi' => 'required|max:20'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('daftar')->withErrors($validator)->withInput();
+        }
+
+        $data = $validator->validated();
+        $token = Str::random(20);
+
+        try {
+            $user = User::create([
+                'email' => $data['email'],
+                'nama' => $data['nama'],
+                'password' => Hash::make($data['sandi']),
+                'peran' => $data['peran'],
+                'konfirmasi' => 0,
+                'token' => $token,
+            ]);
+
+            Mail::send('konfirmasi', ['token' => $token, 'nama' => $data['nama']], function ($pesan) use ($data) {
+                $pesan->to($data['email'])->subject('Konfirmasi Pendaftaran');
+            });
+
+            flash('Email konfirmasi terkirim, Segera cek email kamu.')->success();
+            return redirect()->route('masuk');
+        } catch (\Exception $e) {
+            flash('Gagal mengirim email konfirmasi. Silakan coba lagi.')->error();
             return redirect()->route('daftar');
         }
-        else
-        {
-            $valid = Validator::make($req->all(),[
-                'nama'  => 'required|max:20',
-                'email' => 'required|email|max:30',
-                'peran' => 'required|in:2,3',
-                'sandi' => 'required|max:20'
-            ]);
-            if($valid->fails())
-            {
-                flash('pengisian form belum benar')->error();
-                return redirect()->route('daftar');
-            }
-            else
-            {
-                $data['email']  = $req->input('email');
-                $pengguna      = Pengguna::where('email', $data['email'])->get();
-                if(count($pengguna) != 0)
-                {
-                    flash("pengguna telah terdaftar<br/><a href='form_konfirmasi'>kirim ulang email konfirmasi</a>");
-                    return redirect()->route("daftar");
-                }
-                
-                $data['token']  = $data['email'].Str::random(10);
-                $data['nama']   = $req->input('nama');
-                try{
-                    
-                    Mail::send('konfirmasi', $data, function($pesan) use ($data){
-                        $pesan->to($data['email'])->subject('Konfirmasi Pendaftaran');
-                    });
-                    Pengguna::create([
-                        'email'         => $data['email'],
-                        'nama'          => $data['nama'],
-                        'sandi'         => $req->input('sandi'),
-                        'peran'         => $req->input('peran'),
-                        'konfirmasi'    => 0,
-                        'token'         => $data['token']
-                    ]);
-                    flash('Email konfirmasi terkirim, Segera cek email kamu<br/><a href="form_konfirmasi">Kirim ulang email</a>');
-                    return redirect()->route('masuk');
-                }
-                catch(Exception $e)
-                {
-                    flash('gagal mengirim email konfirmasi');
-                    return redirect()->route('daftar');
-                }
-            }
-        }
     }
+
     public function konfirmasi($token)
     {
-        $pengguna   = Pengguna::where('token', $token)->first();
-        if(!is_null($pengguna))
-        {
-            if($pengguna->konfirmasi == 0)
-            {
-                $pengguna->konfirmasi = 1;
-                $pengguna->save();
-                if(session()->has('konfirmasi'))
-                {
-                    session()->forget('konfirmasi');
-                }
-                flash('aktivasi berhasil, silahkan masuk');
+        $user = User::where('token', $token)->first();
+
+        if ($user) {
+            if ($user->konfirmasi == 0) {
+                $user->konfirmasi = 1;
+                $user->token = null; // Clear the token after confirmation
+                $user->save();
+                flash('Aktivasi berhasil, silahkan masuk.')->success();
+            } else {
+                flash('Akun sudah aktif.')->info();
             }
-            else if($pengguna->konfirmasi == 1)
-            {
-                flash('akun sudah aktif');
-            }
-            return redirect()->route('masuk');
+        } else {
+            flash('Token konfirmasi tidak benar.')->error();
         }
-        else
-        {
-            flash('token konfirmasi tidak benar <a href="/form_konfirmasi">kirim ulang konfirmasi</a>');
-            return redirect()->route('masuk');
-        }
+
+        return redirect()->route('masuk');
     }
+
     public function data_konfirmasi(Request $req)
     {
-        $validasi = Validator::make($req->all(),[
-            'email' => 'required|email|max:30'
+        $validator = Validator::make($req->all(), [
+            'email' => 'required|email|exists:users,email|max:30'
         ]);
-        
-        if($validasi->fails())
-        {
-            flash('Cek kembali pengisian email')->error();
-            return redirect()->route('formkonfirmasi');
+
+        if ($validator->fails()) {
+            return redirect()->route('formkonfirmasi')->withErrors($validator)->withInput();
         }
-        else
-        {
-            $data['email']  = $req->input('email');
-            $cekdata = Pengguna::where('email', $data['email'])->get();
-            if(count($cekdata) == null)
-            {
-                flash("email tidak terdaftar")->error();
-                return redirect()->route('formkonfirmasi');
-            }
-            else
-            {
-                try{
-                    $data['token']  = $data['email'].Str::random(10);
-                    $data['email']  = $req->input('email');
-                    
-                    $pengguna       = Pengguna::where('email', $data['email']);
-                    $data['nama']   = $pengguna->get()->pluck('nama')->first();
-                    $pengguna->update([
-                        'token' => $data['token']
-                    ]);
-                    
-                    Mail::send('konfirmasi', $data, function($pesan) use ($data){
-                        $pesan->to($data['email'])->subject('Konfirmasi Pendaftaran');
-                    });
-                    flash('Email konfirmasi terkirim, Segera cek email kamu');
-                    return redirect()->route('formkonfirmasi');
-                }
-                catch(Exception $e)
-                {
-                    flash('gagal mengirim email konfirmasi');
-                    return redirect()->route('formkonfirmasi');
-                }
-            }
+
+        $user = User::where('email', $req->input('email'))->first();
+        $token = Str::random(20);
+        $user->token = $token;
+        $user->save();
+
+        try {
+            Mail::send('konfirmasi', ['token' => $token, 'nama' => $user->nama], function ($pesan) use ($user) {
+                $pesan->to($user->email)->subject('Konfirmasi Pendaftaran');
+            });
+
+            flash('Email konfirmasi terkirim, Segera cek email kamu.')->success();
+        } catch (\Exception $e) {
+            flash('Gagal mengirim email konfirmasi.')->error();
         }
+
+        return redirect()->route('formkonfirmasi');
     }
 }
