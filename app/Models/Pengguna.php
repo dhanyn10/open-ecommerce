@@ -16,6 +16,10 @@ class Pengguna extends Model
     
     protected $fillable = [
         'email',
+        'telepon',
+        'alamat',
+        'kota',
+        'provinsi',
         'nama',
         'sandi',
         'peran',

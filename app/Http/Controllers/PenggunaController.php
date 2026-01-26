@@ -13,7 +13,7 @@ class PenggunaController extends Controller
         $validatedData = $req->validate([
             'email'     => 'required|email|max:30',
             'nama'      => 'required|string|max:20',
-            'telepon'   => 'required|numeric|min:8|max:15',
+            'telepon'   => 'required|digits_between:8,15',
             'alamat'    => 'required|string|max:255',
             'kota'      => 'required|string|max:255',
             'provinsi'  => 'required|string|max:255',
