@@ -11,7 +11,7 @@
                     <input name="email" type="text" class="form-control" placeholder="email" maxlength="30" required/>
                 </div>
                 <div class="form-group">
-                    <input name="sandi" type="password" class="form-control" placeholder="kata sandi" maxlength="20" required/>
+                    <input name="password" type="password" class="form-control" placeholder="kata sandi" maxlength="20" required/>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-success btn-block">Submit</button>
