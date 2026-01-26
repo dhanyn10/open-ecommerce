@@ -39,8 +39,6 @@ RUN cp .env.docker .env
 # Set appropriate permissions for storage and bootstrap cache
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
-RUN mkdir -p storage/framework/views
-
 
 # Copy entrypoint script
 COPY entrypoint.sh /usr/local/bin/
