@@ -9,6 +9,11 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col text-right">
+                            <a href="{{ route('penjual-lihat') }}" class="btn btn-secondary btn-sm">Kembali</a>
+                        </div>
+                    </div>
                     <h4 class="text-primary text-uppercase text-center">Mengubah Barang Dagang</h4>
                     @include('flash::message')
                     <form method="post">
