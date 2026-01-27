@@ -15,7 +15,7 @@ class BeliController extends Controller
 {    
     public function beli()
     {
-        $pembelian  = Pembelian::where('user_id', session('id'))->get();
+        $pembelian  = Pengguna::find(session('id'))->pembelian;
         $nomor      = 0;
         foreach($pembelian as $data)
         {
@@ -43,15 +43,16 @@ class BeliController extends Controller
         $barang = Barang::where('id', $id)->get();
         if(count($barang) > 0)
         {
-            $pembeli    = Pembelian::where('user_id', session('id'))->get();
+            $user = Pengguna::find(session('id'));
+            $pembeli = $user->pembelian;
             if(count($pembeli) > 0) //pembeli yang telah terdata di tabel pembelian
             {
                 //mengambil data id barang berdasarkan data id pembeli
-                $cek_beli = Pembelian::where('idbarang', $id)->where('user_id', session('id'))->get();
+                $cek_beli = $user->pembelian()->where('idbarang', $id)->get();
                 if(count($cek_beli)> 0) //pengkondisian jika barang yang sama sudah masuk dalam troli pembeli
                 {
                     //mengambil data pembelian di tabel pembelian berdasarkan id barang yang diberikan melalui url
-                    $data_beli      = Pembelian::where('idbarang', $id)->where('user_id', session('id'))->get();
+                    $data_beli      = $cek_beli;
 
                     //mengambil data barang di tabel barang berdasarkan id barang yang diberikan melalui url
                     $data_barang    = Barang::where('id', $id)->get();
@@ -122,7 +123,7 @@ class BeliController extends Controller
                 ]);
             }
             //memasukkan harga kedalam array untuk keperluan tabel hitungan pembayaran
-            $pembelian  = Pembelian::where('user_id', session('id'))->get();
+            $pembelian  = $user->pembelian;
             $nomor      = 0;
             foreach($pembelian as $data)
             {
@@ -179,14 +180,12 @@ class BeliController extends Controller
     }
     public function bayar()
     {
-        $pembeli  = Pembelian::where('user_id', session('id'))->get();
+        $user = Pengguna::find(session('id'));
+        $pembeli = $user->pembelian;
         $idBarang = $pembeli->pluck('idbarang')->first();
-        $barang = Barang::where('id', $idBarang)->get();
-        $user_id = $barang->pluck('user_id')->first();
-        $kotaAsal = Pengguna::where('id', $user_id)->get();
-        $idkotaAsal = $kotaAsal->pluck('kota')->first();
-        $kotaTujuan = Pengguna::where('id', session('id'))->get();
-        $idkotaTujuan = $kotaTujuan->pluck('kota')->first();
+        $barang = Barang::find($idBarang);
+        $idkotaAsal = $barang->pengguna->kota;
+        $idkotaTujuan = $user->kota;
         $totalharga = 0;
         $nomor      = 0;
         $totalBerat = 0;

@@ -15,16 +15,13 @@ class BarangController extends Controller
 {    
     private function sisaBarang($id)
     {
-        $barang         = Barang::where('id', $id)->get();
-        $user_id        = $barang->pluck('user_id')->first();
-        $pengguna       = Pengguna::where('id', $user_id)->get();
-        $namapenjual    = $pengguna->pluck('nama')->first();
+        $barang         = Barang::find($id);
+        $namapenjual    = $barang->pengguna->nama;
 
         //jumlah barang yang tersisa
-        $data_barang    = Barang::where('id', $id)->get();
-        $batasjml       = $data_barang->pluck('jumlah')->first();
+        $batasjml       = $barang->jumlah;
         //data jumlah barang yang dibeli di tabel pembelian
-        $jumlahbarang   = Pembelian::where('idbarang', $id)->get();
+        $jumlahbarang   = $barang->pembelian;
 
         $jml_dibeli     = 0;
         for($a = 0; $a < count($jumlahbarang); $a++)
@@ -34,7 +31,7 @@ class BarangController extends Controller
 
         $sisabarang = $batasjml - $jml_dibeli;
         return array(
-            'barang'        => $barang,
+            'barang'        => collect([$barang]),
             'namapenjual'   => $namapenjual,
             'sisabarang'    => $sisabarang
         );
@@ -42,14 +39,13 @@ class BarangController extends Controller
     public function index(Request $req, $id)
     {
         $arrayBarang = $this->sisaBarang($id);
-        $barang = Barang::where('id', $id)->get();
-        $berat = $barang->pluck('berat')->first();
+        $barangObj = $arrayBarang['barang']->first();
+        $berat = $barangObj->berat;
 
         //penjual
-        $user_id = $barang->pluck('user_id')->first();
-        $userPenjual = Pengguna::where('id', $user_id)->get();
-        $provUserPenjual = $userPenjual->pluck('provinsi')->first();
-        $kotaUserPenjual = $userPenjual->pluck('kota')->first();
+        $userPenjual = $barangObj->pengguna;
+        $provUserPenjual = $userPenjual ? $userPenjual->provinsi : null;
+        $kotaUserPenjual = $userPenjual ? $userPenjual->kota : null;
 
         if($provUserPenjual != null)
         {
@@ -61,9 +57,9 @@ class BarangController extends Controller
         }
 
         //pembeli
-        $userPembeli = Pengguna::where('id', session('id'))->get();
-        $provUserPembeli = $userPembeli->pluck('provinsi')->first();
-        $kotaUserPembeli = $userPembeli->pluck('kota')->first();
+        $userPembeli = Pengguna::find(session('id'));
+        $provUserPembeli = $userPembeli ? $userPembeli->provinsi : null;
+        $kotaUserPembeli = $userPembeli ? $userPembeli->kota : null;
 
         if($provUserPembeli != null)
         {

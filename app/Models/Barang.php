@@ -23,4 +23,14 @@ class Barang extends Model
         'user_id',
         'keterangan'
     ];
+
+    public function pengguna()
+    {
+        return $this->belongsTo(Pengguna::class, 'user_id');
+    }
+
+    public function pembelian()
+    {
+        return $this->hasMany(Pembelian::class, 'idbarang');
+    }
 }

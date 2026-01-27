@@ -22,4 +22,14 @@ class Pembelian extends Model
         'jumlah',
         'user_id'
     ];
+
+    public function pengguna()
+    {
+        return $this->belongsTo(Pengguna::class, 'user_id');
+    }
+
+    public function barang()
+    {
+        return $this->belongsTo(Barang::class, 'idbarang');
+    }
 }
