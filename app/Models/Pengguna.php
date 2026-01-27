@@ -28,20 +28,18 @@ class Pengguna extends Model
         'token'
     ];
     
-    protected $nullable = [
-        'telepon',
-        'alamat',
-        'kota',
-        'provinsi'
-    ];
-
     protected $hidden = [
         'sandi'
     ];
 
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'user_id');
+    }
+
     public function barang()
     {
-        return $this->hasMany(Barang::class, 'user_id');
+        return $this->hasMany(Product::class, 'user_id');
     }
 
     public function pembelian()

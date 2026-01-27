@@ -6,29 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 class Pembelian extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('pembelian', function (Blueprint $table) {
             $table->string('id', 50)->primary();
             $table->string('waktu', 17);
             $table->integer('jumlah');
-            $table->string('idbarang', 50);
-            $table->foreign('idbarang')->references('id')->on('barang')->onDelete('cascade');
-            $table->string('nama_barang', 30);
+            $table->string('product_id', 50);
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->string('product_name', 30);
             $table->foreignId('user_id')->constrained('pengguna')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('pembelian');

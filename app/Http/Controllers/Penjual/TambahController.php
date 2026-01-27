@@ -4,13 +4,11 @@ namespace App\Http\Controllers\Penjual;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use File;
 use Validator;
 
-use App\Models\Barang;
+use App\Models\Product;
 use App\Models\Pengguna;
 
 class TambahController extends Controller
@@ -18,11 +16,6 @@ class TambahController extends Controller
     public function index()
     {
         $pengguna = Pengguna::where('id', session('id'))->get();
-
-        /**
-         * unable to create new product record before user profile completed
-         * force account return to form to complete the data first
-         */
         $telp       = $pengguna->pluck('telepon')->first();
         $alamat     = $pengguna->pluck('alamat')->first();
         $kota       = $pengguna->pluck('kota')->first();
@@ -35,25 +28,22 @@ class TambahController extends Controller
         }
         else
         {
-            // $barang = Barang::where('penjual', session('email'))->get();
             return view('penjual.tambah');
         }
     }
-    //hapus special character dan ubah spasi menjadi underscore
     protected function clean($string) {
-        $string = str_replace(' ', '_', $string); // Replaces all spaces with hyphens.
-        $string = preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
-     
-        return preg_replace('/-+/', '_', $string); // Replaces multiple hyphens with single one.
+        $string = str_replace(' ', '_', $string);
+        $string = preg_replace('/[^A-Za-z0-9\-]/', '', $string);
+        return preg_replace('/-+/', '_', $string);
      }
     public function formtambah(Request $req)
     {
         $validasi = Validator::make($req->all(),[
-            'nama'          => 'required|max:30',
-            'harga'         => 'required|numeric|digits_between:1,10',
-            'jumlah'        => 'required|numeric|digits_between:1,10',
-            'berat'         => 'required|numeric|digits_between:1,10',
-            'keterangan'    => 'required|max:10000'
+            'name'          => 'required|max:30',
+            'price'         => 'required|numeric|digits_between:1,10',
+            'stock'         => 'required|numeric|digits_between:1,10',
+            'weight'        => 'required|numeric|digits_between:1,10',
+            'description'   => 'required|max:10000'
         ]);
         if($validasi->fails())
         {
@@ -63,34 +53,26 @@ class TambahController extends Controller
         {
             if($req->input('data-gambar') != null)
             {
-                $nama       = $req->input('nama');
-                $harga      = $req->input('harga');
-                $jumlah     = $req->input('jumlah');
-                $berat      = $req->input('berat');
-                $keterangan = $req->input('keterangan');
+                $name        = $req->input('name');
+                $price       = $req->input('price');
+                $stock       = $req->input('stock');
+                $weight      = $req->input('weight');
+                $description = $req->input('description');
 
-                /**
-                 * prosesor gambar di sini
-                 */
-                //encode gambar menjadi base64
                 $getgambar  = $req->input('data-gambar');
                 $explode    = explode(',', $getgambar);
-                //mendecode string gambar yang diperoleh
                 $gambar     = base64_decode($explode[1]);
-                //nama barang sekaligus menjadi id
-                $id     = date("ymdhis").Str::random(7).'-'.$this->clean($nama);
-                //lokasi gambar
+                $id     = date("ymdhis").Str::random(7).'-'.$this->clean($name);
                 $lokasibarang   = public_path().'/img/barangdagang/'.$id.'.png';
-                //menyimpan file kedalam folder public/img/user
                 File::put($lokasibarang, $gambar);
-                Barang::create([
-                    'id'        => $id,
-                    'nama'      => $nama,
-                    'harga'     => $harga,
-                    'jumlah'    => $jumlah,
-                    'berat'     => $berat,
-                    'user_id'   => session('id'),
-                    'keterangan'=> $keterangan
+                Product::create([
+                    'id'            => $id,
+                    'name'          => $name,
+                    'price'         => $price,
+                    'stock'         => $stock,
+                    'weight'        => $weight,
+                    'user_id'       => session('id'),
+                    'description'   => $description
                 ]);
                 flash('berhasil menambah barang');
             }

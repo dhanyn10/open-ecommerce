@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-use App\Models\Barang;
+use App\Models\Product;
 use App\Models\Pembelian;
 use App\Models\Pengguna;
 use App\Http\Controllers\RajaOngkir;
@@ -15,13 +15,13 @@ class BeliController extends Controller
 {    
     public function beli()
     {
-        $user = Pengguna::with('pembelian.barangData')->find(session('id'));
+        $user = Pengguna::with('pembelian.product')->find(session('id'));
         $pembelian = $user ? $user->pembelian : collect();
 
         foreach($pembelian as $item)
         {
-            $barang = $item->barangData;
-            $item->harga = $barang ? $barang->harga : 0;
+            $product = $item->product;
+            $item->harga = $product ? $product->price : 0;
         }
 
         $totalbelanja = 0;
@@ -38,34 +38,28 @@ class BeliController extends Controller
 
     public function troliPlus($id)
     {
-        $barang = Barang::find($id);
-        if($barang)
+        $product = Product::find($id);
+        if($product)
         {
             $user = Pengguna::find(session('id'));
+            $cek_beli = $user->pembelian()->where('product_id', $id)->first();
 
-            // Check if item already in cart for this user
-            $cek_beli = $user->pembelian()->where('idbarang', $id)->first();
-
-            if($cek_beli) // Item exists in cart
+            if($cek_beli)
             {
-                $batasjml = $barang->jumlah;
-                $jml_dibeli = Pembelian::where('idbarang', $id)->sum('jumlah');
-                $sisabarang = $batasjml - $jml_dibeli;
-
-                if($sisabarang > 0)
+                if($product->current_stock > 0)
                 {
                     $cek_beli->increment('jumlah');
                 }
             }
-            else // New item for cart
+            else
             {
-                $id_beli = date("ymdhis").Str::random(7).'-'.str_replace(' ','-',$barang->nama);
+                $id_beli = date("ymdhis").Str::random(7).'-'.str_replace(' ','-',$product->name);
                 $user->pembelian()->create([
                     'id'            => $id_beli,
                     'waktu'         => date('y-m-d-h-i-s'),
                     'jumlah'        => 1,
-                    'idbarang'      => $id,
-                    'nama_barang'   => $barang->nama,
+                    'product_id'    => $id,
+                    'product_name'  => $product->name,
                 ]);
             }
             
@@ -82,7 +76,7 @@ class BeliController extends Controller
     {
         $user = Pengguna::find(session('id'));
         if ($user) {
-            $user->pembelian()->where('idbarang', $id)->delete();
+            $user->pembelian()->where('product_id', $id)->delete();
             flash('berhasil menghapus barang dari troli');
         }
         return redirect()->route('data-belanja');
@@ -92,7 +86,7 @@ class BeliController extends Controller
     {
         $user = Pengguna::find(session('id'));
         if ($user) {
-            $cek_beli = $user->pembelian()->where('idbarang', $id)->first();
+            $cek_beli = $user->pembelian()->where('product_id', $id)->first();
 
             if($cek_beli && $cek_beli->jumlah > 1)
             {
@@ -105,7 +99,7 @@ class BeliController extends Controller
 
     public function bayar()
     {
-        $user = Pengguna::with('pembelian.barangData.pengguna')->find(session('id'));
+        $user = Pengguna::with('pembelian.product.pengguna')->find(session('id'));
         if (!$user) {
             flash('Silahkan login dulu')->error();
             return redirect()->route('masuk');
@@ -118,16 +112,15 @@ class BeliController extends Controller
             return redirect()->route('beranda');
         }
 
-        // Get shipping origin from the first seller in the cart
         $firstItem = $pembelian->first();
-        $firstBarang = $firstItem ? $firstItem->barangData : null;
+        $firstProduct = $firstItem ? $firstItem->product : null;
 
-        if (!$firstBarang) {
+        if (!$firstProduct) {
             flash('Barang tidak ditemukan atau sudah tidak tersedia')->error();
             return redirect()->route('beranda');
         }
 
-        $idkotaAsal = $firstBarang->pengguna ? $firstBarang->pengguna->kota : null;
+        $idkotaAsal = $firstProduct->pengguna ? $firstProduct->pengguna->kota : null;
         $idkotaTujuan = $user->kota;
 
         if ($idkotaAsal) {
@@ -141,10 +134,10 @@ class BeliController extends Controller
         $totalBerat = 0;
         foreach($pembelian as $item)
         {
-            $barang = $item->barangData;
-            if ($barang) {
-                $totalharga += $item->jumlah * $barang->harga;
-                $totalBerat += $item->jumlah * $barang->berat;
+            $product = $item->product;
+            if ($product) {
+                $totalharga += $item->jumlah * $product->price;
+                $totalBerat += $item->jumlah * $product->weight;
             }
         }
 
