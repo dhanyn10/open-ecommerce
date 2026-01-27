@@ -42,7 +42,10 @@
                                 <div class="col-md-4"><label>keterangan</label></div>
                                 <div class="col-md-8"><textarea name="description" class="form-control" rows="6" maxlength="10000" placeholder="keterangan" required>{!! $item->description !!}</textarea></div>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-sm">Ubah</button>
+                            <div class="form-group text-right">
+                                <a href="{{ route('penjual-lihat') }}" class="btn btn-secondary btn-sm">Kembali</a>
+                                <button type="submit" class="btn btn-primary btn-sm">Ubah</button>
+                            </div>
                         @endforeach
                     </form>
                 </div>
