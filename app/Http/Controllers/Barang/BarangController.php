@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Barang;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
 
-use App\Models\Barang;
+use App\Models\Product;
 use App\Models\Pembelian;
 use App\Models\Pengguna;
 use App\Http\Controllers\RajaOngkir;
@@ -15,35 +14,22 @@ class BarangController extends Controller
 {    
     private function sisaBarang($id)
     {
-        $barang         = Barang::find($id);
-        $namapenjual    = $barang->pengguna->nama;
+        $product        = Product::find($id);
+        $namapenjual    = $product->pengguna->nama;
 
-        //jumlah barang yang tersisa
-        $batasjml       = $barang->jumlah;
-        //data jumlah barang yang dibeli di tabel pembelian
-        $jumlahbarang   = $barang->pembelian;
-
-        $jml_dibeli     = 0;
-        for($a = 0; $a < count($jumlahbarang); $a++)
-        {
-            $jml_dibeli += $jumlahbarang[$a]['jumlah'];
-        }
-
-        $sisabarang = $batasjml - $jml_dibeli;
         return array(
-            'barang'        => collect([$barang]),
+            'barang'        => collect([$product]),
             'namapenjual'   => $namapenjual,
-            'sisabarang'    => $sisabarang
+            'sisabarang'    => $product->current_stock
         );
     }
     public function index(Request $req, $id)
     {
         $arrayBarang = $this->sisaBarang($id);
-        $barangObj = $arrayBarang['barang']->first();
-        $berat = $barangObj->berat;
+        $productObj = $arrayBarang['barang']->first();
+        $weight = $productObj->weight;
 
-        //penjual
-        $userPenjual = $barangObj->pengguna;
+        $userPenjual = $productObj->pengguna;
         $provUserPenjual = $userPenjual ? $userPenjual->provinsi : null;
         $kotaUserPenjual = $userPenjual ? $userPenjual->kota : null;
 
@@ -56,7 +42,6 @@ class BarangController extends Controller
             $kotaUserPenjual = explode('-', $kotaUserPenjual);
         }
 
-        //pembeli
         $userPembeli = Pengguna::find(session('id'));
         $provUserPembeli = $userPembeli ? $userPembeli->provinsi : null;
         $kotaUserPembeli = $userPembeli ? $userPembeli->kota : null;
@@ -70,7 +55,6 @@ class BarangController extends Controller
             $kotaUserPembeli = explode('-', $kotaUserPembeli);
         }
         
-
         $idkotaAsal = null;
         if($kotaUserPenjual != null)
         {
@@ -82,7 +66,7 @@ class BarangController extends Controller
             $idkotaTujuan = $kotaUserPembeli;
         }
 
-        $harga = RajaOngkir::costRajaOngkir($idkotaAsal, $idkotaTujuan, $berat*1000); //return array costs
+        $harga = RajaOngkir::costRajaOngkir($idkotaAsal, $idkotaTujuan, $weight*1000);
 
         return view('barang.index', [
             'provUserPenjual'   => $provUserPenjual,
@@ -92,7 +76,7 @@ class BarangController extends Controller
             'data_barang'   => $arrayBarang['barang'],
             'penjual'       => $arrayBarang['namapenjual'],
             'sisabarang'    => $arrayBarang['sisabarang'],
-            'berat'         => $berat,
+            'berat'         => $weight,
             'ongkir'        => $harga
         ]);
     }

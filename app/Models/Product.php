@@ -5,23 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Barang extends Model
+class Product extends Model
 {
     use HasFactory;
     
     protected $primaryKey   = 'id';
-    protected $table        = 'barang';
+    protected $table        = 'products';
     public $incrementing    = false;
     public $timestamps      = false;
     
     protected $fillable = [
         'id',
-        'nama',
-        'harga',
-        'berat',
-        'jumlah',
+        'name',
+        'price',
+        'weight',
+        'stock',
         'user_id',
-        'keterangan'
+        'description'
     ];
 
     public function pengguna()
@@ -31,6 +31,16 @@ class Barang extends Model
 
     public function pembelian()
     {
-        return $this->hasMany(Pembelian::class, 'idbarang');
+        return $this->hasMany(Pembelian::class, 'product_id');
+    }
+
+    public function getSoldAttribute()
+    {
+        return $this->pembelian()->sum('jumlah');
+    }
+
+    public function getCurrentStockAttribute()
+    {
+        return $this->stock - $this->sold;
     }
 }

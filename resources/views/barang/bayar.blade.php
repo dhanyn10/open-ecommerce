@@ -15,18 +15,16 @@
                         <table class="table table-bordered text-uppercase">
                             <tr>
                                 <th>keterangan</th>
-                                <th>jumlah</th>
+                                <th>jumlah (Rp)</th>
                             </tr>
                             <tr>
                                 <td>total pembelian</td>
-                                <td>
-                                    <input style="direction:rtl" type="number" name="" id="totalharga" class="form-control form-control-sm" value="{{$totalharga}}" disabled>
-                                </td>
+                                <td><input style="direction:rtl" type="number" name="" id="totalharga" class="form-control form-control-sm" value="{{$totalharga}}" disabled></td>
                             </tr>
                             <tr>
                                 <td>biaya antar</td>
                                 <td style="direction:rtl">
-                                    <div class="form-group">
+                                    <div class="form-group mb-0">
                                         @if (isset($ongkir) && $ongkir != null)
                                             <select name="ongkir" id="ongkir" class="form-control form-control-sm" onchange="totalHarga()">
                                             @foreach ($ongkir as $item)
@@ -34,15 +32,14 @@
                                             @endforeach
                                             </select>
                                         @else
-                                            
+                                            <span class="text-muted">Ongkir tidak tersedia</span>
                                         @endif
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td>total harga</td>
-                                <td>
-                                    <input style="direction:rtl" type="number" id="total-tagihan" class="form-control form-control-sm" disabled/>
-                                </td>
+                                <td><input style="direction:rtl" type="number" id="total-tagihan" class="form-control form-control-sm" disabled/></td>
                             </tr>
                         </table>
                     </div>
@@ -50,12 +47,10 @@
             </div>
             <div class="col-md-4">
                 <div class="card border-primary">
-                    <div class="card-header bg-primary text-white text-center">
-                        Rekening Tujuan Transfer
-                    </div>
+                    <div class="card-header bg-primary text-white text-center">Rekening Tujuan Transfer</div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-sm-6">Bank Mandiri</div>
+                            <div class="col-sm-6 font-weight-bold">Bank Mandiri</div>
                             <div class="col-sm-6">123456789</div>
                         </div>
                     </div>
@@ -64,11 +59,9 @@
         </div>
     </div>
 @endsection
-
 @section('js')
     <script>
-        function totalHarga()
-        {
+        function totalHarga() {
             var harga = document.getElementById('totalharga').value
             var ongkir = document.getElementById('ongkir').value
             harga = parseInt(harga) || 0
@@ -76,8 +69,6 @@
             var tagihan = (harga + ongkir)
             document.getElementById('total-tagihan').value = tagihan
         }
-        document.addEventListener('DOMContentLoaded', function () {
-            totalHarga()
-        })
+        document.addEventListener('DOMContentLoaded', function () { totalHarga() })
     </script>
 @endsection

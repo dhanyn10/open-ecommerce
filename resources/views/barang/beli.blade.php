@@ -1,11 +1,6 @@
 @extends('tataletak')
 @section('css')
-<style>
-.fotobarang{
-    width:75px;
-    height:75px;
-}
-</style>
+<style>.fotobarang{width:75px;height:75px;}</style>
 @endsection
 @section('konten')
 <div class="container-fluid" style="margin-top:10px">
@@ -30,20 +25,14 @@
                     </tr>
                     @foreach($data_pembelian as $data)
                     <tr>
-                        <td><a  href="{{url('barang/'.$data->idbarang)}}"><img class="img-thumbnail fotobarang" src="{{URL::asset('img/barangdagang/'.$data->idbarang.'.png')}}"/></a></td>
-                        <td>{{$data->nama_barang}}</td>
-                        <td style="direction:rtl">{{$data->harga}}</td>
+                        <td><a href="{{url('barang/'.$data->product_id)}}"><img class="img-thumbnail fotobarang" src="{{URL::asset('img/barangdagang/'.$data->product_id.'.png')}}"/></a></td>
+                        <td>{{$data->product_name}}</td>
+                        <td class="text-right">Rp {{ number_format($data->harga, 0, ',', '.') }}</td>
                         <td class="text-center">{{$data->jumlah}}</td>
-                        <td style="direction:rtl">{{$data->harga*$data->jumlah}}</td>
-                        <td>
-                            <a class="btn btn-block btn-outline-dark btn-sm text-uppercase" href="{{url('barang/hapus/'.$data->idbarang)}}">hapus</a>
-                        </td>
-                        <td>
-                            <a class="btn btn-block btn-outline-dark btn-sm text-uppercase" href="{{url('barang/tambah/'.$data->idbarang)}}">+</a>
-                        </td>
-                        <td>
-                            <a class="btn btn-block btn-outline-dark btn-sm text-uppercase" href="{{url('barang/kurang/'.$data->idbarang)}}">-</a>
-                        </td>
+                        <td class="text-right">Rp {{ number_format($data->harga*$data->jumlah, 0, ',', '.') }}</td>
+                        <td><a class="btn btn-block btn-outline-dark btn-sm text-uppercase" href="{{url('barang/hapus/'.$data->product_id)}}">hapus</a></td>
+                        <td><a class="btn btn-block btn-outline-dark btn-sm text-uppercase" href="{{url('barang/tambah/'.$data->product_id)}}">+</a></td>
+                        <td><a class="btn btn-block btn-outline-dark btn-sm text-uppercase" href="{{url('barang/kurang/'.$data->product_id)}}">-</a></td>
                     </tr>
                     @endforeach
                 </table>
@@ -53,19 +42,17 @@
                             <div class="card-header rounded-0 bg-primary text-white">
                                 <div class="row">
                                     <div class="col-sm-6 text-uppercase">total belanja</div>
-                                    <div class="col-sm-6" style="direction:rtl">{{$total_belanja}}</div>
+                                    <div class="col-sm-6 text-right">Rp {{ number_format($total_belanja, 0, ',', '.') }}</div>
                                 </div>
                             </div>
                         </div>
-                        <div class="card">
-                            <a href="{{route('bayar')}}" class="card-header rounded-0 bg-success text-white text-uppercase text-center">bayar</a>
+                        <div class="card mt-2">
+                            <a href="{{route('bayar')}}" class="btn btn-success btn-block rounded-0 text-uppercase">bayar</a>
                         </div>
                     </div>
                 </div>
             @else
-            <div class="alert alert-primary text-center">
-                belum ada data pembelian barang
-            </div>
+            <div class="alert alert-primary text-center">belum ada data pembelian barang dalam troli</div>
             @endif
         </div>
     </div>

@@ -13,10 +13,10 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <h5 class="text-uppercase">{{$barang->nama}}</h5>
+                            <h5 class="text-uppercase">{{$barang->name}}</h5>
                         </div>
                         <div class="col-md-6">
-                            <strong class="text-danger float-right">Rp.{{$barang->harga}}</strong>
+                            <strong class="text-danger float-right">Rp {{ number_format($barang->price, 0, ',', '.') }}</strong>
                         </div>
                     </div>
                     <strong>tersedia {{$sisabarang}} stok barang</strong>
@@ -88,8 +88,6 @@
                                                     <option value="{{$item['service']}}">[{{$item['service']}}] {{$item['cost'][0]['value']}} (Etd: {{$item['cost'][0]['etd']}})</option>
                                                 @endforeach
                                                 </select>
-                                            @else
-                                                
                                             @endif
                                         </div>
                                     </div>
@@ -104,44 +102,24 @@
                 <div class="card-body">
                     <ul class="nav nav-tabs" id="tab-barang" role="tablist">
                     <li class="nav-item">
-                        <a
-                            class="nav-link active"
-                            id="home-tab"
-                            data-toggle="tab"
-                            href="#detail"
-                            role="tab"
-                            aria-controls="detail"
-                            aria-selected="true"
-                        >
-                            Deskripsi
-                        </a>
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#detail" role="tab" aria-controls="detail" aria-selected="true">Deskripsi</a>
                     </li>
                     <li class="nav-item">
-                        <a
-                            class="nav-link"
-                            id="profile-tab"
-                            data-toggle="tab"
-                            href="#ulasan"
-                            role="tab"
-                            aria-controls="ulasan"
-                            aria-selected="false"
-                        >
-                            Ulasan barang
-                        </a>
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#ulasan" role="tab" aria-controls="ulasan" aria-selected="false">Ulasan barang</a>
                     </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="detail" role="tabpanel" aria-labelledby="home-tab">
                             <div class="card">
                                 <div class="card-body">
-                                    {!!$barang->keterangan!!}
+                                    {!!$barang->description!!}
                                 </div>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="ulasan" role="tabpanel" aria-labelledby="profile-tab">
                             <div class="card">
                                 <div class="card-body">
-                                    {!!$barang->keterangan!!}
+                                    {!!$barang->description!!}
                                 </div>
                             </div>
                         </div>
@@ -151,12 +129,8 @@
         </div>
         <div class="col-md-2">
             <div class="card">
-                <div class="card-header">
-                    Penjual
-                </div>
-                <div class="card-body">
-                    {{$penjual}}
-                </div>
+                <div class="card-header">Penjual</div>
+                <div class="card-body">{{$penjual}}</div>
             </div>
         </div>
         @endforeach

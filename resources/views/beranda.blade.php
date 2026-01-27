@@ -7,7 +7,6 @@
 			<div class="carousel slide" data-ride="carousel">
 				<div class="carousel-inner">
 					<div class="carousel-item active">
-						{{-- <img class="d-block w-100" src="" alt="First slide"> --}}
 					</div>
 				</div>
 			</div>
@@ -19,18 +18,17 @@
 				$number = 1;	
 			@endphp
 				@foreach($data_barang as $barang)
-				<div class="col-md-3">
-					<div class="card w-100">
+				<div class="col-md-3 mb-4">
+					<div class="card h-100">
 						<div class="fotobarangdagang">
-							{{-- https://stackoverflow.com/questions/92720/jquery-javascript-to-replace-broken-images --}}
 							<img class="card-img-top" src="{{URL::asset('img/barangdagang/'.$barang->id.'.png')}} "onError="this.onerror=null;this.src='https://picsum.photos/200/300?random={{$number}}'">
 						</div>
 						<div class="card-body">
-							<p><a class="h5 card-title stretched-link beranda-link text-secondary" href="{{route('barang', $barang->id)}}">{{$barang->nama}}</a></p>
-							<span class="text-danger">{{$barang->harga}}</span>
+							<p><a class="h5 card-title stretched-link beranda-link text-secondary text-uppercase" href="{{route('barang', $barang->id)}}">{{$barang->name}}</a></p>
+							<span class="text-danger">Rp {{ number_format($barang->price, 0, ',', '.') }}</span>
 						</div>
 						@if ($kota != null)
-							<div class="card-footer">{{$kota}}</div>
+							<div class="card-footer text-muted small">{{$kota}}</div>
 						@endif
 					  </div>
 				</div>

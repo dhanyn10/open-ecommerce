@@ -8,18 +8,18 @@ class Barang extends Migration
 {
     public function up()
     {
-        Schema::create('barang', function(Blueprint $table){
+        Schema::create('products', function(Blueprint $table){
             $table->string('id', 50)->primary();
-            $table->string('nama');
+            $table->string('name');
             $table->foreignId('user_id')->constrained('pengguna')->onDelete('cascade');
-            $table->integer("harga");
-            $table->integer('jumlah');
-            $table->integer('berat');
-            $table->text('keterangan',10000);
+            $table->integer("price");
+            $table->integer('stock');
+            $table->integer('weight');
+            $table->text('description',10000);
         });
     }
     public function down()
     {
-        Schema::dropIfExists('barang');
+        Schema::dropIfExists('products');
     }
 }

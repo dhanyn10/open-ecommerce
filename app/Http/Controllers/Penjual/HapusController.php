@@ -4,11 +4,10 @@ namespace App\Http\Controllers\Penjual;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
 use File;
 use Validator;
 
-use App\Models\Barang;
+use App\Models\Product;
 use App\Models\Pembelian;
 
 class HapusController extends Controller
@@ -16,7 +15,7 @@ class HapusController extends Controller
     public function formhapus(Request $req)
     {
         $validasi = Validator::make($req->all(),[
-            'id-barang' => 'required'
+            'product_id' => 'required'
         ]);
         if($validasi->fails())
         {
@@ -25,12 +24,8 @@ class HapusController extends Controller
         }
         else
         {
-            $id = $req->input('id-barang');
-            //hapus data barang di tabel barang
-            Barang::where('user_id', session('id'))->where('id',$id)->delete();
-            //hapus barang di tabel pembelian
-            Pembelian::where('idbarang', $id)->delete();
-            //hapus file gambar barang di public path
+            $id = $req->input('product_id');
+            Product::where('user_id', session('id'))->where('id',$id)->delete();
             File::delete(public_path().'/img/barangdagang/'.$id.'.png');
             flash('berhasil menghapus data')->success();
         }

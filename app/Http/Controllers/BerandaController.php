@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-use App\Models\Barang;
+use App\Models\Product;
 use App\Models\Pengguna;
 
 class BerandaController extends Controller
@@ -31,8 +31,8 @@ class BerandaController extends Controller
         }
         else
         {
-            $barang = Barang::all();
-            $penjual = $barang->pluck('user_id')->first();
+            $products = Product::all();
+            $penjual = $products->pluck('user_id')->first();
             $pengguna = Pengguna::where('id', $penjual)->get();
             $kota = $pengguna->pluck('kota')->first();
             if($kota != null)
@@ -41,7 +41,7 @@ class BerandaController extends Controller
                 $kota = $kota[1];
             }
             return view('beranda',[
-                'data_barang' => $barang,
+                'data_barang' => $products,
                 'kota' => $kota
             ]);
         }

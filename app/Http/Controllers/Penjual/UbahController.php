@@ -7,26 +7,26 @@ use Illuminate\Http\Request;
 use Validator;
 use File;
 
-use App\Models\Barang;
+use App\Models\Product;
 use App\Models\Pengguna;
 
 class UbahController extends Controller
 {
     public function index($id)
     {
-        $barang = Pengguna::find(session('id'))->barang()->where('id', $id)->get();
+        $products = Pengguna::find(session('id'))->products()->where('id', $id)->get();
         return view('penjual.ubah', [
-            'barang'  => $barang
+            'barang'  => $products
         ]);
     }
     public function formubah(Request $req)
     {
         $validasi = Validator::make($req->all(),[
-            'nama'          => 'required|max:30',
-            'harga'         => 'required|digits_between:1,10',
-            'berat'         => 'required|digits_between:1,10',
-            'jumlah'        => 'required|max:10',
-            'keterangan'    => 'required|max:1000'
+            'name'          => 'required|max:30',
+            'price'         => 'required|digits_between:1,10',
+            'weight'        => 'required|digits_between:1,10',
+            'stock'         => 'required|max:10',
+            'description'   => 'required|max:1000'
         ]);
         if($validasi->fails())
         {
@@ -34,58 +34,39 @@ class UbahController extends Controller
         }
         else
         {
-            //update tanpa gambar
-            if($req->input('data-gambar') == null)
+            $id = $req->input('id');
+            $user = Pengguna::find(session('id'));
+
+            $updateData = [
+                'name'          => $req->input('name'),
+                'price'         => $req->input('price'),
+                'weight'        => $req->input('weight'),
+                'stock'         => $req->input('stock'),
+                'description'   => $req->input('description')
+            ];
+
+            if($req->input('data-gambar') != null)
             {
-                $id = $req->input('id');
-                $update = Pengguna::find(session('id'))->barang()->where('id', $id)->update([
-                    'nama'          => $req->input('nama'),
-                    'harga'         => $req->input('harga'),
-                    'berat'         => $req->input('berat'),
-                    'jumlah'        => $req->input('jumlah'),
-                    'keterangan'    => $req->input('keterangan')
-                ]);
-                if($update == 0)
+                $getgambar  = $req->input('data-gambar');
+                $explode    = explode(',', $getgambar);
+                $gambar     = base64_decode($explode[1]);
+                $lokasibarang   = public_path().'/img/barangdagang/'.$id.'.png';
+                if(File::exists($lokasibarang))
                 {
-                    flash('gagal memperbarui data')->error();
+                    File::delete($lokasibarang);
                 }
+                File::put($lokasibarang, $gambar);
+            }
+
+            $update = $user->products()->where('id', $id)->update($updateData);
+
+            if($update == 0)
+            {
+                flash('gagal memperbarui data')->error();
             }
             else
             {
-                $id = $req->input('id');
-                $user = Pengguna::find(session('id'));
-                
-                /**
-                 * prosesor gambar di sini
-                 */
-                //encode gambar menjadi base64
-                $getgambar  = $req->input('data-gambar');
-                $explode    = explode(',', $getgambar);
-                //mendecode string gambar yang diperoleh
-                $gambar     = base64_decode($explode[1]);
-                //lokasi gambar
-                $lokasibarang   = public_path().'/img/barangdagang/'.$id.'.png';
-
-                //cek ketersediaan file
-                if(File::exists($lokasibarang))
-                {
-                    //hapus file lama
-                    File::delete($lokasibarang);
-                }
-                //menaruh file gambar baru dengan nama yang sama
-                File::put($lokasibarang, $gambar);
-
-                $update = $user->barang()->where('id', $id)->update([
-                    'nama'          => $req->input('nama'),
-                    'harga'         => $req->input('harga'),
-                    'berat'         => $req->input('berat'),
-                    'jumlah'        => $req->input('jumlah'),
-                    'keterangan'    => $req->input('keterangan')
-                ]);
-                if($update == 0)
-                {
-                    flash('gagal memperbarui data')->error();
-                }
+                flash('berhasil memperbarui data');
             }
         }
         return redirect()->route('penjual-lihat');

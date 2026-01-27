@@ -17,8 +17,8 @@ class Pembelian extends Model
     protected $fillable = [
         'id',
         'waktu',
-        'idbarang',
-        'nama_barang',
+        'product_id',
+        'product_name',
         'jumlah',
         'user_id'
     ];
@@ -28,8 +28,13 @@ class Pembelian extends Model
         return $this->belongsTo(Pengguna::class, 'user_id');
     }
 
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+
     public function barangData()
     {
-        return $this->belongsTo(Barang::class, 'idbarang');
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }
