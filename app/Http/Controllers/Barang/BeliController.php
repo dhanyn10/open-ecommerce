@@ -15,136 +15,61 @@ class BeliController extends Controller
 {    
     public function beli()
     {
-        $pembelian  = Pembelian::where('user_id', session('id'))->get();
-        $nomor      = 0;
-        foreach($pembelian as $data)
+        $user = Pengguna::with('pembelian.barangData')->find(session('id'));
+        $pembelian = $user ? $user->pembelian : collect();
+
+        foreach($pembelian as $item)
         {
-            $idbarang   = $pembelian[$nomor]['idbarang'];
-            $barang     = Barang::where('id', $idbarang)->get();
-            $harga      = $barang->pluck('harga')->first();
-            $pembelian[$nomor]['harga'] = $harga;
-            $nomor++;
+            $barang = $item->barangData;
+            $item->harga = $barang ? $barang->harga : 0;
         }
 
         $totalbelanja = 0;
-        $nomor = 0;
-        foreach($pembelian as $data)
+        foreach($pembelian as $item)
         {
-            $totalbelanja += $pembelian[$nomor]['harga'] * $pembelian[$nomor]['jumlah'];
-            $nomor++;
+            $totalbelanja += $item->harga * $item->jumlah;
         }
+
         return view('barang.beli',[
             'data_pembelian'    => $pembelian,
             'total_belanja'     => $totalbelanja
         ]);
     }
+
     public function troliPlus($id)
     {
-        $barang = Barang::where('id', $id)->get();
-        if(count($barang) > 0)
+        $barang = Barang::find($id);
+        if($barang)
         {
-            $pembeli    = Pembelian::where('user_id', session('id'))->get();
-            if(count($pembeli) > 0) //pembeli yang telah terdata di tabel pembelian
+            $user = Pengguna::find(session('id'));
+
+            // Check if item already in cart for this user
+            $cek_beli = $user->pembelian()->where('idbarang', $id)->first();
+
+            if($cek_beli) // Item exists in cart
             {
-                //mengambil data id barang berdasarkan data id pembeli
-                $cek_beli = Pembelian::where('idbarang', $id)->where('user_id', session('id'))->get();
-                if(count($cek_beli)> 0) //pengkondisian jika barang yang sama sudah masuk dalam troli pembeli
+                $batasjml = $barang->jumlah;
+                $jml_dibeli = Pembelian::where('idbarang', $id)->sum('jumlah');
+                $sisabarang = $batasjml - $jml_dibeli;
+
+                if($sisabarang > 0)
                 {
-                    //mengambil data pembelian di tabel pembelian berdasarkan id barang yang diberikan melalui url
-                    $data_beli      = Pembelian::where('idbarang', $id)->where('user_id', session('id'))->get();
-
-                    //mengambil data barang di tabel barang berdasarkan id barang yang diberikan melalui url
-                    $data_barang    = Barang::where('id', $id)->get();
-    
-                    //mengambil jumlah barang yang tersedia untuk membatasi maks pembelian di tabel barang
-                    $batasjml       = $data_barang->pluck('jumlah')->first();
-    
-                    //mengambil data jumlah barang yang dibeli di tabel pembelian
-                    $jumlah_beli    = $data_beli->pluck('jumlah')->first();
-                    
-                    //jumlah barang yang tersisa
-                    //data jumlah barang yang dibeli di tabel pembelian
-                    $jumlahbarang   = Pembelian::where('idbarang', $id)->get();
-
-                    $jml_dibeli     = 0;
-                    for($a = 0; $a < count($jumlahbarang); $a++)
-                    {
-                        $jml_dibeli += $jumlahbarang[$a]['jumlah'];
-                    }
-
-                    $sisabarang     = $batasjml - $jml_dibeli;
-
-                    //pemgkondisian jika jumlah beli masih belum melebihi batas stok
-                    if($sisabarang > 0)
-                    {
-                        $jumlah_beli++;
-                    }
-                    //memperbarui jumlah barang yang dipesan berdasarkan nilai variabel jumlah_beli
-                    Pembelian::where('idbarang', $id)
-                    ->where('user_id', session('id'))
-                    ->update(['jumlah' => $jumlah_beli]);
-                }
-                else //pembeli terdata baru pertama kali membeli barang yang bersangkutan
-                {
-                    //ambil data barang dari tabel barang
-                    $barang         = Barang::where('id', $id)->get();
-                    //ambil nama barang
-                    $nama_barang    = $barang->pluck('nama')->first();
-                    //buat id pembelian
-                    $id_beli        = date("ymdhis").Str::random(7).'-'.str_replace(' ','-',$nama_barang);
-                    //buat database pembelian
-                    Pembelian::create([
-                        'id'        => $id_beli,
-                        'waktu'     => date('y-m-d-h-i-s'),
-                        'jumlah'    => 1,
-                        'idbarang' => $id,
-                        'barang'    => $nama_barang,
-                        'user_id'   => session('id')
-                    ]);
+                    $cek_beli->increment('jumlah');
                 }
             }
-            else //pembeli baru
+            else // New item for cart
             {
-                //ambil data barang dari tabel barang
-                $barang         = Barang::where('id', $id)->get();
-                //ambil nama barang
-                $nama_barang    = $barang->pluck('nama')->first();
-                //buat id pembelian
-                $id_beli        = date("ymdhis").Str::random(7).'-'.str_replace(' ','-',$nama_barang);
-                //buat database pembelian
-                Pembelian::create([
-                    'id'        => $id_beli,
-                    'waktu'     => date('y-m-d-h-i-s'),
-                    'jumlah'    => 1,
-                    'idbarang' => $id,
-                    'barang'    => $nama_barang,
-                    'user_id'   => session('id')
+                $id_beli = date("ymdhis").Str::random(7).'-'.str_replace(' ','-',$barang->nama);
+                $user->pembelian()->create([
+                    'id'            => $id_beli,
+                    'waktu'         => date('y-m-d-h-i-s'),
+                    'jumlah'        => 1,
+                    'idbarang'      => $id,
+                    'nama_barang'   => $barang->nama,
                 ]);
             }
-            //memasukkan harga kedalam array untuk keperluan tabel hitungan pembayaran
-            $pembelian  = Pembelian::where('user_id', session('id'))->get();
-            $nomor      = 0;
-            foreach($pembelian as $data)
-            {
-                $idbarang   = $pembelian[$nomor]['idbarang'];
-                $barang     = Barang::where('id', $idbarang)->get();
-                $harga      = $barang->pluck('harga')->first();
-                $pembelian[$nomor]['harga'] = $harga;
-                $nomor++;
-            }
             
-            //menghitung total belanja
-            $totalbelanja   = 0;
-            $nomor          = 0;
-            foreach($pembelian as $data)
-            {
-                $totalbelanja += $pembelian[$nomor]['harga'] * $pembelian[$nomor]['jumlah'];
-                $nomor++;
-            }
-            return view('barang.beli',[
-                'data_pembelian'    => $pembelian,
-                'total_belanja'     => $totalbelanja
-            ]);
+            return redirect()->route('data-belanja');
         }
         else
         {
@@ -152,55 +77,79 @@ class BeliController extends Controller
             return redirect()->route('beranda');
         }
     }
+
     public function troliDelete($id)
     {
-        
-        //menghapus belanja barang
-        Pembelian::where('idbarang', $id)->delete();
-        flash('berhasil menghapus barang dari troli');
+        $user = Pengguna::find(session('id'));
+        if ($user) {
+            $user->pembelian()->where('idbarang', $id)->delete();
+            flash('berhasil menghapus barang dari troli');
+        }
         return redirect()->route('data-belanja');
     }
+
     public function troliMinus($id)
     {
-        //mengambil data belanja di tabel pembelian
-        $data_beli  = Pembelian::where('idbarang', $id)->get();
-        //mengambil data jumlah barang yang dibeli
-        $jumlah_beli = $data_beli->pluck('jumlah')->first();
-        if($jumlah_beli > 1)
-        {
-            $jumlah_beli--;
+        $user = Pengguna::find(session('id'));
+        if ($user) {
+            $cek_beli = $user->pembelian()->where('idbarang', $id)->first();
+
+            if($cek_beli && $cek_beli->jumlah > 1)
+            {
+                $cek_beli->decrement('jumlah');
+            }
         }
-        //memperbarui jumlah barang yang dipesan berdasarkan nilai variabel jumlah_beli
-        Pembelian::where('idbarang', $id)
-        ->where('user_id', session('id'))
-        ->update(['jumlah' => $jumlah_beli]);
 
         return redirect()->route('data-belanja');
     }
+
     public function bayar()
     {
-        $pembeli  = Pembelian::where('user_id', session('id'))->get();
-        $idBarang = $pembeli->pluck('idbarang')->first();
-        $barang = Barang::where('id', $idBarang)->get();
-        $user_id = $barang->pluck('user_id')->first();
-        $kotaAsal = Pengguna::where('id', $user_id)->get();
-        $idkotaAsal = $kotaAsal->pluck('kota')->first();
-        $kotaTujuan = Pengguna::where('id', session('id'))->get();
-        $idkotaTujuan = $kotaTujuan->pluck('kota')->first();
-        $totalharga = 0;
-        $nomor      = 0;
-        $totalBerat = 0;
-        foreach($pembeli as $data)
-        {
-            $barang = Barang::where('id', $data->idbarang)->get();
-            $harga  = $barang->pluck('harga')->first();
-            $berat  = $barang->pluck('berat')->first();
-            $totalharga += $pembeli[$nomor]['jumlah'] * $harga;
-            $nomor++;
-            $totalBerat += $berat;
+        $user = Pengguna::with('pembelian.barangData.pengguna')->find(session('id'));
+        if (!$user) {
+            flash('Silahkan login dulu')->error();
+            return redirect()->route('masuk');
         }
 
-        $ongkir = RajaOngkir::costRajaOngkir($idkotaAsal, $idkotaTujuan, $totalBerat*1000); //return array costs
+        $pembelian = $user->pembelian;
+
+        if ($pembelian->isEmpty()) {
+            flash('Troli kosong')->error();
+            return redirect()->route('beranda');
+        }
+
+        // Get shipping origin from the first seller in the cart
+        $firstItem = $pembelian->first();
+        $firstBarang = $firstItem ? $firstItem->barangData : null;
+
+        if (!$firstBarang) {
+            flash('Barang tidak ditemukan atau sudah tidak tersedia')->error();
+            return redirect()->route('beranda');
+        }
+
+        $idkotaAsal = $firstBarang->pengguna ? $firstBarang->pengguna->kota : null;
+        $idkotaTujuan = $user->kota;
+
+        if ($idkotaAsal) {
+            $idkotaAsal = explode('-', $idkotaAsal)[0];
+        }
+        if ($idkotaTujuan) {
+            $idkotaTujuan = explode('-', $idkotaTujuan)[0];
+        }
+
+        $totalharga = 0;
+        $totalBerat = 0;
+        foreach($pembelian as $item)
+        {
+            $barang = $item->barangData;
+            if ($barang) {
+                $totalharga += $item->jumlah * $barang->harga;
+                $totalBerat += $item->jumlah * $barang->berat;
+            }
+        }
+
+        $ongkir = RajaOngkir::costRajaOngkir($idkotaAsal, $idkotaTujuan, $totalBerat*1000);
+
         return view('barang.bayar',[
             'totalharga' => $totalharga,
             'ongkir' => $ongkir

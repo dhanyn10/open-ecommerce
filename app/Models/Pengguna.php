@@ -38,4 +38,14 @@ class Pengguna extends Model
     protected $hidden = [
         'sandi'
     ];
+
+    public function barang()
+    {
+        return $this->hasMany(Barang::class, 'user_id');
+    }
+
+    public function pembelian()
+    {
+        return $this->hasMany(Pembelian::class, 'user_id');
+    }
 }

@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Penjual;
 use App\Http\Controllers\Controller;
 
 use App\Models\Barang;
+use App\Models\Pengguna;
 
 class BarangController extends Controller
 {
     public function index()
     {
-        $barang = Barang::where('user_id', session('id'))->get();
+        $barang = Pengguna::find(session('id'))->barang;
         return view('penjual.barang',[
             'data_barang'   => $barang
         ]);

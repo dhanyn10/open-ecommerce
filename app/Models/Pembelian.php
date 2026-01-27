@@ -18,8 +18,18 @@ class Pembelian extends Model
         'id',
         'waktu',
         'idbarang',
-        'barang',
+        'nama_barang',
         'jumlah',
         'user_id'
     ];
+
+    public function pengguna()
+    {
+        return $this->belongsTo(Pengguna::class, 'user_id');
+    }
+
+    public function barangData()
+    {
+        return $this->belongsTo(Barang::class, 'idbarang');
+    }
 }

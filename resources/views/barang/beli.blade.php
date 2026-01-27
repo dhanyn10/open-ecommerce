@@ -31,7 +31,7 @@
                     @foreach($data_pembelian as $data)
                     <tr>
                         <td><a  href="{{url('barang/'.$data->idbarang)}}"><img class="img-thumbnail fotobarang" src="{{URL::asset('img/barangdagang/'.$data->idbarang.'.png')}}"/></a></td>
-                        <td>{{$data->barang}}</td>
+                        <td>{{$data->nama_barang}}</td>
                         <td style="direction:rtl">{{$data->harga}}</td>
                         <td class="text-center">{{$data->jumlah}}</td>
                         <td style="direction:rtl">{{$data->harga*$data->jumlah}}</td>

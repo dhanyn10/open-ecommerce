@@ -68,13 +68,12 @@ Route::group([
     'prefix'        => 'barang'
 ], function(){
     Route::get('beli', [BarangBeli::class, 'beli'])->name('data-belanja');
-    Route::get('bayar',[BarangBeli::class. 'bayar'])->name('bayar');
+    Route::get('bayar',[BarangBeli::class, 'bayar'])->name('bayar');
     Route::get('{id}', [BarangBarang::class, 'index'])->name('barang');
     Route::get('tambah/{id}', [BarangBeli::class, 'troliPlus']);
     Route::get('kurang/{id}', [BarangBeli::class, 'troliMinus']);
     Route::get('hapus/{id}', [BarangBeli::class, 'troliDelete']);
     Route::post('{id}', [BarangBarang::class, 'index']);
-    Route::post('beli', [BarangBeli::class, 'aturbelanja']);
 });
 
 Route::group([
