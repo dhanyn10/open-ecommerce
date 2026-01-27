@@ -17,7 +17,7 @@ class TambahController extends Controller
 {
     public function index()
     {
-        $pengguna = Pengguna::where('email', session('email'))->get();
+        $pengguna = Pengguna::where('id', session('id'))->get();
 
         /**
          * unable to create new product record before user profile completed
@@ -89,7 +89,7 @@ class TambahController extends Controller
                     'harga'     => $harga,
                     'jumlah'    => $jumlah,
                     'berat'     => $berat,
-                    'penjual'   => session('email'),
+                    'user_id'   => session('id'),
                     'keterangan'=> $keterangan
                 ]);
                 flash('berhasil menambah barang');

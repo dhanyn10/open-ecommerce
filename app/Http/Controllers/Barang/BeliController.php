@@ -15,7 +15,7 @@ class BeliController extends Controller
 {    
     public function beli()
     {
-        $pembelian  = Pembelian::where('pembeli', session('email'))->get();
+        $pembelian  = Pembelian::where('user_id', session('id'))->get();
         $nomor      = 0;
         foreach($pembelian as $data)
         {
@@ -43,15 +43,15 @@ class BeliController extends Controller
         $barang = Barang::where('id', $id)->get();
         if(count($barang) > 0)
         {
-            $pembeli    = Pembelian::where('pembeli', session('email'))->get();
+            $pembeli    = Pembelian::where('user_id', session('id'))->get();
             if(count($pembeli) > 0) //pembeli yang telah terdata di tabel pembelian
             {
                 //mengambil data id barang berdasarkan data id pembeli
-                $cek_beli = Pembelian::where('idbarang', $id)->where('pembeli', session('email'))->get();
+                $cek_beli = Pembelian::where('idbarang', $id)->where('user_id', session('id'))->get();
                 if(count($cek_beli)> 0) //pengkondisian jika barang yang sama sudah masuk dalam troli pembeli
                 {
                     //mengambil data pembelian di tabel pembelian berdasarkan id barang yang diberikan melalui url
-                    $data_beli      = Pembelian::where('idbarang', $id)->where('pembeli', session('email'))->get();
+                    $data_beli      = Pembelian::where('idbarang', $id)->where('user_id', session('id'))->get();
 
                     //mengambil data barang di tabel barang berdasarkan id barang yang diberikan melalui url
                     $data_barang    = Barang::where('id', $id)->get();
@@ -81,7 +81,7 @@ class BeliController extends Controller
                     }
                     //memperbarui jumlah barang yang dipesan berdasarkan nilai variabel jumlah_beli
                     Pembelian::where('idbarang', $id)
-                    ->where('pembeli', session('email'))
+                    ->where('user_id', session('id'))
                     ->update(['jumlah' => $jumlah_beli]);
                 }
                 else //pembeli terdata baru pertama kali membeli barang yang bersangkutan
@@ -99,7 +99,7 @@ class BeliController extends Controller
                         'jumlah'    => 1,
                         'idbarang' => $id,
                         'barang'    => $nama_barang,
-                        'pembeli'   => session('email')
+                        'user_id'   => session('id')
                     ]);
                 }
             }
@@ -118,11 +118,11 @@ class BeliController extends Controller
                     'jumlah'    => 1,
                     'idbarang' => $id,
                     'barang'    => $nama_barang,
-                    'pembeli'   => session('email')
+                    'user_id'   => session('id')
                 ]);
             }
             //memasukkan harga kedalam array untuk keperluan tabel hitungan pembayaran
-            $pembelian  = Pembelian::where('pembeli', session('email'))->get();
+            $pembelian  = Pembelian::where('user_id', session('id'))->get();
             $nomor      = 0;
             foreach($pembelian as $data)
             {
@@ -172,20 +172,20 @@ class BeliController extends Controller
         }
         //memperbarui jumlah barang yang dipesan berdasarkan nilai variabel jumlah_beli
         Pembelian::where('idbarang', $id)
-        ->where('pembeli', session('email'))
+        ->where('user_id', session('id'))
         ->update(['jumlah' => $jumlah_beli]);
 
         return redirect()->route('data-belanja');
     }
     public function bayar()
     {
-        $pembeli  = Pembelian::where('pembeli', session('email'))->get();
+        $pembeli  = Pembelian::where('user_id', session('id'))->get();
         $idBarang = $pembeli->pluck('idbarang')->first();
         $barang = Barang::where('id', $idBarang)->get();
-        $penjualBarang = $barang->pluck('penjual')->first();
-        $kotaAsal = Pengguna::where('email', $penjualBarang)->get();
+        $user_id = $barang->pluck('user_id')->first();
+        $kotaAsal = Pengguna::where('id', $user_id)->get();
         $idkotaAsal = $kotaAsal->pluck('kota')->first();
-        $kotaTujuan = Pengguna::where('email', session('email'))->get();
+        $kotaTujuan = Pengguna::where('id', session('id'))->get();
         $idkotaTujuan = $kotaTujuan->pluck('kota')->first();
         $totalharga = 0;
         $nomor      = 0;

@@ -14,7 +14,7 @@ class Pembelian extends Migration
             $table->integer('jumlah');
             $table->string('idbarang',50);
             $table->string('barang', 30);
-            $table->string('pembeli',30);
+            $table->foreignId('user_id')->constrained('pengguna')->onDelete('cascade');
         });
     }
    public function down()

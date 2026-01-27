@@ -20,7 +20,7 @@ class PenggunaController extends Controller
             'sandi'     => 'nullable|string|max:30'
         ]);
 
-        $pengguna = Pengguna::where('email', session('email'))->firstOrFail();
+        $pengguna = Pengguna::where('id', session('id'))->firstOrFail();
 
         // Handle email change and re-confirmation
         $konfirmasi = $pengguna->konfirmasi;

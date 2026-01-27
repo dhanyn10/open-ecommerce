@@ -20,6 +20,6 @@ class Pembelian extends Model
         'idbarang',
         'barang',
         'jumlah',
-        'pembeli'
+        'user_id'
     ];
 }

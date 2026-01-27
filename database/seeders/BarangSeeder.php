@@ -13,6 +13,7 @@ class BarangSeeder extends Seeder
     {
         $faker = Faker::create();
         $faker->addProvider(new \Faker\Provider\FakeCar($faker));
+        $user = \App\Models\Pengguna::where('email', 'penjual@open_ecommerce')->first();
         for($x = 0; $x < 10; $x++) {
             Barang::create([
                 'id'    => date("ymdhis").Str::random(7).'-404',
@@ -20,7 +21,7 @@ class BarangSeeder extends Seeder
                 'harga' => rand(200000000, 500000000),
                 'berat' => rand(5,10),
                 'jumlah'    => rand(1,50),
-                'penjual'   => 'penjual@open_ecommerce',
+                'user_id'   => $user->id,
                 'keterangan' => $faker->paragraphs(2, true)
             ]);
         }

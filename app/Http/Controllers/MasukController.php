@@ -68,6 +68,7 @@ class MasukController extends Controller
                 else
                 {
                     //mengambil data di database
+                    $data_id    = $data->pluck('id')->first();
                     $data_nama  = $data->pluck('nama')->first();
                     $data_email = $data->pluck('email')->first();
                     $data_peran = $data->pluck('peran')->first();
@@ -78,6 +79,7 @@ class MasukController extends Controller
                     {
                         //jika sandi cocok, buat sesi dengan menggunakan data nama dan email
                         session([
+                            'id'        => $data_id,
                             'nama'      => $data_nama,
                             'email'     => $data_email,
                             'peran'     => $data_peran

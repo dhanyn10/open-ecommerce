@@ -32,8 +32,8 @@ class BerandaController extends Controller
         else
         {
             $barang = Barang::all();
-            $penjual = $barang->pluck('penjual')->first();
-            $pengguna = Pengguna::where('email', $penjual)->get();
+            $penjual = $barang->pluck('user_id')->first();
+            $pengguna = Pengguna::where('id', $penjual)->get();
             $kota = $pengguna->pluck('kota')->first();
             if($kota != null)
             {

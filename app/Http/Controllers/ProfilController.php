@@ -10,7 +10,7 @@ class ProfilController extends Controller
 {
     public function index()
     {
-        $pengguna       = Pengguna::where('email', session('email'))->get();
+        $pengguna       = Pengguna::where('id', session('id'))->get();
         $dataProvinsi   = RajaOngkir::getProvinces();
         $dataKota       = null;
         $provinsiId     = null;
