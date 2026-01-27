@@ -25,7 +25,7 @@
                     </tr>
                     @foreach($data_pembelian as $data)
                     <tr>
-                        <td><a href="{{url('barang/'.$data->product_id)}}"><img class="img-thumbnail fotobarang" src="{{URL::asset('img/barangdagang/'.$data->product_id.'.png')}}"/></a></td>
+                        <td><a href="{{url('barang/'.$data->product_id)}}"><img class="img-thumbnail fotobarang" src="{{URL::asset('img/barangdagang/'.$data->product_id.'.png')}}" onError="this.onerror=null;this.src='{{URL::asset('img/noimage.svg')}}'"/></a></td>
                         <td>{{$data->product_name}}</td>
                         <td class="text-right">Rp {{ number_format($data->harga, 0, ',', '.') }}</td>
                         <td class="text-center">{{$data->jumlah}}</td>

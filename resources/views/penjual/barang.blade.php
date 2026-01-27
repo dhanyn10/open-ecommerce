@@ -29,7 +29,7 @@
                                         <tr>
                                             <td class="text-center">{{ $index + 1 }}</td>
                                             <td class="text-center">
-                                                <img src="{{URL::asset('img/barangdagang/'.$barang->id.'.png')}}" style="width: 50px; height: 50px; object-fit: cover;"/>
+                                                <img src="{{URL::asset('img/barangdagang/'.$barang->id.'.png')}}" style="width: 50px; height: 50px; object-fit: cover;" onError="this.onerror=null;this.src='{{URL::asset('img/noimage.svg')}}'"/>
                                             </td>
                                             <td>{{$barang->name}}</td>
                                             <td class="text-danger text-right">Rp {{ number_format($barang->price, 0, ',', '.') }}</td>

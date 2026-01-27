@@ -6,7 +6,7 @@
     <div class="row">
         @foreach($data_barang as $barang)
         <div class="col-md-3">
-            <img class="img-thumbnail w-100" src="{{URL::asset('img/barangdagang/'.$barang->id.'.png')}}"/>
+            <img class="img-thumbnail w-100" src="{{URL::asset('img/barangdagang/'.$barang->id.'.png')}}" onError="this.onerror=null;this.src='{{URL::asset('img/noimage.svg')}}'"/>
         </div>
         <div class="col-md-7">
             <div class="card">

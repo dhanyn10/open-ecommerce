@@ -16,7 +16,7 @@
                         @foreach ($barang as $item)
                             <input type="hidden" name="id" value="{{$item->id}}">
                             <div class="form-group">
-                                <img id="preview-gambar" class="img-thumbnail" src="{{URL::asset('img/barangdagang/'.$item->id.'.png')}}"/>
+                                <img id="preview-gambar" class="img-thumbnail" src="{{URL::asset('img/barangdagang/'.$item->id.'.png')}}" onError="this.onerror=null;this.src='{{URL::asset('img/noimage.svg')}}'"/>
                                 <input type="hidden" name="data-gambar" id="data-gambar"/>
                             </div>
                             <div class="form-group">

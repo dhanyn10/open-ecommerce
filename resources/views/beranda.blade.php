@@ -14,14 +14,11 @@
 		<hr/>
 		<div class="row">
 			@if(isset($data_barang))
-			@php
-				$number = 1;	
-			@endphp
 				@foreach($data_barang as $barang)
 				<div class="col-md-3 mb-4">
 					<div class="card h-100">
 						<div class="fotobarangdagang">
-							<img class="card-img-top" src="{{URL::asset('img/barangdagang/'.$barang->id.'.png')}} "onError="this.onerror=null;this.src='https://picsum.photos/200/300?random={{$number}}'">
+							<img class="card-img-top" src="{{URL::asset('img/barangdagang/'.$barang->id.'.png')}}" onError="this.onerror=null;this.src='{{URL::asset('img/noimage.svg')}}'">
 						</div>
 						<div class="card-body">
 							<p><a class="h5 card-title stretched-link beranda-link text-secondary text-uppercase" href="{{route('barang', $barang->id)}}">{{$barang->name}}</a></p>
@@ -32,9 +29,6 @@
 						@endif
 					  </div>
 				</div>
-				@php
-					$number++;
-				@endphp
 				@endforeach
 			@endif
 		</div>
