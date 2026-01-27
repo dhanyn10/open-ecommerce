@@ -8,12 +8,13 @@ use Validator;
 use File;
 
 use App\Models\Barang;
+use App\Models\Pengguna;
 
 class UbahController extends Controller
 {
     public function index($id)
     {
-        $barang = Barang::where('id', $id)->get();
+        $barang = Pengguna::find(session('id'))->barang()->where('id', $id)->get();
         return view('penjual.ubah', [
             'barang'  => $barang
         ]);
@@ -37,7 +38,7 @@ class UbahController extends Controller
             if($req->input('data-gambar') == null)
             {
                 $id = $req->input('id');
-                $update = Barang::where('id', $id)->update([
+                $update = Pengguna::find(session('id'))->barang()->where('id', $id)->update([
                     'nama'          => $req->input('nama'),
                     'harga'         => $req->input('harga'),
                     'berat'         => $req->input('berat'),
@@ -52,6 +53,7 @@ class UbahController extends Controller
             else
             {
                 $id = $req->input('id');
+                $user = Pengguna::find(session('id'));
                 
                 /**
                  * prosesor gambar di sini
@@ -73,7 +75,7 @@ class UbahController extends Controller
                 //menaruh file gambar baru dengan nama yang sama
                 File::put($lokasibarang, $gambar);
 
-                $update = Barang::where('id', $id)->update([
+                $update = $user->barang()->where('id', $id)->update([
                     'nama'          => $req->input('nama'),
                     'harga'         => $req->input('harga'),
                     'berat'         => $req->input('berat'),
