@@ -182,8 +182,20 @@ class BeliController extends Controller
     {
         $user = Pengguna::find(session('id'));
         $pembeli = $user->pembelian;
+
+        if (count($pembeli) == 0) {
+            flash('Troli kosong')->error();
+            return redirect()->route('beranda');
+        }
+
         $idBarang = $pembeli->pluck('idbarang')->first();
         $barang = Barang::find($idBarang);
+
+        if (!$barang) {
+            flash('Barang tidak ditemukan')->error();
+            return redirect()->route('beranda');
+        }
+
         $idkotaAsal = $barang->pengguna->kota;
         $idkotaTujuan = $user->kota;
         $totalharga = 0;
