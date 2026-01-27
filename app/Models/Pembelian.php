@@ -28,7 +28,7 @@ class Pembelian extends Model
         return $this->belongsTo(Pengguna::class, 'user_id');
     }
 
-    public function barang()
+    public function barangData()
     {
         return $this->belongsTo(Barang::class, 'idbarang');
     }
