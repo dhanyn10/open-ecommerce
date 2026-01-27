@@ -10,7 +10,7 @@ class BarangController extends Controller
 {
     public function index()
     {
-        $barang = Barang::where('penjual', session('email'))->get();
+        $barang = Barang::where('user_id', session('id'))->get();
         return view('penjual.barang',[
             'data_barang'   => $barang
         ]);

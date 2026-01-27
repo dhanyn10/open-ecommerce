@@ -16,8 +16,8 @@ class BarangController extends Controller
     private function sisaBarang($id)
     {
         $barang         = Barang::where('id', $id)->get();
-        $emailpenjual   = $barang->pluck('penjual')->first();
-        $pengguna       = Pengguna::where('email', $emailpenjual)->get();
+        $user_id        = $barang->pluck('user_id')->first();
+        $pengguna       = Pengguna::where('id', $user_id)->get();
         $namapenjual    = $pengguna->pluck('nama')->first();
 
         //jumlah barang yang tersisa
@@ -46,8 +46,8 @@ class BarangController extends Controller
         $berat = $barang->pluck('berat')->first();
 
         //penjual
-        $emailpenjual = $barang->pluck('penjual')->first();
-        $userPenjual = Pengguna::where('email', $emailpenjual)->get();
+        $user_id = $barang->pluck('user_id')->first();
+        $userPenjual = Pengguna::where('id', $user_id)->get();
         $provUserPenjual = $userPenjual->pluck('provinsi')->first();
         $kotaUserPenjual = $userPenjual->pluck('kota')->first();
 
@@ -61,7 +61,7 @@ class BarangController extends Controller
         }
 
         //pembeli
-        $userPembeli = Pengguna::where('email', session('email'))->get();
+        $userPembeli = Pengguna::where('id', session('id'))->get();
         $provUserPembeli = $userPembeli->pluck('provinsi')->first();
         $kotaUserPembeli = $userPembeli->pluck('kota')->first();
 

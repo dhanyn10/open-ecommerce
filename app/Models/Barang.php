@@ -20,7 +20,7 @@ class Barang extends Model
         'harga',
         'berat',
         'jumlah',
-        'penjual',
+        'user_id',
         'keterangan'
     ];
 }

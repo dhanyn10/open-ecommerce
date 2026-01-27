@@ -27,7 +27,7 @@ class HapusController extends Controller
         {
             $id = $req->input('id-barang');
             //hapus data barang di tabel barang
-            Barang::where('penjual', session('email'))->where('id',$id)->delete();
+            Barang::where('user_id', session('id'))->where('id',$id)->delete();
             //hapus barang di tabel pembelian
             Pembelian::where('idbarang', $id)->delete();
             //hapus file gambar barang di public path

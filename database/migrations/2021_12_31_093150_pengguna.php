@@ -9,7 +9,8 @@ class Pengguna extends Migration
     public function up()
     {
         Schema::create('pengguna', function(Blueprint $table){
-            $table->string("email", 30)->primary();
+            $table->id();
+            $table->string("email", 30)->unique();
             $table->string("nama");
             $table->string('telepon', 15)->nullable();
             $table->string('alamat',255)->nullable();

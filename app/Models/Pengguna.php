@@ -9,12 +9,13 @@ class Pengguna extends Model
 {
     use HasFactory;
     
-    protected $primaryKey   = 'email';
+    protected $primaryKey   = 'id';
     protected $table        = 'pengguna';
-    public $incrementing    = false;
+    public $incrementing    = true;
     public $timestamps      = false;
     
     protected $fillable = [
+        'id',
         'email',
         'telepon',
         'alamat',

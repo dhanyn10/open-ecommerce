@@ -11,7 +11,7 @@ class Barang extends Migration
         Schema::create('barang', function(Blueprint $table){
             $table->string('id', 50)->primary();
             $table->string('nama');
-            $table->string('penjual');
+            $table->foreignId('user_id')->constrained('pengguna')->onDelete('cascade');
             $table->integer("harga");
             $table->integer('jumlah');
             $table->integer('berat');
