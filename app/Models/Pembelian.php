@@ -18,7 +18,7 @@ class Pembelian extends Model
         'id',
         'waktu',
         'idbarang',
-        'barang',
+        'nama_barang',
         'jumlah',
         'user_id'
     ];

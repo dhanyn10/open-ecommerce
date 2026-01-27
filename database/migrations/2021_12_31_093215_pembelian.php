@@ -19,7 +19,7 @@ class Pembelian extends Migration
             $table->integer('jumlah');
             $table->string('idbarang', 50);
             $table->foreign('idbarang')->references('id')->on('barang')->onDelete('cascade');
-            $table->string('barang', 30);
+            $table->string('nama_barang', 30);
             $table->foreignId('user_id')->constrained('pengguna')->onDelete('cascade');
         });
     }

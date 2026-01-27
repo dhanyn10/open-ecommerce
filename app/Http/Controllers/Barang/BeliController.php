@@ -100,7 +100,7 @@ class BeliController extends Controller
                         'waktu'     => date('y-m-d-h-i-s'),
                         'jumlah'    => 1,
                         'idbarang' => $id,
-                        'barang'    => $nama_barang,
+                        'nama_barang'    => $nama_barang,
                         'user_id'   => session('id')
                     ]);
                 }
@@ -119,7 +119,7 @@ class BeliController extends Controller
                     'waktu'     => date('y-m-d-h-i-s'),
                     'jumlah'    => 1,
                     'idbarang' => $id,
-                    'barang'    => $nama_barang,
+                    'nama_barang'    => $nama_barang,
                     'user_id'   => session('id')
                 ]);
             }
