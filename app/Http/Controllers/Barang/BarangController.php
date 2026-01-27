@@ -93,7 +93,7 @@ class BarangController extends Controller
             'penjual'       => $arrayBarang['namapenjual'],
             'sisabarang'    => $arrayBarang['sisabarang'],
             'berat'         => $berat,
-            'harga'         => $harga
+            'ongkir'        => $harga
         ]);
     }
 }

@@ -15,7 +15,8 @@ class BeliController extends Controller
 {    
     public function beli()
     {
-        $pembelian  = Pengguna::find(session('id'))->pembelian;
+        $user = Pengguna::find(session('id'));
+        $pembelian = $user ? $user->pembelian : collect();
         $nomor      = 0;
         foreach($pembelian as $data)
         {
@@ -180,35 +181,46 @@ class BeliController extends Controller
     }
     public function bayar()
     {
-        $user = Pengguna::find(session('id'));
+        $user = Pengguna::with('pembelian.barang')->find(session('id'));
+        if (!$user) {
+            flash('Silahkan login dulu')->error();
+            return redirect()->route('masuk');
+        }
+
         $pembeli = $user->pembelian;
 
-        if (count($pembeli) == 0) {
+        if ($pembeli->isEmpty()) {
             flash('Troli kosong')->error();
             return redirect()->route('beranda');
         }
 
-        $idBarang = $pembeli->pluck('idbarang')->first();
-        $barang = Barang::find($idBarang);
+        $firstPembelian = $pembeli->first();
+        $firstBarang = $firstPembelian ? $firstPembelian->barang : null;
 
-        if (!$barang) {
+        if (!$firstBarang) {
             flash('Barang tidak ditemukan')->error();
             return redirect()->route('beranda');
         }
 
-        $idkotaAsal = $barang->pengguna->kota;
+        $idkotaAsal = $firstBarang->pengguna ? $firstBarang->pengguna->kota : null;
         $idkotaTujuan = $user->kota;
+
+        if ($idkotaAsal) {
+            $idkotaAsal = explode('-', $idkotaAsal)[0];
+        }
+        if ($idkotaTujuan) {
+            $idkotaTujuan = explode('-', $idkotaTujuan)[0];
+        }
+
         $totalharga = 0;
-        $nomor      = 0;
         $totalBerat = 0;
         foreach($pembeli as $data)
         {
-            $barang = Barang::where('id', $data->idbarang)->get();
-            $harga  = $barang->pluck('harga')->first();
-            $berat  = $barang->pluck('berat')->first();
-            $totalharga += $pembeli[$nomor]['jumlah'] * $harga;
-            $nomor++;
-            $totalBerat += $berat;
+            $barang = $data->barang;
+            if ($barang) {
+                $totalharga += $data->jumlah * $barang->harga;
+                $totalBerat += $data->jumlah * $barang->berat;
+            }
         }
 
         $ongkir = RajaOngkir::costRajaOngkir($idkotaAsal, $idkotaTujuan, $totalBerat*1000); //return array costs

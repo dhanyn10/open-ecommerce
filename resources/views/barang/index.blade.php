@@ -82,10 +82,10 @@
                                     <div class="col-md-6">
                                         <label>Kurir(JNE)</label>
                                         <div class="form-group">
-                                            @if (isset($ongkir) && $harga != null)
+                                            @if (isset($ongkir) && $ongkir != null)
                                                 <select name="harga" id="" class="form-control form-control-sm">
                                                 @foreach ($ongkir as $item)
-                                                    <option value="{{$item->service}}">[{{$item->service}}] {{$item->cost[0]->value}} (Etd: {{$item->cost[0]->etd}})</option>
+                                                    <option value="{{$item['service']}}">[{{$item['service']}}] {{$item['cost'][0]['value']}} (Etd: {{$item['cost'][0]['etd']}})</option>
                                                 @endforeach
                                                 </select>
                                             @else

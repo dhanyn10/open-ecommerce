@@ -30,7 +30,7 @@
                                         @if (isset($ongkir) && $ongkir != null)
                                             <select name="ongkir" id="ongkir" class="form-control form-control-sm" onchange="totalHarga()">
                                             @foreach ($ongkir as $item)
-                                                <option value="{{$item->cost[0]->value}}">[{{$item->service}}] {{$item->cost[0]->value}} (Etd: {{$item->cost[0]->etd}})</option>
+                                                <option value="{{$item['cost'][0]['value']}}">[{{$item['service']}}] {{$item['cost'][0]['value']}} (Etd: {{$item['cost'][0]['etd']}})</option>
                                             @endforeach
                                             </select>
                                         @else
@@ -63,20 +63,21 @@
             </div>
         </div>
     </div>
-    @section('js')
-        <script>
-            function totalHarga()
-            {
-                var harga = document.getElementById('totalharga').value
-                var ongkir = document.getElementById('ongkir').value
-                harga = parseInt(harga)
-                ongkir = parseInt(ongkir)
-                var tagihan = (harga + ongkir)
-                document.getElementById('total-tagihan').value = tagihan
-            }
-            document.addEventListener('DOMContentLoaded', function () {
-                totalHarga()
-            })
-        </script>
-    @endsection
+@endsection
+
+@section('js')
+    <script>
+        function totalHarga()
+        {
+            var harga = document.getElementById('totalharga').value
+            var ongkir = document.getElementById('ongkir').value
+            harga = parseInt(harga) || 0
+            ongkir = parseInt(ongkir) || 0
+            var tagihan = (harga + ongkir)
+            document.getElementById('total-tagihan').value = tagihan
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            totalHarga()
+        })
+    </script>
 @endsection
